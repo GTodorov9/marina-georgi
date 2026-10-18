@@ -307,31 +307,24 @@
     }, 1400);
   }
 
-  // Gold confetti bursting out of the three circles
-  function confetti() {
-    const host = revealDate.getBoundingClientRect();
-    const kinds = ["dot", "dot", "diamond", "heart"];
-    document.querySelectorAll("[data-scratch]").forEach((el, k) => {
-      const r = el.getBoundingClientRect();
-      const cx = r.left - host.left + r.width / 2, cy = r.top - host.top + r.height / 2;
-      for (let n = 0; n < 40; n++) {
-        const c = document.createElement("span");
-        const kind = kinds[(Math.random() * kinds.length) | 0];
-        c.className = `confetti ${kind}`;
-        if (kind === "heart") c.textContent = "♥";
-        const ang = Math.random() * Math.PI * 2, dist = 70 + Math.random() * 170;
-        c.style.setProperty("--x", `${cx}px`);
-        c.style.setProperty("--y", `${cy}px`);
-        c.style.setProperty("--dx", `${Math.cos(ang) * dist}px`);
-        c.style.setProperty("--dy", `${Math.sin(ang) * dist - 40}px`);
-        c.style.setProperty("--r", `${(Math.random() - .5) * 540}deg`);
-        c.style.setProperty("--s", `${kind === "heart" ? 13 + Math.random() * 9 : 5 + Math.random() * 6}px`);
-        c.style.setProperty("--d", `${2.4 + Math.random() * 1.6}s`);
-        c.style.animationDelay = `${k * .18 + Math.random() * .15}s`;
-        revealDate.appendChild(c);
-        setTimeout(() => c.remove(), 4800);
-      }
-    });
+  // Rose petals and a few small roses drifting down over the revealed date
+  function petals() {
+    const W = revealDate.clientWidth, H = revealDate.clientHeight;
+    for (let n = 0; n < 26; n++) {
+      const p = document.createElement("span");
+      const rose = Math.random() < 0.22;
+      p.className = rose ? "petal rose" : "petal";
+      p.style.setProperty("--x", `${Math.random() * (W - 20)}px`);
+      p.style.setProperty("--s", `${rose ? 18 + Math.random() * 10 : 10 + Math.random() * 8}px`);
+      p.style.setProperty("--dx", `${(Math.random() - .5) * 120}px`);
+      p.style.setProperty("--fall", `${H * (0.75 + Math.random() * 0.3)}px`);
+      p.style.setProperty("--r", `${(Math.random() - .5) * 360}deg`);
+      const d = 5 + Math.random() * 3, delay = Math.random() * 2.2;
+      p.style.setProperty("--d", `${d}s`);
+      p.style.setProperty("--delay", `${delay}s`);
+      revealDate.appendChild(p);
+      setTimeout(() => p.remove(), (d + delay) * 1000 + 200);
+    }
   }
 
   // ---- Scratch to reveal the date ----
@@ -425,7 +418,7 @@
       if (scratches.every((s) => s.isDone())) {
         revealDate.classList.add("complete", "celebrate");
         if (navigator.vibrate) navigator.vibrate([20, 60, 30]);
-        if (!reduced) { confetti(); setTimeout(confetti, 1100); }
+        if (!reduced) petals();
         setTimeout(unlockRest, 2200);   // let the celebration play first
       }
     }
