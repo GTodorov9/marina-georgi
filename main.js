@@ -314,22 +314,22 @@
     document.querySelectorAll("[data-scratch]").forEach((el, k) => {
       const r = el.getBoundingClientRect();
       const cx = r.left - host.left + r.width / 2, cy = r.top - host.top + r.height / 2;
-      for (let n = 0; n < 22; n++) {
+      for (let n = 0; n < 40; n++) {
         const c = document.createElement("span");
         const kind = kinds[(Math.random() * kinds.length) | 0];
         c.className = `confetti ${kind}`;
         if (kind === "heart") c.textContent = "♥";
-        const ang = Math.random() * Math.PI * 2, dist = 50 + Math.random() * 110;
+        const ang = Math.random() * Math.PI * 2, dist = 70 + Math.random() * 170;
         c.style.setProperty("--x", `${cx}px`);
         c.style.setProperty("--y", `${cy}px`);
         c.style.setProperty("--dx", `${Math.cos(ang) * dist}px`);
         c.style.setProperty("--dy", `${Math.sin(ang) * dist - 40}px`);
         c.style.setProperty("--r", `${(Math.random() - .5) * 540}deg`);
-        c.style.setProperty("--s", `${kind === "heart" ? 10 + Math.random() * 6 : 4 + Math.random() * 5}px`);
-        c.style.setProperty("--d", `${1.6 + Math.random() * 1.2}s`);
+        c.style.setProperty("--s", `${kind === "heart" ? 13 + Math.random() * 9 : 5 + Math.random() * 6}px`);
+        c.style.setProperty("--d", `${2.4 + Math.random() * 1.6}s`);
         c.style.animationDelay = `${k * .18 + Math.random() * .15}s`;
         revealDate.appendChild(c);
-        setTimeout(() => c.remove(), 3600);
+        setTimeout(() => c.remove(), 4800);
       }
     });
   }
@@ -425,7 +425,7 @@
       if (scratches.every((s) => s.isDone())) {
         revealDate.classList.add("complete", "celebrate");
         if (navigator.vibrate) navigator.vibrate([20, 60, 30]);
-        if (!reduced) confetti();
+        if (!reduced) { confetti(); setTimeout(confetti, 1100); }
         setTimeout(unlockRest, 2200);   // let the celebration play first
       }
     }

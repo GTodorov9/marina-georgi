@@ -23,3 +23,6 @@ Mobile-first digital wedding invitation. Static HTML/CSS/JS, no build step.
 ## Assets
 Generated with Gemini (`gemini-3-pro-image`) via the AIContent cloud routine
 (branch `oneoff/wedding-assets`, script `WeddingSite/oneoff/gen_envelope_assets.sh`).
+
+## Cache busting
+After changing styles.css / main.js / config.js, bump the `?v=` on their tags in index.html (phones cache them hard).

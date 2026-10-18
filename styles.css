@@ -797,7 +797,7 @@ body {
 .reveal-date.complete.celebrate .scratch { animation: date-pop .9s cubic-bezier(.2, 1.5, .4, 1) calc(var(--k) * .18s) both, halo 2.6s ease-in-out calc(1s + var(--k) * .18s) infinite; }
 @keyframes date-pop {
   0%   { transform: scale(1); }
-  35%  { transform: scale(1.14); }
+  35%  { transform: scale(1.2); }
   100% { transform: scale(1); }
 }
 /* gold ripple ring from each circle */
@@ -815,7 +815,7 @@ body {
   opacity: 0;
   pointer-events: none;
 }
-.reveal-date.celebrate .rd-item::before { animation: ripple 1.4s ease-out calc(var(--k) * .18s) 2; }
+.reveal-date.celebrate .rd-item::before { animation: ripple 1.6s ease-out calc(var(--k) * .18s) 3; }
 @keyframes ripple {
   0%   { opacity: .9; transform: scale(1); }
   100% { opacity: 0; transform: scale(1.9); }
