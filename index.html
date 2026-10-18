@@ -13,6 +13,7 @@
   <link rel="preload" as="image" href="assets/seal.webp?v=2">
   <link rel="preload" as="image" href="assets/seal-lines.webp?v=2">
   <link rel="preload" as="image" href="assets/hero.webp?v=1">
+  <link rel="preconnect" href="https://www.google.com">
 </head>
 <body>
   <main class="stage" id="stage">
@@ -94,6 +95,65 @@
             <span class="rd-label">Година</span>
           </div>
         </div>
+      </section>
+
+      <section class="venue" id="venue">
+        <p class="v-kicker reveal-up">Мястото</p>
+        <h2 class="v-title reveal-up">Резиденция Тера</h2>
+        <p class="v-place reveal-up">София · Младост 1</p>
+
+        <figure class="v-art reveal-up">
+          <img src="assets/venue.webp?v=1" alt="Градините на Резиденция Тера с фонтан, тунел от светлини и Витоша на фона" loading="lazy" onerror="this.parentElement.hidden=true">
+        </figure>
+        <p class="v-lead reveal-up">Сред зелени градини с фонтани и светлини,<br>с изглед към Витоша</p>
+
+        <ol class="v-program">
+          <li class="reveal-up">
+            <span class="v-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="12.5" cy="18" r="7"/><circle cx="19.5" cy="18" r="7"/><path d="M14 7l2-3 2 3-2 2z"/></svg></span>
+            <span class="v-time" data-time="ceremony"></span>
+            <span class="v-what">Изнесен ритуал</span>
+            <span class="v-where">Английският двор</span>
+          </li>
+          <li class="reveal-up">
+            <span class="v-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M9 5h6l-.6 8a2.4 2.4 0 0 1-4.8 0z"/><path d="M12 15.5V25M9 25h6"/><path d="M17 5h6l-.6 8a2.4 2.4 0 0 1-4.8 0z"/><path d="M20 15.5V25M17 25h6"/></svg></span>
+            <span class="v-time" data-time="cocktail"></span>
+            <span class="v-what">Коктейл</span>
+            <span class="v-where">Централната градина с фонтана</span>
+          </li>
+          <li class="reveal-up">
+            <span class="v-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M16 4v3"/><path d="M8 13a8 8 0 0 1 16 0z"/><path d="M6 13h20"/><path d="M11 17v9M21 17v9M8 26h16"/></svg></span>
+            <span class="v-time" data-time="dinner"></span>
+            <span class="v-what">Вечеря и празненство</span>
+            <span class="v-where">Le Grand Salon</span>
+          </li>
+        </ol>
+
+        <div class="v-card reveal-up">
+          <p class="v-label">Адрес</p>
+          <address>бул. „Андрей Сахаров“ 56<br>ж.к. Младост 1, София 1784</address>
+          <a class="v-map" href="https://www.google.com/maps/search/?api=1&amp;query=42.6519613,23.3673899" target="_blank" rel="noopener" aria-label="Отворете картата">
+            <iframe title="Карта до Резиденция Тера" loading="lazy" tabindex="-1" src="https://www.google.com/maps?q=42.6519613,23.3673899&amp;z=16&amp;output=embed"></iframe>
+          </a>
+          <div class="v-buttons">
+            <a class="v-btn" href="https://www.google.com/maps/dir/?api=1&amp;destination=42.6519613,23.3673899" target="_blank" rel="noopener">Google Maps</a>
+            <a class="v-btn" href="https://waze.com/ul?ll=42.6519613,23.3673899&amp;navigate=yes" target="_blank" rel="noopener">Waze</a>
+          </div>
+        </div>
+
+        <ul class="v-info">
+          <li class="reveal-up">
+            <span class="v-info-icon" aria-hidden="true">M</span>
+            <span><b>Метро</b>Станция „Младост 1“ — около 500 м, 7 минути пеша</span>
+          </li>
+          <li class="reveal-up">
+            <span class="v-info-icon" aria-hidden="true">P</span>
+            <span><b>Паркинг</b>Безплатни паркинги на няколко крачки от резиденцията</span>
+          </li>
+          <li class="reveal-up">
+            <span class="v-info-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.5 2"/></svg></span>
+            <span><b>От центъра</b>Около 15 минути с кола или такси</span>
+          </li>
+        </ul>
       </section>
     </div>
     <div class="sparkles" id="sparkles" aria-hidden="true"></div>

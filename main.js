@@ -25,6 +25,9 @@
   fill("[data-date-day]", cfg.dateDay);
   fill("[data-date-month]", cfg.dateMonth);
   fill("[data-date-year]", cfg.dateYear);
+  document.querySelectorAll("[data-time]").forEach((el) => {
+    el.textContent = (cfg.times || {})[el.dataset.time] || "";
+  });
 
   // ---- Use the generated art only once it has loaded; CSS fallbacks otherwise ----
   const useImage = (src, cls) => {
@@ -116,7 +119,7 @@
   const io = new IntersectionObserver((entries) => {
     entries.forEach((e) => e.isIntersecting && e.target.classList.add("in-view"));
   }, { root: invite, threshold: 0.12 });
-  document.querySelectorAll(".arrived").forEach((el) => io.observe(el));
+  document.querySelectorAll(".arrived, .reveal-up").forEach((el) => io.observe(el));
 
   // ---- Scratch to reveal the date ----
   const revealDate = document.getElementById("revealDate");
