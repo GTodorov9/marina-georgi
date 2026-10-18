@@ -549,7 +549,7 @@
       if (firstTime) setTimeout(() => form.elements.name.focus({ preventScroll: true }), 250);
     }));
 
-    // −/+ steppers (a personal invitation caps the party at its number of seats)
+    // −/+ steppers
     const counts = { adults: 1, children: 0 };
     let seatCap = Infinity;
     const steppers = [];
@@ -632,8 +632,8 @@
       const g = e.detail;
       form.elements.name.value = g.name;
       document.getElementById("rsvpTitle").textContent = `${g.name}, ще бъдете ли с нас?`;
-      seatCap = Math.max(1, g.seats);
-      counts.adults = Math.min(seatCap, Math.max(1, g.seats));
+      // seats only pre-set the adults count; guests may still add more people
+      counts.adults = Math.min(8, Math.max(1, g.seats));
       counts.children = 0;
       steppers.forEach((f) => f());
       renderMenus();
