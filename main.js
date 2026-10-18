@@ -3,7 +3,6 @@
   const root = document.documentElement;
   const stage = document.getElementById("stage");
   const seal = document.getElementById("seal");
-  const replay = document.getElementById("replay");
   const music = document.getElementById("music");
 
   // ---- Fill couple details from config.js ----
@@ -162,7 +161,6 @@
     });
     later(t0 + T.done, () => {
       stage.classList.add("is-done");
-      replay.hidden = false;
       document.dispatchEvent(new CustomEvent("invitation:opened"));
     });
   }
@@ -179,7 +177,6 @@
     afterReveal.hidden = true;
     afterReveal.classList.remove("unveil");
     scratches.forEach((s) => s.reset());
-    replay.hidden = true;
     stage.classList.remove("is-pressed", "is-glowing", "is-washed", "is-open", "is-slide", "is-reveal", "is-done");
     opened = false;
   }
@@ -475,7 +472,6 @@
     stage.classList.add("is-open", "is-slide", "is-reveal", "is-done");
     if (new URLSearchParams(location.search).get("skip") !== "locked") unlockRest(true);
     invite.setAttribute("aria-hidden", "false");
-    replay.hidden = false;
   }
 
   // Dev aid: ?freeze=<ms> plays the open sequence and freezes it <ms> after the flap
@@ -489,5 +485,4 @@
       document.getAnimations().forEach((a) => { a.pause(); a.currentTime = Number(freeze); });
     }));
   }
-  replay.addEventListener("click", reset);
 })();

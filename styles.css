@@ -245,36 +245,24 @@ body {
 .hero-divider.rise { transform: scaleX(0); }
 .is-reveal .hero-divider.rise { transform: scaleX(1); }
 
-/* Scroll cue: a thin line with a falling dot */
-.scroll-cue {
+/* "Продължете надолу" cue at the bottom of the hero, same as after the date reveal */
+.hero-next {
   position: absolute;
+  left: 0;
+  right: 0;
+  bottom: max(26px, env(safe-area-inset-bottom));
   z-index: 2;
-  left: 50%;
-  bottom: max(18px, env(safe-area-inset-bottom));
-  width: 1px;
-  height: 42px;
-  translate: -50% 0;
-  background: linear-gradient(180deg, rgba(255, 250, 243, 0), rgba(255, 250, 243, .8));
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-style: italic;
+  font-size: 18px;
+  text-align: center;
+  color: #7a4a33;
+  text-shadow: 0 0 10px rgba(255, 240, 225, .9), 0 0 2px rgba(255, 240, 225, .9);
   opacity: 0;
+  pointer-events: none;
 }
-.scroll-cue::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 0;
-  width: 5px;
-  height: 5px;
-  translate: -50% 0;
-  border-radius: 50%;
-  background: #fffaf3;
-  animation: cue 2.2s ease-in-out infinite;
-}
-@keyframes cue {
-  0%   { transform: translateY(0); opacity: 0; }
-  30%  { opacity: 1; }
-  100% { transform: translateY(40px); opacity: 0; }
-}
-.is-reveal .scroll-cue { opacity: 1; transition: opacity 1s ease 2.6s; }
+.hero-next span { display: block; font-style: normal; font-size: 22px; animation: nudge 1.6s ease-in-out infinite; }
+.is-reveal .hero-next { opacity: 1; transition: opacity 1.2s ease 2.8s; }
 
 /* ---------- Screen 2: "The day has arrived" ---------- */
 .arrived {
@@ -542,20 +530,6 @@ body {
 }
 @keyframes pulse { 50% { opacity: .45; } }
 
-.replay {
-  position: absolute;
-  right: 16px;
-  bottom: max(16px, env(safe-area-inset-bottom));
-  z-index: 10;
-  font: 500 14px/1 "Cormorant Garamond", serif;
-  letter-spacing: .1em;
-  color: var(--ink);
-  background: rgba(255, 250, 244, .8);
-  border: 1px solid rgba(123, 75, 66, .25);
-  border-radius: 999px;
-  padding: 10px 16px;
-  cursor: pointer;
-}
 
 /* ---------- Music button ---------- */
 .music-btn {
@@ -1455,7 +1429,7 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   :root { --t-flap: .01s; }
-  .seal, .hint, .glow, .seal-shine::before, .sparkle, .reveal-date::after, .scratch, .flake, .music-btn i, .rs-seal, .after-reveal.unveil, .rd-next span { animation: none !important; }
+  .seal, .hint, .glow, .seal-shine::before, .sparkle, .reveal-date::after, .scratch, .flake, .music-btn i, .rs-seal, .after-reveal.unveil, .rd-next span, .hero-next span { animation: none !important; }
   .pocket, .glow, .rise, .press, .hero-bg, .reveal-up, .sc-item, .sheet-panel, .sheet-backdrop { transition-duration: .01s !important; transition-delay: 0s !important; }
   .cd-num.tick { animation: none !important; }
 }
