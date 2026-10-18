@@ -986,9 +986,9 @@ body {
 .is-glowing .card-lines {
   opacity: 1;
   --ripple: 620px;
-  transition: --ripple 2.1s cubic-bezier(.3, .1, .35, 1) 1.4s, opacity .4s ease 1.4s;
+  transition: --ripple 3.4s cubic-bezier(.25, .1, .4, 1) 1.4s, opacity .6s ease 1.4s;
 }
-.is-washed .card-lines { animation: candle 2.4s ease-in-out .8s infinite; }
+.is-washed .card-lines { animation: candle 2.4s ease-in-out 1.6s infinite; }
 
 /* ================= OPEN SEQUENCE ================= */
 /* 1) Ignite: light rises through the seal from bottom to top.

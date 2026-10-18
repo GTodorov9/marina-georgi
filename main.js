@@ -286,7 +286,7 @@
   if (!reduced) drawSealLight();
   const T = reduced
     ? { press: 0, glow: 0, wash: 0, slide: 0, reveal: 0, done: 0 }
-    : { press: 140, glow: 3500, wash: 3000, slide: 1300, reveal: 2300, done: 3700 };   // glow leaves time for the ripple through the drawings
+    : { press: 140, glow: 4700, wash: 4000, slide: 1300, reveal: 2300, done: 3700 };   // glow leaves time for the ripple through the drawings
   let timers = [];
   let opened = false;
 
