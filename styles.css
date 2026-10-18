@@ -1157,6 +1157,46 @@ body {
   transition: opacity .7s ease;
 }
 .scratch.done canvas { opacity: 0; }
+
+/* Idle hint: a glowing fingertip scrubs across the next circle, which gives a little wiggle */
+.scratch-hint {
+  position: absolute;
+  left: 50%;
+  top: calc(min(26vw, 112px) / 2);
+  width: 24px;
+  height: 24px;
+  margin: -12px 0 0 -12px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 252, 245, .97) 0 32%, rgba(255, 238, 215, .45) 58%, rgba(255, 238, 215, 0) 72%);
+  box-shadow: 0 0 0 1.5px rgba(110, 55, 30, .35), 0 2px 6px rgba(80, 35, 15, .35), 0 0 16px 5px rgba(255, 232, 200, .45);
+  pointer-events: none;
+  opacity: 0;
+  z-index: 2;
+}
+.reveal-date.nudge .scratch-hint { animation: hint-scrub 3.4s ease-in-out both; }
+.rd-item.nudge-me .scratch { animation: nudge-wiggle 3.4s ease-in-out; }
+.reveal-date.nudge .rd-sub { animation: sub-glow 3.4s ease-in-out; }
+@keyframes hint-scrub {
+  0%   { opacity: 0; transform: translate(-30px, -22px) scale(1.5); }
+  12%  { opacity: 1; transform: translate(-30px, -22px) scale(1); }
+  28%  { transform: translate(28px, -8px); }
+  44%  { transform: translate(-28px, 6px); }
+  60%  { transform: translate(28px, 20px); }
+  76%  { opacity: 1; transform: translate(-18px, 30px); }
+  90%, 100% { opacity: 0; transform: translate(-18px, 30px) scale(.6); }
+}
+@keyframes nudge-wiggle {
+  0%, 34%, 100% { transform: none; }
+  6%  { transform: scale(1.06); }
+  12% { transform: scale(1.06) rotate(-4deg); }
+  18% { transform: scale(1.06) rotate(4deg); }
+  24% { transform: scale(1.04) rotate(-2.5deg); }
+  30% { transform: scale(1.02) rotate(1deg); }
+}
+@keyframes sub-glow {
+  0%, 100% { text-shadow: none; }
+  25%, 70% { text-shadow: 0 0 12px rgba(255, 228, 190, .85); }
+}
 .scratch-value {
   position: absolute;
   inset: 0;

@@ -461,6 +461,48 @@
   });
   window.addEventListener("resize", () => scratches.forEach((s) => s.repaint()));
 
+  // ---- Idle hint: circles on screen but untouched for a while -> show how to scratch ----
+  (() => {
+    if (reduced) return;
+    const items = [...revealDate.querySelectorAll(".rd-item")];
+    const hint = document.createElement("span");
+    hint.className = "scratch-hint";
+    hint.setAttribute("aria-hidden", "true");
+    let timer = 0, endTimer = 0, inView = false, busy = false, current = null;
+    const next = () => items[scratches.findIndex((s) => !s.isDone())];
+
+    function stop() {
+      clearTimeout(endTimer);
+      revealDate.classList.remove("nudge");
+      if (current) current.classList.remove("nudge-me");
+      current = null;
+    }
+    function show() {
+      const item = next();
+      if (!item || !inView || busy) return;
+      stop();
+      item.appendChild(hint);
+      void hint.offsetWidth;                     // restart the CSS animations
+      current = item;
+      item.classList.add("nudge-me");
+      revealDate.classList.add("nudge");
+      endTimer = setTimeout(() => { stop(); schedule(7000); }, 3600);
+    }
+    function schedule(ms) { clearTimeout(timer); if (next()) timer = setTimeout(show, ms); }
+
+    revealDate.addEventListener("pointerdown", (e) => {
+      if (!e.target.closest("[data-scratch]")) return;
+      busy = true;
+      clearTimeout(timer);
+      stop();
+    });
+    window.addEventListener("pointerup", () => { if (busy) { busy = false; schedule(6000); } });
+    new IntersectionObserver(([e]) => {
+      inView = e.intersectionRatio >= .6;
+      if (inView) schedule(4000); else { clearTimeout(timer); stop(); }
+    }, { threshold: [0, .6] }).observe(revealDate.querySelector(".rd-circles"));
+  })();
+
   // ---- Countdown to the celebration ----
   (() => {
     const target = new Date(cfg.celebrationStart).getTime();
