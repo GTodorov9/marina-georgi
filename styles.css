@@ -235,8 +235,8 @@ body {
 .bell {
   position: absolute;
   left: 60.872%;
-  top: 56.214%;
-  width: 1.1cqw;
+  top: 56.141%;              /* 772.5: just under the arch top */
+  width: 1.5cqw;             /* nearly fills the 11px-wide opening */
   translate: -50% 0;
   overflow: visible;
   transform-origin: 50% 0;
