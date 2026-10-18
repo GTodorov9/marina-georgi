@@ -38,6 +38,24 @@
     scheduleList.appendChild(li);
   });
 
+  // ---- Personal invitation (?g=code): look up the household in the RSVP sheet ----
+  const guestCode = (new URLSearchParams(location.search).get("g") || "").trim().toLowerCase().replace(/[^a-z0-9]/g, "") || null;
+  if (guestCode && cfg.rsvpEndpoint) {
+    fetch(`${cfg.rsvpEndpoint}?g=${encodeURIComponent(guestCode)}`)
+      .then((r) => r.json())
+      .then((g) => {
+        if (!g || !g.ok) return;
+        const forEl = document.querySelector(".hint-for");
+        forEl.textContent = `За ${g.name}`;
+        forEl.hidden = false;
+        const dear = document.querySelector(".rs-dear");
+        dear.textContent = `Скъпи ${g.name},`;
+        dear.hidden = false;
+        document.dispatchEvent(new CustomEvent("guest:loaded", { detail: g }));
+      })
+      .catch(() => {});
+  }
+
   // ---- Use the generated art only once it has loaded; CSS fallbacks otherwise ----
   const useImage = (src, cls) => {
     const img = new Image();
@@ -531,17 +549,26 @@
       if (firstTime) setTimeout(() => form.elements.name.focus({ preventScroll: true }), 250);
     }));
 
-    // −/+ steppers
+    // −/+ steppers (a personal invitation caps the party at its number of seats)
     const counts = { adults: 1, children: 0 };
+    let seatCap = Infinity;
+    const steppers = [];
     form.querySelectorAll("[data-counter]").forEach((box) => {
       const key = box.dataset.counter, min = +box.dataset.min, max = +box.dataset.max;
       const out = box.querySelector("output");
       const [minus, plus] = box.querySelectorAll("button");
-      const render = () => { out.textContent = counts[key]; minus.disabled = counts[key] <= min; plus.disabled = counts[key] >= max; };
+      const render = () => {
+        out.textContent = counts[key];
+        minus.disabled = counts[key] <= min;
+        plus.disabled = counts[key] >= max || counts.adults + counts.children >= seatCap;
+      };
       box.querySelectorAll("button").forEach((b) => b.addEventListener("click", () => {
-        counts[key] = Math.min(max, Math.max(min, counts[key] + Number(b.dataset.step)));
-        render();
+        const step = Number(b.dataset.step);
+        if (step > 0 && counts.adults + counts.children >= seatCap) return;
+        counts[key] = Math.min(max, Math.max(min, counts[key] + step));
+        steppers.forEach((f) => f());
       }));
+      steppers.push(render);
       render();
     });
 
@@ -600,6 +627,18 @@
     form.querySelectorAll("[data-counter] button").forEach((b) => b.addEventListener("click", renderMenus));
     renderMenus();
 
+    // Personal invitation: prefill name, seats and a greeting
+    document.addEventListener("guest:loaded", (e) => {
+      const g = e.detail;
+      form.elements.name.value = g.name;
+      document.getElementById("rsvpTitle").textContent = `${g.name}, ще бъдете ли с нас?`;
+      seatCap = Math.max(1, g.seats);
+      counts.adults = Math.min(seatCap, Math.max(1, g.seats));
+      counts.children = 0;
+      steppers.forEach((f) => f());
+      renderMenus();
+    });
+
     // "Имаме алергия" reveals a short text box
     form.querySelector("[data-allergy]").addEventListener("change", (e) => {
       allergy.hidden = !e.target.checked;
@@ -610,7 +649,7 @@
       e.preventDefault();
       err.hidden = true;
       const fd = new FormData(form);
-      const data = { attending: fd.get("attending"), name: (fd.get("name") || "").trim() };
+      const data = { attending: fd.get("attending"), name: (fd.get("name") || "").trim(), code: guestCode || "", ua: navigator.userAgent.slice(0, 120) };
       if (!data.attending) { err.textContent = "Моля, изберете отговор."; err.hidden = false; return; }
       if (!data.name) { err.textContent = "Моля, напишете името си."; err.hidden = false; form.elements.name.focus(); return; }
       if (data.attending === "yes") {
@@ -627,6 +666,7 @@
         if (cfg.rsvpEndpoint) {
           // text/plain avoids a CORS preflight (works with Google Apps Script web apps)
           await fetch(cfg.rsvpEndpoint, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(data) });
+          try { localStorage.setItem("rsvp-sent", JSON.stringify({ code: data.code, attending: data.attending, at: data.submittedAt })); } catch (_) {}
         } else {
           try {
             const all = JSON.parse(localStorage.getItem("rsvp-test") || "[]");

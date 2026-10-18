@@ -1600,6 +1600,25 @@ body {
   font: 600 22px/1 "Cormorant Garamond", Georgia, serif;
 }
 
+/* personal greeting */
+.hint-for {
+  display: block;
+  margin-bottom: 4px;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-style: italic;
+  font-size: 17px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.hint-for[hidden], .rs-dear[hidden] { display: none; }
+.rs-dear {
+  margin-bottom: 6px;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-style: italic;
+  font-size: 22px;
+  color: #8a5a3e;
+}
+
 /* menu picture cards */
 .f-menu-hint { margin-top: -2px; }
 .f-menus {
