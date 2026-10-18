@@ -836,8 +836,8 @@ body {
   width: 100%;
   height: auto;
   /* the painting already fades into the paper; soften its very edges too */
-  -webkit-mask: radial-gradient(75% 72% at 50% 50%, #000 62%, transparent 100%);
-          mask: radial-gradient(75% 72% at 50% 50%, #000 62%, transparent 100%);
+  -webkit-mask: radial-gradient(68% 66% at 50% 50%, #000 55%, transparent 100%);
+          mask: radial-gradient(68% 66% at 50% 50%, #000 55%, transparent 100%);
 }
 .v-lead {
   font-family: "Cormorant Garamond", Georgia, serif;
