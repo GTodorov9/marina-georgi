@@ -617,15 +617,15 @@
     // Menu picture cards: one guest -> pick one; several -> distribute counts per menu
     const menus = [...form.querySelectorAll(".f-menu")];
     const menuHint = form.querySelector(".f-menu-hint");
-    const menuCounts = { "Месо": 1, "Вегетарианско": 0, "Веганско": 0 };
+    const menuCounts = { "Месно": 1, "Вегетарианско": 0, "Веганско": 0 };
     const total = () => counts.adults + counts.children;
     function renderMenus() {
       const t = total(), multi = t > 1;
       let sum = Object.values(menuCounts).reduce((a, b) => a + b, 0);
-      // keep the distribution equal to the number of guests (adjust "Месо" first)
+      // keep the distribution equal to the number of guests (adjust "Месно" first)
       if (sum !== t) {
         let diff = t - sum;
-        for (const k of ["Месо", "Вегетарианско", "Веганско"]) {
+        for (const k of ["Месно", "Вегетарианско", "Веганско"]) {
           const nv = Math.max(0, menuCounts[k] + diff);
           diff -= nv - menuCounts[k];
           menuCounts[k] = nv;
@@ -660,7 +660,7 @@
           if (!from) return;
           menuCounts[from]--; menuCounts[k]++;
         } else if (menuCounts[k] > 0) {                  // give one back to the first other menu
-          const to = k === "Месо" ? "Вегетарианско" : "Месо";
+          const to = k === "Месно" ? "Вегетарианско" : "Месно";
           menuCounts[k]--; menuCounts[to]++;
         }
         renderMenus();
