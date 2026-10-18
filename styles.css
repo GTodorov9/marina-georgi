@@ -65,7 +65,7 @@ body {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: linear-gradient(180deg, #e2b98f 0%, var(--liner) 45%, #f0d2c6 75%);
+  background: linear-gradient(180deg, #f59a2c 0%, #f8b84e 30%, #f6d3a8 60%, #f0d2c6 80%);
 }
 
 .light {
@@ -80,7 +80,7 @@ body {
 .glow {
   position: absolute;
   inset: -10%;
-  background: radial-gradient(60% 38% at 50% 22%, rgba(255, 214, 120, .95) 0%, rgba(240, 170, 60, .55) 40%, rgba(240, 170, 60, 0) 75%);
+  background: radial-gradient(65% 42% at 50% 22%, rgba(255, 236, 170, 1) 0%, rgba(255, 170, 50, .75) 40%, rgba(255, 150, 30, 0) 78%);
   opacity: 0;
   transition: opacity 1.2s ease .5s;
 }
@@ -131,15 +131,19 @@ body {
 }
 
 .letter-names {
-  font-family: "Pinyon Script", cursive;
-  font-weight: 400;
-  font-size: clamp(40px, 12vw, 56px);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(38px, 11vw, 52px);
   line-height: 1.05;
   color: var(--gold-deep);
   display: flex;
   flex-direction: column;
 }
-.letter-names em { font-style: normal; font-size: .6em; }
+.letter-names em { font-style: normal; font-size: .75em; }
+
+/* Decorative ampersand (Ballet), used in the monogram and the names */
+.amp { font-family: "Ballet", "Cormorant Garamond", serif; font-style: normal; font-weight: 400; font-size: .8em; margin: 0 .04em; }
 
 .letter-date {
   font-size: 17px;
@@ -213,18 +217,19 @@ body {
 
 .flap-inside { transform: rotateX(180deg); }
 .flap-inside::before {
-  background: linear-gradient(0deg, #e6c08f, #f1d8bf);
+  background: linear-gradient(0deg, #f7a83c, #fbd28a 70%, #f8e2c4);
 }
 
 /* ---------- Wax seal ---------- */
 .seal {
   position: absolute;
   left: 50%;
-  top: 54%;
-  z-index: 5;
+  top: 100%;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
   width: min(48vw, 220px);
   aspect-ratio: 1;
-  translate: -50% -50%;
+  translate: -50% -50% 2px;
   border: 0;
   background: none;
   cursor: pointer;
@@ -271,16 +276,23 @@ body {
 .seal-initials {
   position: absolute;
   inset: 0;
-  display: grid;
-  place-items: center;
-  font-family: "Pinyon Script", cursive;
-  font-size: 21cqw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: 19cqw;
   line-height: 1;
-  padding-top: 3%;
-  letter-spacing: -.02em;
-  color: #6f4810;
-  /* engraved: dark upper edge, light lower edge */
-  text-shadow: 0 -1px 1px rgba(70, 35, 5, .55), 0 1.5px 0 rgba(255, 228, 160, .75);
+  padding-top: 2%;
+  white-space: nowrap;
+  color: #4a2c05;
+  /* pressed into the wax: dark rim above, warm highlight below, soft inner shade */
+  text-shadow:
+    0 -1px 0 rgba(40, 20, 0, .7),
+    0 1.5px 0 rgba(255, 226, 150, .85),
+    0 0 6px rgba(60, 30, 0, .25);
+  -webkit-text-stroke: .4px rgba(40, 20, 0, .5);
   pointer-events: none;
 }
 
@@ -299,6 +311,27 @@ body {
   border-radius: 0;
   -webkit-mask: url("assets/seal.webp") center / contain no-repeat;
           mask: url("assets/seal.webp") center / contain no-repeat;
+}
+
+/* Lit-from-within layer: a brightened, high-contrast copy of the seal, so the raised
+   wreath and rim catch the light while the recesses stay gold */
+.seal-lit,
+.seal-glow {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.has-seal .seal-lit {
+  background: url("assets/seal-lines.webp") center / contain no-repeat;
+  filter: brightness(1.4) drop-shadow(0 0 1.5px rgba(255, 252, 240, 1)) drop-shadow(0 0 5px rgba(255, 230, 160, .9)) drop-shadow(0 0 12px rgba(255, 200, 100, .6));
+}
+.seal-glow {
+  inset: -18%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 244, 200, .9) 0%, rgba(255, 210, 110, .45) 45%, rgba(255, 200, 90, 0) 100%);
+  mix-blend-mode: screen;
+  transform: scale(.6);
 }
 
 /* ---------- Hint & replay ---------- */
@@ -343,18 +376,39 @@ body {
 }
 
 /* ================= OPEN SEQUENCE ================= */
-.is-pressed .seal { animation: none; transform: scale(.93); transition: transform .12s ease; }
-
-.is-open .seal {
-  animation: seal-off .75s var(--ease-open) forwards;
-  pointer-events: none;
+/* 1) Ignite: only the engraved details (initials, wreath) light up white */
+.is-glowing .seal { animation: none; transform: scale(1.03); transition: transform .8s cubic-bezier(.2, .8, .2, 1); }
+.is-glowing .seal-lit { opacity: 1; transition: opacity .6s ease; }
+.is-glowing .seal-initials {
+  color: #fffaf0;
+  -webkit-text-stroke: 0 transparent;
+  text-shadow:
+    0 0 2px #fff,
+    0 0 7px rgba(255, 246, 215, .95),
+    0 0 16px rgba(255, 215, 120, .85);
+  transition: color .4s ease, text-shadow .5s ease;
 }
-@keyframes seal-off {
-  0%   { transform: scale(.93); opacity: 1; }
-  35%  { transform: scale(1.12) rotate(-6deg); opacity: 1; }
-  100% { transform: translateY(-40px) scale(1.35) rotate(-12deg); opacity: 0; filter: blur(2px); }
+
+/* 2) Wash: the light spreads until the whole seal glows pale cream */
+.is-washed .seal-wax {
+  filter: brightness(1.32) saturate(.55) drop-shadow(0 0 14px rgba(255, 215, 150, .75));
+  transition: filter .7s ease;
+}
+.is-washed .seal-glow { opacity: .55; transform: scale(1); transition: opacity .7s ease, transform .9s cubic-bezier(.2, .8, .2, 1); }
+.is-washed .seal-lit { opacity: .7; }
+.is-washed .seal-initials { color: #fffaf0; text-shadow: 0 0 1px rgba(120, 80, 20, .55), 0 0 8px rgba(255, 235, 190, .95); }
+
+/* 3) Light leaks out along the flap seams */
+.flap-front { transition: filter .6s ease; }
+.is-washed .flap-front {
+  filter:
+    drop-shadow(0 0 2px rgba(255, 190, 70, 1))
+    drop-shadow(0 4px 10px rgba(255, 140, 20, .95))
+    drop-shadow(0 8px 22px rgba(255, 150, 40, .6));
 }
 
+/* 4) The flap opens with the seal still on it */
+.is-open .seal { pointer-events: none; }
 .is-open .hint { opacity: 0; animation: none; }
 
 .is-open .flap { transform: rotateX(180deg); }
@@ -377,5 +431,4 @@ body {
   :root { --t-flap: .01s; }
   .seal, .hint, .rays, .seal-shine::before { animation: none; }
   .scene, .letter, .glow, .rays { transition-duration: .01s; transition-delay: 0s; }
-  .is-open .seal { animation: none; opacity: 0; }
 }
