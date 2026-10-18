@@ -197,6 +197,23 @@
   }, { root: invite, threshold: 0.12 });
   document.querySelectorAll(".arrived, .reveal-up").forEach((el) => io.observe(el));
 
+  // Slow, eased scroll (native smooth scroll is too quick); any touch cancels it
+  function glideTo(target, ms) {
+    const from = invite.scrollTop, dist = target - from, t0 = performance.now();
+    let cancelled = false;
+    const stop = () => { cancelled = true; };
+    invite.addEventListener("touchstart", stop, { once: true, passive: true });
+    invite.addEventListener("wheel", stop, { once: true, passive: true });
+    const ease = (t) => -(Math.cos(Math.PI * t) - 1) / 2;   // gentle sine ease-in-out
+    const step = (now) => {
+      if (cancelled) return;
+      const t = Math.min((now - t0) / ms, 1);
+      invite.scrollTop = from + dist * ease(t);
+      if (t < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+
   // ---- The rest of the invitation unlocks after the date is found ----
   const afterReveal = document.getElementById("afterReveal");
   function unlockRest(instant) {
@@ -205,11 +222,12 @@
     invite.dispatchEvent(new Event("scroll"));          // position the schedule rose
     if (instant === true) return;
     afterReveal.classList.add("unveil");
-    // glide down so the countdown comes into view
+    // after a pause to enjoy the date, glide slowly down to the countdown
     setTimeout(() => {
-      const top = afterReveal.offsetTop - invite.clientHeight * 0.18;
-      invite.scrollTo({ top, behavior: reduced ? "auto" : "smooth" });
-    }, 500);
+      const target = afterReveal.offsetTop - invite.clientHeight * 0.18;
+      if (reduced) { invite.scrollTop = target; return; }
+      glideTo(target, 3400);
+    }, 1400);
   }
 
   // ---- Scratch to reveal the date ----
@@ -303,7 +321,7 @@
       if (scratches.every((s) => s.isDone())) {
         revealDate.classList.add("complete");
         if (navigator.vibrate) navigator.vibrate([20, 60, 30]);
-        setTimeout(unlockRest, 900);
+        setTimeout(unlockRest, 1200);
       }
     }
 

@@ -985,7 +985,7 @@ body {
 /* ---------- Unlock after the date is revealed ---------- */
 .after-reveal[hidden] { display: none; }
 .after-reveal.unveil {
-  animation: unveil 1.6s cubic-bezier(.2, .8, .2, 1) both;
+  animation: unveil 2.4s cubic-bezier(.2, .8, .2, 1) both;
 }
 @keyframes unveil {
   from { opacity: 0; transform: translateY(60px); filter: blur(8px); }
