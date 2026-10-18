@@ -235,8 +235,8 @@ body {
 .bell {
   position: absolute;
   left: 60.872%;
-  top: 56.141%;              /* 772.5: just under the arch top */
-  width: 1.5cqw;             /* nearly fills the 11px-wide opening */
+  top: 55.814%;              /* 768: hangs from the base of the dome */
+  width: 5.6cqw;             /* almost as wide as the dome */
   translate: -50% 0;
   overflow: visible;
   transform-origin: 50% 0;
@@ -248,13 +248,13 @@ body {
 /* a few full swings, then it settles and waits */
 @keyframes ring {
   0%, 46%, 100% { rotate: 0deg; }
-  6%  { rotate: 22deg; }
-  13% { rotate: -22deg; }
-  20% { rotate: 20deg; }
-  27% { rotate: -17deg; }
-  33% { rotate: 11deg; }
-  39% { rotate: -6deg; }
-  43% { rotate: 2deg; }
+  6%  { rotate: 13deg; }       /* a big bell swings less far */
+  13% { rotate: -13deg; }
+  20% { rotate: 12deg; }
+  27% { rotate: -10deg; }
+  33% { rotate: 7deg; }
+  39% { rotate: -4deg; }
+  43% { rotate: 1.5deg; }
 }
 /* the clapper lags behind the bell and strikes the rim at each end of the swing */
 @keyframes clapper {
