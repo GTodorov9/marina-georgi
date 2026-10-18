@@ -149,13 +149,98 @@ body {
   position: absolute;
   inset: 0 0 -8% 0;          /* extra height for the parallax drift */
   background:
-    url("assets/hero.webp?v=1") center bottom / cover no-repeat,
     linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 55%, var(--sky-low) 100%);
   z-index: 0;
   transform: scale(1.08);
   will-change: transform;
 }
 .is-open .hero-bg { transform: scale(1); transition: transform 9s cubic-bezier(.2, .7, .2, 1); }
+.hero-bg { container-type: size; }
+
+/* "background-size: cover" anchored at the bottom, rebuilt as a box so the cut-outs line up with the plate */
+.hero-art {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: max(100cqw, 100cqh * 768 / 1376);
+  aspect-ratio: 768 / 1376;
+  transform: translateX(-50%);
+  background: url("assets/hero/plate.webp?v=1") center / 100% 100% no-repeat;
+  container-type: inline-size;
+}
+.hl {
+  position: absolute;
+  height: auto;
+  will-change: transform;
+  animation: sway var(--dur, 7s) ease-in-out var(--delay, 0s) infinite alternate;
+}
+/* left/top/width = x/768, y/1376, w/768 of each cut-out; origin = where it stands or grows from */
+.hl-flamingo1 { left: 1.172%;  top: 61.991%; width: 21.875%; transform-origin: 43% 100%; --a: -.7deg; --b: .6deg;  --dur: 7.5s; }
+.hl-flamingo2 { left: 13.802%; top: 68.605%; width: 20.182%; transform-origin: 43% 99%;  --a: .6deg;  --b: -.8deg; --dur: 8.5s; --delay: -3s; }
+.hl-pelican   { left: 23.177%; top: 76.017%; width: 17.057%; transform-origin: 41% 100%; animation-name: breathe; --dur: 4.2s; --delay: -1s; }
+.hl-rose-l    { left: 0;       top: 73.474%; width: 16.667%; transform-origin: 31% 100%; --a: -1.6deg; --b: 1.4deg; --dur: 6s;   --delay: -2s; }
+.hl-rose-r    { left: 81.901%; top: 74.855%; width: 14.063%; transform-origin: 66% 100%; --a: 1.5deg;  --b: -1.5deg; --dur: 6.8s; --delay: -4s; }
+.hl-rose-tr   { left: 89.063%; top: 58.648%; width: 10.938%; transform-origin: 90% 100%; --a: -1.8deg; --b: 1.2deg; --dur: 5.6s; --delay: -1s; }
+
+@keyframes sway { from { transform: rotate(var(--a, -1deg)); } to { transform: rotate(var(--b, 1deg)); } }
+@keyframes breathe {
+  from { transform: rotate(-.5deg) scale(1, 1); }
+  to   { transform: rotate(.7deg) scale(1.006, 1.018); }
+}
+
+/* Lighthouse: a warm lamp that pulses, and a beam that sweeps round (right, towards us, left, away) */
+.lighthouse {
+  position: absolute;
+  left: 73.698%;            /* lantern centre, 566 × 847 */
+  top: 61.555%;
+  width: 0;
+  height: 0;
+}
+.lh-glow {
+  position: absolute;
+  left: -4cqw;
+  top: -4cqw;
+  width: 8cqw;
+  height: 8cqw;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 246, 214, .95) 0 12%, rgba(255, 214, 140, .55) 28%, rgba(255, 190, 110, 0) 70%);
+  mix-blend-mode: screen;
+  animation: lamp 8s ease-in-out infinite;
+}
+.lh-beam {
+  position: absolute;
+  left: 0;
+  top: -3.2cqw;
+  width: 46cqw;
+  height: 6.4cqw;
+  filter: blur(3px);          /* on the parent, so it softens the clipped cone's edges */
+  transform-origin: 0 50%;
+  opacity: 0;
+  animation: beam 8s ease-in-out infinite;
+}
+.lh-beam::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(255, 250, 230, .95), rgba(255, 244, 215, .5) 40%, rgba(255, 240, 205, 0));
+  clip-path: polygon(0 42%, 100% 0, 100% 100%, 0 58%);
+}
+.lh-beam-l { rotate: 180deg; animation-delay: -4s; }
+
+@keyframes beam {
+  0%   { opacity: 0;   transform: scaleX(.08); }
+  22%  { opacity: .85; transform: scaleX(1); }
+  44%  { opacity: 0;   transform: scaleX(.12); }
+  100% { opacity: 0;   transform: scaleX(.08); }
+}
+/* brightest when the beam points at us (between the right and left sweeps) */
+@keyframes lamp {
+  0%, 100% { opacity: .55; transform: scale(.85); }
+  48%      { opacity: 1;   transform: scale(1.35); }
+  52%      { opacity: 1;   transform: scale(1.35); }
+  75%      { opacity: .6;  transform: scale(.9); }
+  96%      { opacity: .75; transform: scale(1); }
+}
 
 /* Soft fade into the paper below, so the parallax never shows a hard edge */
 .hero::after {
@@ -1751,7 +1836,7 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   :root { --t-flap: .01s; }
-  .seal, .hint, .glow, .seal-shine::before, .sparkle, .reveal-date::after, .scratch, .flake, .music-btn i, .rs-seal, .after-reveal.unveil, .rd-next span, .hero-next span, .card-shade, .scratch, .rd-item::before, .scratch-value::after { animation: none !important; }
+  .seal, .hint, .glow, .seal-shine::before, .sparkle, .reveal-date::after, .scratch, .flake, .music-btn i, .rs-seal, .after-reveal.unveil, .rd-next span, .hero-next span, .hl, .lh-glow, .lh-beam, .card-shade, .scratch, .rd-item::before, .scratch-value::after { animation: none !important; }
   .petal { display: none; }
   .card-shade, .pocket, .glow, .rise, .press, .hero-bg, .reveal-up, .sc-item, .sheet-panel, .sheet-backdrop { transition-duration: .01s !important; transition-delay: 0s !important; }
   .cd-num.tick { animation: none !important; }

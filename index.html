@@ -18,11 +18,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ballet:opsz@16..72&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400;1,500;1,600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=202610182054">
+  <link rel="stylesheet" href="styles.css?v=202610182157">
   <link rel="preload" as="image" href="assets/paper.webp?v=3">
   <link rel="preload" as="image" href="assets/seal.webp?v=2">
   <link rel="preload" as="image" href="assets/seal-lines.webp?v=2">
-  <link rel="preload" as="image" href="assets/hero.webp?v=1">
+  <link rel="preload" as="image" href="assets/hero/plate.webp?v=1">
   <link rel="preconnect" href="https://www.google.com">
 </head>
 <body>
@@ -61,7 +61,18 @@
     <!-- The invitation itself, revealed after the envelope dissolves -->
     <div class="invite" id="invite" aria-hidden="true">
       <section class="hero">
-        <div class="hero-bg" id="heroBg"></div>
+        <div class="hero-bg" id="heroBg">
+          <!-- the painting, split into a still plate + gently moving cut-outs; positions are in % of the 768×1376 art -->
+          <div class="hero-art" aria-hidden="true">
+            <img class="hl hl-flamingo1" src="assets/hero/flamingo1.webp?v=1" alt="">
+            <img class="hl hl-flamingo2" src="assets/hero/flamingo2.webp?v=1" alt="">
+            <img class="hl hl-pelican" src="assets/hero/pelican.webp?v=1" alt="">
+            <img class="hl hl-rose-l" src="assets/hero/rose-l.webp?v=1" alt="">
+            <img class="hl hl-rose-r" src="assets/hero/rose-r.webp?v=1" alt="">
+            <img class="hl hl-rose-tr" src="assets/hero/rose-tr.webp?v=1" alt="">
+            <span class="lighthouse"><i class="lh-beam lh-beam-r"></i><i class="lh-beam lh-beam-l"></i><i class="lh-glow"></i></span>
+          </div>
+        </div>
         <div class="hero-text">
           <h1 class="hero-names">
             <span class="rise" style="--i:0" data-name1></span>
@@ -325,7 +336,7 @@
   </main>
 
 
-  <script src="config.js?v=202610182054"></script>
-  <script src="main.js?v=202610182054"></script>
+  <script src="config.js?v=202610182157"></script>
+  <script src="main.js?v=202610182157"></script>
 </body>
 </html>
