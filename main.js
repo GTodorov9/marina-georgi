@@ -32,11 +32,24 @@
   useImage("assets/paper.webp", "has-paper");
   useImage("assets/seal.webp", "has-seal");
 
+  // ---- Gold sparkles for the dissolve ----
+  const sparkles = document.getElementById("sparkles");
+  for (let i = 0; i < 28; i++) {
+    const s = document.createElement("span");
+    s.className = "sparkle";
+    s.style.left = `${Math.random() * 100}%`;
+    s.style.top = `${20 + Math.random() * 70}%`;
+    s.style.setProperty("--s", `${3 + Math.random() * 5}px`);
+    s.style.setProperty("--d", `${4 + Math.random() * 4}s`);
+    s.style.setProperty("--delay", `${Math.random() * 3}s`);
+    sparkles.appendChild(s);
+  }
+
   // ---- Open sequence ----
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const T = reduced
-    ? { press: 0, glow: 0, wash: 0, flipped: 0, letter: 0, done: 0 }
-    : { press: 140, glow: 1900, wash: 950, flipped: 900, letter: 1500, done: 3000 };
+    ? { press: 0, glow: 0, wash: 0, bloom: 0, reveal: 0, done: 0 }
+    : { press: 140, glow: 2650, wash: 2250, bloom: 1450, reveal: 2350, done: 3000 };
   let timers = [];
   let opened = false;
 
@@ -62,9 +75,8 @@
     later(T.press + T.wash, () => stage.classList.add("is-washed"));
     const t0 = T.press + T.glow;
     later(t0, () => stage.classList.add("is-open"));
-    // Once the flap passes vertical it must go behind the letter
-    later(t0 + T.flipped, () => stage.classList.add("is-flipped"));
-    later(t0 + T.letter, () => stage.classList.add("is-letter"));
+    later(t0 + T.bloom, () => stage.classList.add("is-bloom"));
+    later(t0 + T.reveal, () => stage.classList.add("is-reveal"));
     later(t0 + T.done, () => {
       replay.hidden = false;
       document.dispatchEvent(new CustomEvent("invitation:opened"));
@@ -76,7 +88,7 @@
     timers = [];
     music.pause();
     replay.hidden = true;
-    stage.classList.remove("is-pressed", "is-glowing", "is-washed", "is-open", "is-flipped", "is-letter");
+    stage.classList.remove("is-pressed", "is-glowing", "is-washed", "is-open", "is-bloom", "is-reveal");
     opened = false;
   }
 

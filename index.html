@@ -19,16 +19,9 @@
       <!-- Inside back of the envelope + golden light that escapes when it opens -->
       <div class="env-back"></div>
 
-      <!-- The letter tucked inside (expanded in phase 2) -->
-      <article class="letter" id="letter" aria-hidden="true">
-        <p class="letter-kicker">Със семействата си ви канят</p>
-        <h1 class="letter-names"><span data-name1></span><em class="amp">&amp;</em><span data-name2></span></h1>
-        <p class="letter-date" data-date></p>
-      </article>
 
       <!-- Light escaping the envelope, layered over the letter -->
       <div class="light" aria-hidden="true">
-        <div class="glow"></div>
         <div class="rays"></div>
       </div>
 
@@ -47,14 +40,25 @@
         <!-- Wax seal rides on the flap -->
         <button class="seal" id="seal" type="button" aria-label="Отворете поканата">
           <span class="seal-wax"></span>
-          <span class="seal-lit"></span>
+          <span class="seal-wash sweep"></span>
           <span class="seal-glow"></span>
           <span class="seal-shine"></span>
           <span class="seal-initials" data-initials></span>
+          <span class="seal-lit sweep"></span>
+          <span class="seal-initials seal-initials-lit sweep" data-initials aria-hidden="true"></span>
         </button>
       </div>
 
     </div>
+
+    <div class="bloom" aria-hidden="true"></div>
+    <!-- Placeholder for the phase-2 scene -->
+    <article class="letter" id="letter" aria-hidden="true">
+      <p class="letter-kicker">Със семействата си ви канят</p>
+      <h1 class="letter-names"><span data-name1></span><em class="amp">&amp;</em><span data-name2></span></h1>
+      <p class="letter-date" data-date></p>
+    </article>
+    <div class="sparkles" id="sparkles" aria-hidden="true"></div>
 
     <p class="hint" id="hint">Докоснете печата</p>
     <button class="replay" id="replay" type="button" hidden>↺ Отново</button>
