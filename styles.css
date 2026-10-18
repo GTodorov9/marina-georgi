@@ -830,12 +830,13 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 18vh 7% 14vh;
+  /* the night -> peach fade happens in the first 170px; content starts below it */
+  padding: 230px 7% 14vh;
   text-align: center;
   color: var(--cocoa);
   background:
     var(--grain),
-    linear-gradient(180deg, var(--night) 0%, #8a5f52 6%, #e7bfa3 13%, var(--paper-peach) 20%, #f8ddc6 100%);
+    linear-gradient(180deg, var(--night) 0, #6e4c43 50px, #c99a80 110px, var(--paper-peach) 170px, #f8ddc6 100%);
 }
 
 .v-kicker,
@@ -845,7 +846,7 @@ body {
   letter-spacing: .34em;
   text-transform: uppercase;
   margin-right: -.34em;
-  color: var(--rose-gold);
+  color: #b06f49;
 }
 .v-title {
   margin: 10px 0 6px;
