@@ -1146,7 +1146,8 @@ body {
 }
 .sc-item {
   display: grid;
-  grid-template-columns: 1fr 44px 1fr;
+  /* wide centre lane so the travelling rose never covers the text */
+  grid-template-columns: 1fr 96px 1fr;
   align-items: center;
   opacity: .22;
   filter: blur(1.2px);
