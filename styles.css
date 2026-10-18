@@ -557,6 +557,43 @@ body {
   cursor: pointer;
 }
 
+/* ---------- Music button ---------- */
+.music-btn {
+  position: absolute;
+  left: 16px;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  z-index: 10;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid rgba(123, 75, 66, .25);
+  background: rgba(255, 250, 244, .82);
+  -webkit-backdrop-filter: blur(4px);
+          backdrop-filter: blur(4px);
+  box-shadow: 0 4px 14px rgba(120, 60, 50, .15);
+  cursor: pointer;
+}
+.music-btn .bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2.5px;
+  height: 16px;
+}
+.music-btn i {
+  width: 2.5px;
+  height: 4px;
+  border-radius: 2px;
+  background: #b8734d;
+  transition: height .4s ease;
+}
+.music-btn.playing i { animation: eq 1.1s ease-in-out infinite; }
+.music-btn.playing i:nth-child(2) { animation-delay: -.3s; }
+.music-btn.playing i:nth-child(3) { animation-delay: -.6s; }
+.music-btn.playing i:nth-child(4) { animation-delay: -.85s; }
+@keyframes eq { 0%, 100% { height: 4px; } 50% { height: 16px; } }
+
 /* ================= OPEN SEQUENCE ================= */
 /* 1) Ignite: light rises through the seal from bottom to top.
    Each .sweep layer is revealed by a tall gradient mask sliding upwards, so the lit
@@ -1021,6 +1058,6 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   :root { --t-flap: .01s; }
-  .seal, .hint, .glow, .seal-shine::before, .sparkle, .reveal-date::after, .scratch, .flake { animation: none !important; }
+  .seal, .hint, .glow, .seal-shine::before, .sparkle, .reveal-date::after, .scratch, .flake, .music-btn i { animation: none !important; }
   .pocket, .glow, .rise, .press, .hero-bg, .reveal-up { transition-duration: .01s !important; transition-delay: 0s !important; }
 }

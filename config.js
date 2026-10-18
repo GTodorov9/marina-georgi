@@ -10,7 +10,7 @@ window.WEDDING = {
   dateText: "05 юни 2027",
   // Day-of program at Terra Residence. PLACEHOLDER times until confirmed with the venue.
   times: { ceremony: "16:30", cocktail: "17:30", dinner: "19:00" },
-  // Optional background music, started on the first tap (browsers block autoplay).
-  // Drop an mp3 into assets/ and put its path here, e.g. "assets/music.mp3".
-  music: "",
+  // Background music, started (with a fade-in) when the guest taps the seal — browsers
+  // block autoplay before an interaction. Put an mp3 in assets/ and its path here.
+  music: "assets/music.mp3",
 };

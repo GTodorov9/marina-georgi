@@ -51,6 +51,72 @@
     sparkles.appendChild(s);
   }
 
+  // ---- Background music: fades in on the seal tap, floating mute button ----
+  // Volume goes through Web Audio (a GainNode) because iOS ignores audio.volume.
+  const musicBtn = document.getElementById("musicBtn");
+  const player = (() => {
+    let ctx = null, gain = null, on = false, available = false;
+    if (cfg.music) {
+      music.src = cfg.music;
+      music.addEventListener("canplay", () => { available = true; }, { once: true });
+      music.addEventListener("error", () => { available = false; musicBtn.hidden = true; });
+    }
+
+    const fadeTo = (v, secs) => {
+      if (gain) {
+        const t = ctx.currentTime;
+        gain.gain.cancelScheduledValues(t);
+        gain.gain.setValueAtTime(gain.gain.value, t);
+        gain.gain.linearRampToValueAtTime(v, t + secs);
+      } else {
+        music.volume = v;
+      }
+    };
+
+    const play = () => {
+      music.play().then(() => fadeTo(0.7, 3)).catch(() => {});
+      on = true;
+      musicBtn.setAttribute("aria-pressed", "true");
+      musicBtn.classList.add("playing");
+    };
+    const pause = (keepState) => {
+      fadeTo(0, 0.6);
+      setTimeout(() => { if (!on || keepState) music.pause(); }, 650);
+      if (!keepState) {
+        on = false;
+        musicBtn.setAttribute("aria-pressed", "false");
+        musicBtn.classList.remove("playing");
+      }
+    };
+
+    // pause while the guest is in another app / tab, resume when they return
+    document.addEventListener("visibilitychange", () => {
+      if (!on) return;
+      if (document.hidden) pause(true); else play();
+    });
+    musicBtn.addEventListener("click", () => (on ? pause() : play()));
+
+    return {
+      start() {                    // called from the seal tap (a user gesture)
+        if (!cfg.music) return;
+        try {
+          if (!ctx) {
+            const AC = window.AudioContext || window.webkitAudioContext;
+            ctx = new AC();
+            gain = ctx.createGain();
+            gain.gain.value = 0;
+            ctx.createMediaElementSource(music).connect(gain).connect(ctx.destination);
+          }
+          ctx.resume();
+        } catch (e) { ctx = gain = null; music.volume = 0; }
+        musicBtn.hidden = false;
+        play();
+      },
+      stop() { pause(); musicBtn.hidden = true; music.currentTime = 0; },
+      get ready() { return available; },
+    };
+  })();
+
   // ---- Open sequence ----
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const T = reduced
@@ -66,11 +132,7 @@
     opened = true;
 
     if (navigator.vibrate) navigator.vibrate(15);
-    if (cfg.music) {
-      music.src = cfg.music;
-      music.volume = 0.6;
-      music.play().catch(() => {});
-    }
+    player.start();
 
     stage.classList.add("is-pressed");
     // The seal lights up from within, then breaks open
@@ -96,7 +158,7 @@
   function reset() {
     timers.forEach(clearTimeout);
     timers = [];
-    music.pause();
+    player.stop();
     invite.scrollTop = 0;
     invite.setAttribute("aria-hidden", "true");
     heroBg.style.translate = "";

@@ -160,9 +160,12 @@
 
     <p class="hint" id="hint">Докоснете печата</p>
     <button class="replay" id="replay" type="button" hidden>↺ Отново</button>
+    <button class="music-btn" id="musicBtn" type="button" aria-label="Музика" aria-pressed="false" hidden>
+      <span class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+    </button>
   </main>
 
-  <audio id="music" preload="none" loop></audio>
+  <audio id="music" preload="auto" loop playsinline></audio>
 
   <script src="config.js"></script>
   <script src="main.js"></script>
