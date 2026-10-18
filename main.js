@@ -190,14 +190,14 @@
             const inv = d > 0 ? 1 / d : 0;
             const s = -(gx * dx0 + gy * dy0) * inv / 60;   // >0 faces the seal, <0 turned away
             const p = i * 4;
-            const warm = 0.14 * fall;                       // soft amber pool
+            const warm = 0.18 * fall;                       // soft amber pool
             if (s > 0) {                                    // lit edge: warm gold highlight
               const a = Math.min(.8, s * fall * .6 + warm);
-              o[p] = 255; o[p + 1] = 214; o[p + 2] = 150; o[p + 3] = a * 255;
+              o[p] = 255; o[p + 1] = 178; o[p + 2] = 90; o[p + 3] = a * 255;
             } else {                                        // far side: warm brown shade
               const a = Math.min(.55, -s * fall * .5);
               const t = a / (a + warm + 1e-6);
-              o[p] = 255 * (1 - t) + 110 * t; o[p + 1] = 214 * (1 - t) + 66 * t; o[p + 2] = 150 * (1 - t) + 30 * t;
+              o[p] = 255 * (1 - t) + 120 * t; o[p + 1] = 178 * (1 - t) + 55 * t; o[p + 2] = 90 * (1 - t) + 20 * t;
               o[p + 3] = Math.min(1, a + warm) * 255;
             }
           }

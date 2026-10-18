@@ -494,12 +494,12 @@ body {
 }
 .has-seal .seal-lit {
   background: url("assets/seal-lines.webp?v=2") center / contain no-repeat;
-  filter: brightness(1.4) drop-shadow(0 0 1.5px rgba(255, 252, 240, 1)) drop-shadow(0 0 5px rgba(255, 230, 160, .9)) drop-shadow(0 0 12px rgba(255, 200, 100, .6));
+  filter: sepia(1) saturate(4) hue-rotate(-12deg) brightness(1.25) drop-shadow(0 0 1.5px rgba(255, 236, 190, 1)) drop-shadow(0 0 5px rgba(255, 160, 50, .95)) drop-shadow(0 0 13px rgba(240, 100, 20, .7));
 }
 .seal-glow {
   inset: -18%;
   border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(255, 244, 200, .9) 0%, rgba(255, 210, 110, .45) 45%, rgba(255, 200, 90, 0) 100%);
+  background: radial-gradient(closest-side, rgba(255, 210, 140, .9) 0%, rgba(255, 150, 50, .55) 50%, rgba(240, 110, 30, .2) 75%, rgba(230, 90, 20, 0) 100%);
   mix-blend-mode: screen;
   transform: scale(.6);
 }
@@ -614,33 +614,35 @@ body {
 .seal-lit { --sweep-dur: 1.8s; }
 .seal-initials-lit {
   --sweep-dur: 1.8s;
-  color: #fffaf0;
+  color: #fff3d6;
   -webkit-text-stroke: 0 transparent;
   text-shadow:
-    0 0 2px #fff,
-    0 0 7px rgba(255, 246, 215, .95),
-    0 0 16px rgba(255, 215, 120, .85);
+    0 0 2px #fff6dc,
+    0 0 7px rgba(255, 190, 80, .95),
+    0 0 16px rgba(245, 120, 30, .85),
+    0 0 28px rgba(220, 80, 10, .5);
 }
 
-/* 2) Wash: a second, slower wave turns the whole seal pale, glowing cream */
+/* 2) Wash: a second, slower wave sets the whole seal glowing like an ember */
 .has-seal .seal-wash {
   position: absolute;
   inset: 0;
   pointer-events: none;
   background: url("assets/seal.webp?v=2") center / contain no-repeat;
-  filter: brightness(1.45) saturate(.45) drop-shadow(0 0 14px rgba(255, 215, 150, .75));
+  /* no drop-shadow here: the sweep mask would clip it to a square; the halo is .seal-glow */
+  filter: brightness(1.15) saturate(1.7) sepia(.35) hue-rotate(-8deg) contrast(1.08);
   --sweep-dur: 1.9s;
   --sweep-delay: .9s;
 }
-.is-glowing .seal-glow { opacity: .6; transform: scale(1); transition: opacity 1.6s ease 1s, transform 2s cubic-bezier(.2, .8, .2, 1) .9s; }
+.is-glowing .seal-glow { opacity: 1; transform: scale(1); transition: opacity 1.6s ease 1s, transform 2s cubic-bezier(.2, .8, .2, 1) .9s; }
 
 /* 3) Light leaks out along the flap seams */
 .flap-front { transition: filter .6s ease; }
 .is-washed .flap-front {
   filter:
-    drop-shadow(0 0 2px rgba(255, 242, 228, 1))
-    drop-shadow(0 4px 10px rgba(236, 178, 146, .95))
-    drop-shadow(0 8px 22px rgba(226, 160, 128, .6));
+    drop-shadow(0 0 2px rgba(255, 226, 180, 1))
+    drop-shadow(0 4px 10px rgba(245, 150, 70, .9))
+    drop-shadow(0 8px 22px rgba(225, 100, 30, .55));
 }
 
 /* 4) The flap lifts away with the seal on it; the painting's sky shows through the V */
