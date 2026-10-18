@@ -279,13 +279,12 @@ body {
 /* ---------- Screen 2: "The day has arrived" ---------- */
 .arrived {
   position: relative;
-  min-height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 22px;
-  padding: 12vh 9%;
+  padding: 10vh 9% 64px;
   text-align: center;
   background:
     var(--grain),
@@ -673,7 +672,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 15vh 7% 9vh;
+  padding: 110px 7% 40px;
   text-align: center;
   color: var(--night-ink);
   background:
@@ -693,7 +692,7 @@ body {
   left: 0;
   right: 0;
   top: -1px;
-  height: 160px;
+  height: 90px;
   background: linear-gradient(180deg, var(--paper-peach) 0%, rgba(246, 213, 185, .55) 30%, rgba(246, 213, 185, .15) 65%, rgba(246, 213, 185, 0) 100%);
   pointer-events: none;
 }
@@ -831,7 +830,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 12vh 7% 14vh;
+  padding: 48px 7% 14vh;
   text-align: center;
   color: var(--cocoa);
   background: var(--grain), linear-gradient(180deg, #fbeee3 0%, var(--paper-peach) 30%, #f8ddc6 100%);
@@ -986,13 +985,13 @@ body {
 /* ---------- Screen 4: countdown ---------- */
 .countdown {
   position: relative;
-  padding: 150px 6% 70px;
+  padding: 96px 6% 56px;
   text-align: center;
   color: var(--cocoa, #6b3c28);
   /* the night -> peach fade happens in the first 110px; content starts below it */
   background:
     var(--grain),
-    linear-gradient(180deg, var(--night) 0, #6e4c43 35px, #c99a80 75px, var(--paper-peach) 110px, #f7d9bf 100%);
+    linear-gradient(180deg, var(--night) 0, #6e4c43 22px, #c99a80 48px, var(--paper-peach) 72px, #f7d9bf 100%);
 }
 .cd-title {
   font-family: "Cormorant Garamond", Georgia, serif;
@@ -1047,7 +1046,7 @@ body {
 /* ---------- Screen 5: schedule with a scroll-linked rose ---------- */
 .schedule {
   position: relative;
-  padding: 8vh 5% 10vh;
+  padding: 56px 5% 24px;
   text-align: center;
   color: #6b3c28;
   background: var(--grain), linear-gradient(180deg, #fcf1e7, #fbeee3);
@@ -1084,8 +1083,8 @@ body {
 .sc-timeline {
   position: relative;
   max-width: 380px;
-  margin: 44px auto 0;
-  padding: 28px 0 40px;
+  margin: 30px auto 0;
+  padding: 28px 0 30px;
 }
 .sc-line,
 .sc-line-fill {
