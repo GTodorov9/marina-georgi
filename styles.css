@@ -673,7 +673,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 15vh 7% 16vh;
+  padding: 15vh 7% 9vh;
   text-align: center;
   color: var(--night-ink);
   background:
@@ -986,13 +986,13 @@ body {
 /* ---------- Screen 4: countdown ---------- */
 .countdown {
   position: relative;
-  padding: 220px 6% 13vh;
+  padding: 150px 6% 70px;
   text-align: center;
   color: var(--cocoa, #6b3c28);
-  /* the night -> peach fade happens in the first 170px; content starts below it */
+  /* the night -> peach fade happens in the first 110px; content starts below it */
   background:
     var(--grain),
-    linear-gradient(180deg, var(--night) 0, #6e4c43 50px, #c99a80 110px, var(--paper-peach) 170px, #f7d9bf 100%);
+    linear-gradient(180deg, var(--night) 0, #6e4c43 35px, #c99a80 75px, var(--paper-peach) 110px, #f7d9bf 100%);
 }
 .cd-title {
   font-family: "Cormorant Garamond", Georgia, serif;
@@ -1007,15 +1007,15 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  gap: clamp(4px, 1.6vw, 10px);
-  margin-top: 26px;
+  gap: 6px;
+  margin-top: 22px;
 }
-.cd-unit { display: flex; flex-direction: column; align-items: center; min-width: 17vw; max-width: 84px; }
+.cd-unit { display: flex; flex-direction: column; align-items: center; flex: 0 1 84px; min-width: 0; }
 .cd-num,
 .cd-sep {
   font-family: "Cormorant Garamond", Georgia, serif;
   font-weight: 600;
-  font-size: clamp(38px, 11.5vw, 54px);
+  font-size: clamp(36px, 10vw, 50px);
   line-height: 1;
   /* gold-leaf numerals */
   background: linear-gradient(180deg, #c99a5b 0%, #a8743a 55%, #c48f52 100%);
@@ -1047,7 +1047,7 @@ body {
 /* ---------- Screen 5: schedule with a scroll-linked rose ---------- */
 .schedule {
   position: relative;
-  padding: 11vh 5% 12vh;
+  padding: 8vh 5% 10vh;
   text-align: center;
   color: #6b3c28;
   background: var(--grain), linear-gradient(180deg, #fcf1e7, #fbeee3);
