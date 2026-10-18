@@ -231,6 +231,42 @@ body {
   25%, 100% { background-position: 0 0; }
 }
 
+/* Bell swinging in the middle arch of the bell tower; hangs from (467.5,773.5) */
+.bell {
+  position: absolute;
+  left: 60.872%;
+  top: 56.214%;
+  width: 1.1cqw;
+  translate: -50% 0;
+  overflow: visible;
+  transform-origin: 50% 0;
+  animation: ring 12s ease-in-out infinite;
+}
+.bell .bell-body    { fill: url(#bellGold); stroke: #6b4a17; stroke-width: .35; }
+.bell .bell-loop    { fill: none; stroke: #6b4a17; stroke-width: .6; }
+.bell .bell-clapper { fill: #5a3d12; transform-box: view-box; transform-origin: 5px 1px; animation: clapper 12s ease-in-out infinite; }
+/* a few full swings, then it settles and waits */
+@keyframes ring {
+  0%, 46%, 100% { rotate: 0deg; }
+  6%  { rotate: 22deg; }
+  13% { rotate: -22deg; }
+  20% { rotate: 20deg; }
+  27% { rotate: -17deg; }
+  33% { rotate: 11deg; }
+  39% { rotate: -6deg; }
+  43% { rotate: 2deg; }
+}
+/* the clapper lags behind the bell and strikes the rim at each end of the swing */
+@keyframes clapper {
+  0%, 48%, 100% { rotate: 0deg; }
+  7%  { rotate: -14deg; }
+  14% { rotate: 14deg; }
+  21% { rotate: -13deg; }
+  28% { rotate: 11deg; }
+  34% { rotate: -7deg; }
+  40% { rotate: 4deg; }
+}
+
 /* Dolphin: hinged below the waterline (405,1075) and swung over in an arc; the pool clips it at the surface */
 .dolphin-pool {
   position: absolute;
@@ -296,12 +332,12 @@ body {
 .gull path { fill: none; stroke: #6e5f58; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 .gull ellipse { fill: #6e5f58; }
 /* each wing hinges at the shoulder (12,6); the right one is a mirrored copy, so both beat together */
-.gull .wing { transform-box: view-box; transform-origin: 12px 6px; animation: flap 2.6s ease-in-out infinite; }
+.gull .wing { transform-box: view-box; transform-origin: 12px 6px; animation: flap 5s ease-in-out infinite; }
 .gull-1 { top: 49.5%; --dur: 30s; --delay: -6s; }
 .gull-2 { top: 51.5%; --dur: 36s; --delay: -20s; width: 3cqw; }
-.gull-2 .wing { animation-delay: -.9s; }
+.gull-2 .wing { animation-delay: -1.8s; }
 .gull-3 { top: 47.5%; --dur: 42s; --delay: -31s; width: 2.4cqw; animation-name: fly-back; }
-.gull-3 .wing { animation-delay: -1.7s; }
+.gull-3 .wing { animation-delay: -3.4s; }
 @keyframes fly {
   0%   { left: -5%;  translate: 0 0;     opacity: 0; }
   4%   { opacity: .85; }
@@ -320,9 +356,10 @@ body {
 }
 /* mostly gliding, then a few quick beats */
 @keyframes flap {
-  0%, 52%, 100% { transform: rotate(4deg); }     /* gliding, wings slightly raised */
-  58%, 70%, 82% { transform: rotate(-24deg); }   /* downstroke */
-  64%, 76%      { transform: rotate(22deg); }    /* upstroke */
+  0%, 40%, 100% { transform: rotate(4deg); }     /* gliding, wings slightly raised */
+  50%, 70%      { transform: rotate(-24deg); }   /* slow downstroke */
+  60%, 80%      { transform: rotate(22deg); }    /* upstroke */
+  90%           { transform: rotate(4deg); }
 }
 
 /* Sea: rows of the water strip slide side to side on a canvas (main.js); 915/1376 down, 262 tall */
@@ -2069,7 +2106,7 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   :root { --t-flap: .01s; }
-  .seal, .hint, .glow, .seal-shine::before, .sparkle, .reveal-date::after, .scratch, .flake, .music-btn i, .rs-seal, .after-reveal.unveil, .rd-next span, .hero-next span, .hl, .lh-glow, .lh-beam, .boat, .sail, .couple, .couple *, .lh-door, .mist, .mist::before, .dome-glint, .dolphin, .splash, .gull, .gull .wing, .card-shade, .scratch, .rd-item::before, .scratch-value::after { animation: none !important; }
+  .seal, .hint, .glow, .seal-shine::before, .sparkle, .reveal-date::after, .scratch, .flake, .music-btn i, .rs-seal, .after-reveal.unveil, .rd-next span, .hero-next span, .hl, .lh-glow, .lh-beam, .boat, .sail, .couple, .couple *, .lh-door, .mist, .mist::before, .dome-glint, .bell, .bell *, .dolphin, .splash, .gull, .gull .wing, .card-shade, .scratch, .rd-item::before, .scratch-value::after { animation: none !important; }
   .petal { display: none; }
   .card-shade, .pocket, .glow, .rise, .press, .hero-bg, .reveal-up, .sc-item, .sheet-panel, .sheet-backdrop { transition-duration: .01s !important; transition-delay: 0s !important; }
   .cd-num.tick { animation: none !important; }

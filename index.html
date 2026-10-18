@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ballet:opsz@16..72&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400;1,500;1,600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=202610182221">
+  <link rel="stylesheet" href="styles.css?v=202610182222">
   <link rel="preload" as="image" href="assets/paper.webp?v=3">
   <link rel="preload" as="image" href="assets/seal.webp?v=2">
   <link rel="preload" as="image" href="assets/seal-lines.webp?v=2">
@@ -66,6 +66,12 @@
           <div class="hero-art" aria-hidden="true">
             <span class="mist"></span>
             <span class="dome-glint"></span>
+            <svg class="bell" viewBox="0 0 10 10">
+              <defs><linearGradient id="bellGold" x1="0" x2="1"><stop offset="0" stop-color="#9a6d22"/><stop offset=".45" stop-color="#e9c96c"/><stop offset="1" stop-color="#8a5f1c"/></linearGradient></defs>
+              <circle class="bell-clapper" cx="5" cy="8.4" r=".85"/>
+              <path class="bell-body" d="M3.3 2.3 Q3.4 .9 5 .9 Q6.6 .9 6.7 2.3 L7.2 6.4 Q7.5 7.4 8.7 8 L1.3 8 Q2.5 7.4 2.8 6.4 Z"/>
+              <path class="bell-loop" d="M4.3 1 Q5 -.2 5.7 1"/>
+            </svg>
             <canvas class="sea" id="sea" width="768" height="262"></canvas>
             <span class="dolphin-pool">
               <span class="dolphin-arm">
@@ -370,7 +376,7 @@
   </main>
 
 
-  <script src="config.js?v=202610182221"></script>
-  <script src="main.js?v=202610182221"></script>
+  <script src="config.js?v=202610182222"></script>
+  <script src="main.js?v=202610182222"></script>
 </body>
 </html>
