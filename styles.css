@@ -1242,8 +1242,9 @@ body {
   place-items: center;
   font-family: "Cormorant Garamond", Georgia, serif;
   font-weight: 600;
-  font-size: 25px;
-  letter-spacing: .08em;
+  font-style: italic;
+  font-size: 21px;
+  letter-spacing: .02em;
   color: #f6dcc8;
   text-shadow: 0 -1px 0 rgba(40, 0, 10, .6), 0 1px 0 rgba(255, 200, 200, .35);
 }
