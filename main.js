@@ -505,14 +505,14 @@
     const thanks = document.getElementById("rsvpThanks");
     const err = document.getElementById("rsvpError");
     const ifYes = form.querySelector(".f-if-yes");
-    const companions = form.querySelector(".f-companions");
+    const rest = form.querySelector(".f-rest");
+    const allergy = form.querySelector(".f-allergy");
     let lastFocus = null;
 
     const openSheet = () => {
       lastFocus = document.activeElement;
       sheet.hidden = false;
       requestAnimationFrame(() => requestAnimationFrame(() => sheet.classList.add("open")));
-      setTimeout(() => form.elements.name.focus({ preventScroll: true }), 450);
     };
     const closeSheet = () => {
       sheet.classList.remove("open");
@@ -522,19 +522,103 @@
     sheet.querySelectorAll("[data-close]").forEach((el) => el.addEventListener("click", closeSheet));
     document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !sheet.hidden) closeSheet(); });
 
-    form.addEventListener("change", () => {
-      const att = form.elements.attending.value;
-      ifYes.hidden = att === "no";
-      companions.hidden = Number(form.elements.guests.value) < 2;
+    // answer chosen -> reveal the rest (only the name for "no")
+    form.querySelectorAll('input[name="attending"]').forEach((r) => r.addEventListener("change", () => {
+      const firstTime = rest.hidden;
+      rest.hidden = false;
+      ifYes.hidden = r.value === "no";
+      form.classList.toggle("answered-no", r.value === "no");
+      if (firstTime) setTimeout(() => form.elements.name.focus({ preventScroll: true }), 250);
+    }));
+
+    // −/+ steppers
+    const counts = { adults: 1, children: 0 };
+    form.querySelectorAll("[data-counter]").forEach((box) => {
+      const key = box.dataset.counter, min = +box.dataset.min, max = +box.dataset.max;
+      const out = box.querySelector("output");
+      const [minus, plus] = box.querySelectorAll("button");
+      const render = () => { out.textContent = counts[key]; minus.disabled = counts[key] <= min; plus.disabled = counts[key] >= max; };
+      box.querySelectorAll("button").forEach((b) => b.addEventListener("click", () => {
+        counts[key] = Math.min(max, Math.max(min, counts[key] + Number(b.dataset.step)));
+        render();
+      }));
+      render();
+    });
+
+    // Menu picture cards: one guest -> pick one; several -> distribute counts per menu
+    const menus = [...form.querySelectorAll(".f-menu")];
+    const menuHint = form.querySelector(".f-menu-hint");
+    const menuCounts = { "Месо": 1, "Вегетарианско": 0, "Веганско": 0 };
+    const total = () => counts.adults + counts.children;
+    function renderMenus() {
+      const t = total(), multi = t > 1;
+      let sum = Object.values(menuCounts).reduce((a, b) => a + b, 0);
+      // keep the distribution equal to the number of guests (adjust "Месо" first)
+      if (sum !== t) {
+        let diff = t - sum;
+        for (const k of ["Месо", "Вегетарианско", "Веганско"]) {
+          const nv = Math.max(0, menuCounts[k] + diff);
+          diff -= nv - menuCounts[k];
+          menuCounts[k] = nv;
+          if (!diff) break;
+        }
+      }
+      menuHint.hidden = !multi;
+      menuHint.querySelector("[data-menu-total]").textContent = t;
+      menus.forEach((m) => {
+        const k = m.dataset.menu, n = menuCounts[k];
+        m.querySelector(".f-menu-pick").setAttribute("aria-pressed", String(n > 0));
+        m.classList.toggle("on", n > 0);
+        const box = m.querySelector(".f-menu-count");
+        box.hidden = !multi;
+        box.querySelector("output").textContent = n;
+      });
+    }
+    menus.forEach((m) => {
+      const k = m.dataset.menu;
+      m.querySelector(".f-menu-pick").addEventListener("click", () => {
+        if (total() === 1) { Object.keys(menuCounts).forEach((x) => (menuCounts[x] = x === k ? 1 : 0)); }
+        else if (menuCounts[k] === 0) {                  // take one from the largest other menu
+          const from = Object.keys(menuCounts).filter((x) => x !== k).sort((a, b) => menuCounts[b] - menuCounts[a])[0];
+          if (menuCounts[from] > 0) { menuCounts[from]--; menuCounts[k]++; }
+        }
+        renderMenus();
+      });
+      m.querySelectorAll(".f-menu-count button").forEach((b) => b.addEventListener("click", () => {
+        const d = Number(b.dataset.d);
+        if (d > 0) {                                     // move one here from another menu
+          const from = Object.keys(menuCounts).filter((x) => x !== k && menuCounts[x] > 0).sort((a, c) => menuCounts[c] - menuCounts[a])[0];
+          if (!from) return;
+          menuCounts[from]--; menuCounts[k]++;
+        } else if (menuCounts[k] > 0) {                  // give one back to the first other menu
+          const to = k === "Месо" ? "Вегетарианско" : "Месо";
+          menuCounts[k]--; menuCounts[to]++;
+        }
+        renderMenus();
+      }));
+    });
+    form.querySelectorAll("[data-counter] button").forEach((b) => b.addEventListener("click", renderMenus));
+    renderMenus();
+
+    // "Имаме алергия" reveals a short text box
+    form.querySelector("[data-allergy]").addEventListener("change", (e) => {
+      allergy.hidden = !e.target.checked;
+      if (e.target.checked) allergy.focus();
     });
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       err.hidden = true;
-      const data = Object.fromEntries(new FormData(form));
-      if (!data.name || !data.name.trim()) { err.textContent = "Моля, въведете името си."; err.hidden = false; return; }
-      if (!data.attending) { err.textContent = "Моля, отбележете дали ще присъствате."; err.hidden = false; return; }
-      if (data.attending === "no") ["guests", "companions", "children", "menu", "allergies"].forEach((k) => delete data[k]);
+      const fd = new FormData(form);
+      const data = { attending: fd.get("attending"), name: (fd.get("name") || "").trim() };
+      if (!data.attending) { err.textContent = "Моля, изберете отговор."; err.hidden = false; return; }
+      if (!data.name) { err.textContent = "Моля, напишете името си."; err.hidden = false; form.elements.name.focus(); return; }
+      if (data.attending === "yes") {
+        data.adults = counts.adults;
+        data.children = counts.children;
+        data.menu = Object.entries(menuCounts).filter(([, n]) => n > 0).map(([k, n]) => `${k} × ${n}`).join(", ");
+        data.allergies = allergy.hidden ? "" : (fd.get("allergies") || "").trim();
+      }
       data.submittedAt = new Date().toISOString();
 
       const btn = form.querySelector(".f-submit");

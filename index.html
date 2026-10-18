@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ballet:opsz@16..72&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400;1,500;1,600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=202610182017">
+  <link rel="stylesheet" href="styles.css?v=202610182023">
   <link rel="preload" as="image" href="assets/paper.webp?v=3">
   <link rel="preload" as="image" href="assets/seal.webp?v=2">
   <link rel="preload" as="image" href="assets/seal-lines.webp?v=2">
@@ -235,59 +235,79 @@
       <div class="sheet-panel">
         <button class="sheet-close" type="button" aria-label="Затвори" data-close>×</button>
         <form class="rsvp-form" id="rsvpForm" novalidate>
-          <h3 id="rsvpTitle">Потвърдете присъствието си</h3>
+          <h3 id="rsvpTitle">Ще бъдете ли с нас?</h3>
           <p class="f-note">Моля, отговорете до <span data-rsvp-by></span></p>
 
-          <label class="f-field">
-            <span>Име и фамилия *</span>
-            <input name="name" autocomplete="name" required>
-          </label>
-
-          <fieldset class="f-field">
-            <legend>Ще присъствате ли? *</legend>
-            <label class="f-choice"><input type="radio" name="attending" value="yes" required> С удоволствие ще присъствам</label>
-            <label class="f-choice"><input type="radio" name="attending" value="no"> За съжаление, няма да успея</label>
-          </fieldset>
-
-          <div class="f-if-yes">
-            <label class="f-field">
-              <span>Брой гости (включително вие)</span>
-              <select name="guests">
-                <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
-              </select>
-            </label>
-            <label class="f-field f-companions" hidden>
-              <span>Имена на придружителите</span>
-              <input name="companions" placeholder="напр. Иван Петров">
-            </label>
-            <label class="f-field">
-              <span>Деца</span>
-              <small>Моля, посочете имена и възраст</small>
-              <input name="children">
-            </label>
-            <label class="f-field">
-              <span>Предпочитано меню</span>
-              <select name="menu">
-                <option value="standard">Без ограничения</option>
-                <option value="vegetarian">Вегетарианско</option>
-                <option value="vegan">Веганско</option>
-                <option value="gluten-free">Без глутен</option>
-              </select>
-            </label>
-            <label class="f-field">
-              <span>Алергии или хранителни ограничения</span>
-              <input name="allergies">
-            </label>
+          <!-- Step 1: the answer, as two big buttons -->
+          <div class="f-answer" role="radiogroup" aria-label="Ще присъствате ли?">
+            <label class="f-big yes"><input type="radio" name="attending" value="yes"><span><b>✓</b>Ще дойда</span></label>
+            <label class="f-big no"><input type="radio" name="attending" value="no"><span><b>✕</b>Няма да успея</span></label>
           </div>
 
-          <label class="f-field">
-            <span>Телефон</span>
-            <small>За да можем да се свържем с вас при нужда</small>
-            <input name="phone" type="tel" autocomplete="tel" inputmode="tel">
-          </label>
+          <!-- Step 2: the rest appears after choosing -->
+          <div class="f-rest" hidden>
+            <label class="f-field">
+              <span>Вашето име</span>
+              <input name="name" autocomplete="name" placeholder="Име и фамилия" enterkeyhint="done">
+            </label>
 
-          <p class="f-error" id="rsvpError" role="alert" hidden></p>
-          <button class="f-submit" type="submit">Изпрати</button>
+            <div class="f-if-yes">
+              <div class="f-field">
+                <span>Колко души ще бъдете?</span>
+                <div class="f-counters">
+                  <div class="f-counter" data-counter="adults" data-min="1" data-max="8">
+                    <span class="f-counter-label">Възрастни</span>
+                    <div class="f-stepper">
+                      <button type="button" data-step="-1" aria-label="По-малко възрастни">−</button>
+                      <output>1</output>
+                      <button type="button" data-step="1" aria-label="Повече възрастни">+</button>
+                    </div>
+                  </div>
+                  <div class="f-counter" data-counter="children" data-min="0" data-max="6">
+                    <span class="f-counter-label">Деца</span>
+                    <div class="f-stepper">
+                      <button type="button" data-step="-1" aria-label="По-малко деца">−</button>
+                      <output>0</output>
+                      <button type="button" data-step="1" aria-label="Повече деца">+</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="f-field">
+                <span>Изберете меню</span>
+                <small class="f-menu-hint" hidden>Разпределете <b data-menu-total>2</b> менюта</small>
+                <div class="f-menus">
+                  <div class="f-menu" data-menu="Месо">
+                    <button type="button" class="f-menu-pick" aria-pressed="true">
+                      <img src="assets/menu-meat.webp?v=1" alt="" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'f-menu-emoji',textContent:'🥩'}))">
+                      <span class="f-menu-name">Месо</span>
+                    </button>
+                    <div class="f-menu-count" hidden><button type="button" data-d="-1" aria-label="По-малко">−</button><output>0</output><button type="button" data-d="1" aria-label="Повече">+</button></div>
+                  </div>
+                  <div class="f-menu" data-menu="Вегетарианско">
+                    <button type="button" class="f-menu-pick" aria-pressed="false">
+                      <img src="assets/menu-vegetarian.webp?v=1" alt="" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'f-menu-emoji',textContent:'🧀'}))">
+                      <span class="f-menu-name">Вегетарианско</span>
+                    </button>
+                    <div class="f-menu-count" hidden><button type="button" data-d="-1" aria-label="По-малко">−</button><output>0</output><button type="button" data-d="1" aria-label="Повече">+</button></div>
+                  </div>
+                  <div class="f-menu" data-menu="Веганско">
+                    <button type="button" class="f-menu-pick" aria-pressed="false">
+                      <img src="assets/menu-vegan.webp?v=1" alt="" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'f-menu-emoji',textContent:'🥗'}))">
+                      <span class="f-menu-name">Веганско</span>
+                    </button>
+                    <div class="f-menu-count" hidden><button type="button" data-d="-1" aria-label="По-малко">−</button><output>0</output><button type="button" data-d="1" aria-label="Повече">+</button></div>
+                  </div>
+                </div>
+                <label class="f-check"><input type="checkbox" data-allergy> Имаме алергия</label>
+                <input class="f-allergy" name="allergies" placeholder="Към какво?" hidden>
+              </div>
+            </div>
+
+            <p class="f-error" id="rsvpError" role="alert" hidden></p>
+            <button class="f-submit" type="submit">Изпрати</button>
+          </div>
         </form>
         <div class="rsvp-thanks" id="rsvpThanks" hidden>
           <h3>Благодарим ви!</h3>
@@ -304,7 +324,7 @@
   </main>
 
 
-  <script src="config.js?v=202610182017"></script>
-  <script src="main.js?v=202610182017"></script>
+  <script src="config.js?v=202610182023"></script>
+  <script src="main.js?v=202610182023"></script>
 </body>
 </html>
