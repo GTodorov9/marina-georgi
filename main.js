@@ -86,7 +86,7 @@
     };
 
     const play = () => {
-      music.play().then(() => fadeTo(0.7, 3)).catch(() => {});
+      music.play().then(() => fadeTo(0.35, 3)).catch(() => {});
       on = true;
       musicBtn.setAttribute("aria-pressed", "true");
       musicBtn.classList.add("playing");
