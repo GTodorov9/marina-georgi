@@ -156,7 +156,10 @@
     if (!reduced) later(t0 + T.dust, () => dust.start(2600));
     later(t0 + T.flare, () => stage.classList.add("is-flare"));
     later(t0 + T.bloom, () => stage.classList.add("is-bloom"));
-    later(t0 + T.reveal, () => stage.classList.add("is-reveal"));
+    later(t0 + T.reveal, () => {
+      stage.classList.add("is-reveal");
+      invite.setAttribute("aria-hidden", "false");
+    });
     later(t0 + T.done, () => {
       replay.hidden = false;
       document.dispatchEvent(new CustomEvent("invitation:opened"));
@@ -168,12 +171,37 @@
     timers = [];
     music.pause();
     dust.stop();
+    invite.scrollTop = 0;
+    invite.setAttribute("aria-hidden", "true");
+    heroBg.style.translate = "";
+    document.querySelectorAll(".in-view").forEach((el) => el.classList.remove("in-view"));
     replay.hidden = true;
     stage.classList.remove("is-pressed", "is-glowing", "is-washed", "is-open", "is-flare", "is-bloom", "is-reveal");
     opened = false;
   }
 
+  // ---- Invitation: parallax hero + sections that press in as they scroll into view ----
+  const invite = document.getElementById("invite");
+  const heroBg = document.getElementById("heroBg");
+  if (!reduced) {
+    invite.addEventListener("scroll", () => {
+      heroBg.style.translate = `0 ${invite.scrollTop * 0.35}px`;
+    }, { passive: true });
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => e.isIntersecting && e.target.classList.add("in-view"));
+  }, { root: invite, threshold: 0.35 });
+  document.querySelectorAll(".arrived").forEach((el) => io.observe(el));
+
   seal.addEventListener("click", open);
+
+  // Dev aid: ?skip jumps straight to the opened invitation
+  if (new URLSearchParams(location.search).has("skip")) {
+    opened = true;
+    stage.classList.add("is-open", "is-bloom", "is-reveal");
+    invite.setAttribute("aria-hidden", "false");
+    replay.hidden = false;
+  }
 
   // Dev aid: ?freeze=<ms> plays the open sequence and freezes it <ms> after the flap
   // starts moving, so a single frame can be inspected or screenshotted.
