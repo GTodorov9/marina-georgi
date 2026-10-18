@@ -165,7 +165,7 @@ body {
   width: max(100cqw, 100cqh * 768 / 1376);
   aspect-ratio: 768 / 1376;
   transform: translateX(-50%);
-  background: url("assets/hero/plate.webp?v=2") center / 100% 100% no-repeat;
+  background: url("assets/hero/plate.webp?v=3") center / 100% 100% no-repeat;
   container-type: inline-size;
 }
 .hl {
@@ -459,6 +459,26 @@ body {
   78%       { opacity: 1; }
   92%       { opacity: .8; }
   100%      { opacity: 0; }
+}
+
+/* Pines (0,657 · 170×174) and (608,658 · 160×168): rock from where the trunk leaves the frame, in uneven gusts */
+.hl-tree-l { left: 0;       top: 47.747%; width: 22.135%; transform-origin: 0 99%;    animation: breeze-l 10s ease-in-out infinite; }
+.hl-tree-r { left: 79.167%; top: 47.820%; width: 20.833%; transform-origin: 100% 99%; animation: breeze-r 11.5s ease-in-out -4s infinite; }
+@keyframes breeze-l {
+  0%, 100% { rotate: 0deg; }
+  18% { rotate: .9deg; }
+  30% { rotate: .3deg; }
+  46% { rotate: 1.2deg; }
+  62% { rotate: .2deg; }
+  80% { rotate: .6deg; }
+}
+@keyframes breeze-r {
+  0%, 100% { rotate: 0deg; }
+  20% { rotate: -.8deg; }
+  33% { rotate: -.25deg; }
+  50% { rotate: -1.1deg; }
+  66% { rotate: -.15deg; }
+  82% { rotate: -.55deg; }
 }
 
 @keyframes sway { from { transform: rotate(var(--a, -1deg)); } to { transform: rotate(var(--b, 1deg)); } }
