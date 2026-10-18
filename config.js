@@ -24,7 +24,7 @@ window.WEDDING = {
   rsvpBy: "01 май 2027",           // MOCK deadline
   // Where answers are POSTed (e.g. a Google Apps Script web-app URL that appends to a
   // Sheet). Empty = answers are only kept in this browser (for testing).
-  rsvpEndpoint: "",
+  rsvpEndpoint: "https://script.google.com/macros/s/AKfycbyEYv771NgxOTwbpMvp1oZL_bMzsOVk09EIkpX6c-0MpzMK6MUMUE6WF2YCUJTzeovB/exec",
   // Background music, started (with a fade-in) when the guest taps the seal — browsers
   // block autoplay before an interaction. Put an mp3 in assets/ and its path here.
   music: "assets/music.mp3?v=3",
