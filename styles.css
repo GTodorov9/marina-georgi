@@ -1166,6 +1166,214 @@ body {
   opacity: .8;
 }
 
+/* ---------- RSVP ---------- */
+.rsvp {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 64px 8% 16vh;
+  text-align: center;
+  color: #6b3c28;
+  background: var(--grain), linear-gradient(180deg, #f8ddc6 0%, #fbeee3 100%);
+}
+.rs-title {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(30px, 8.6vw, 40px);
+  line-height: 1.15;
+  text-wrap: balance;
+  color: #8a5a3e;
+}
+.rs-text {
+  margin-top: 14px;
+  font-size: 17px;
+  line-height: 1.5;
+}
+.rs-text span { font-weight: 600; }
+.rs-seal {
+  position: relative;
+  width: 132px;
+  aspect-ratio: 1;
+  margin-top: 30px;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  border-radius: 50%;
+  animation: breathe 3.2s ease-in-out infinite;
+}
+.rs-seal-wax {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 38% 32%, #c56a72 0%, #8e2f3c 55%, #5e1622 100%);
+  border-radius: 50%;
+  filter: drop-shadow(0 8px 12px rgba(80, 20, 30, .35));
+}
+.has-rsvp-seal .rs-seal-wax { background: url("assets/seal-rsvp.webp?v=1") center / contain no-repeat; border-radius: 0; }
+.rs-seal-text {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 600;
+  font-size: 25px;
+  letter-spacing: .08em;
+  color: #f6dcc8;
+  text-shadow: 0 -1px 0 rgba(40, 0, 10, .6), 0 1px 0 rgba(255, 200, 200, .35);
+}
+.rs-hint {
+  margin-top: 14px;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-style: italic;
+  font-size: 17px;
+  line-height: 1.1;
+  opacity: .8;
+}
+.rs-hint span { font-style: normal; font-size: 20px; }
+.rs-hope {
+  margin-top: 40px;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-style: italic;
+  font-size: 28px;
+  color: #8a5a3e;
+}
+.rs-names {
+  margin-top: 4px;
+  font-size: 22px;
+  letter-spacing: .06em;
+}
+
+/* Bottom-sheet form */
+.sheet {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: flex-end;
+}
+.sheet[hidden] { display: none; }
+.sheet-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(46, 35, 34, .45);
+  -webkit-backdrop-filter: blur(3px);
+          backdrop-filter: blur(3px);
+  opacity: 0;
+  transition: opacity .4s ease;
+}
+.sheet-panel {
+  position: relative;
+  width: 100%;
+  max-height: 92%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 30px 22px max(28px, env(safe-area-inset-bottom));
+  border-radius: 24px 24px 0 0;
+  color: #5e3524;
+  background: var(--grain), linear-gradient(180deg, #fff8f1, #fbeee3);
+  box-shadow: 0 -10px 40px rgba(60, 25, 15, .25);
+  transform: translateY(100%);
+  transition: transform .55s cubic-bezier(.2, .8, .2, 1);
+}
+.sheet.open .sheet-backdrop { opacity: 1; }
+.sheet.open .sheet-panel { transform: none; }
+.sheet-close {
+  position: absolute;
+  right: 14px;
+  top: 10px;
+  width: 38px;
+  height: 38px;
+  border: 0;
+  background: none;
+  font-size: 30px;
+  line-height: 1;
+  color: #8a5a3e;
+  cursor: pointer;
+}
+.rsvp-form h3,
+.rsvp-thanks h3 {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 30px;
+  text-align: center;
+  color: #8a5a3e;
+}
+.f-note { text-align: center; font-size: 15px; margin: 4px 0 18px; opacity: .85; }
+.f-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 18px;
+  border: 0;
+}
+.f-field > span,
+.f-field legend {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.f-field small { font-size: 13.5px; opacity: .75; margin-top: -4px; }
+.f-field input:not([type="radio"]),
+.f-field select,
+.f-field textarea {
+  width: 100%;
+  padding: 12px 14px;
+  font: 500 17px/1.3 "Cormorant Garamond", Georgia, serif;
+  color: #4a2a1c;
+  background: rgba(255, 255, 255, .7);
+  border: 1px solid rgba(150, 100, 70, .35);
+  border-radius: 12px;
+  outline: none;
+  -webkit-appearance: none;
+          appearance: none;
+}
+.f-field select {
+  background-image: linear-gradient(45deg, transparent 50%, #8a5a3e 50%), linear-gradient(135deg, #8a5a3e 50%, transparent 50%);
+  background-position: calc(100% - 20px) 55%, calc(100% - 15px) 55%;
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+}
+.f-field input:focus,
+.f-field select:focus,
+.f-field textarea:focus { border-color: #b97d55; box-shadow: 0 0 0 3px rgba(185, 125, 85, .18); }
+.f-field textarea { resize: vertical; }
+.f-choice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  font-size: 17px;
+}
+.f-choice input {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  accent-color: #8e2f3c;
+}
+.f-if-yes[hidden],
+.f-field[hidden] { display: none; }
+.f-error { margin-bottom: 12px; color: #9b2f2f; font-size: 15px; text-align: center; }
+.f-submit {
+  width: 100%;
+  padding: 15px;
+  border: 0;
+  border-radius: 999px;
+  font: 600 18px/1 "Cormorant Garamond", Georgia, serif;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #fff3ec;
+  background: linear-gradient(180deg, #8e2f3c, #6a1f2b);
+  box-shadow: 0 8px 18px rgba(106, 31, 43, .3);
+  cursor: pointer;
+}
+.f-submit:disabled { opacity: .6; }
+.rsvp-thanks { padding: 30px 0 40px; text-align: center; }
+.rsvp-thanks p { margin-top: 12px; font-size: 18px; line-height: 1.5; }
+
 /* Gentle rise as each piece scrolls into view */
 .reveal-up {
   opacity: 0;
@@ -1179,7 +1387,7 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   :root { --t-flap: .01s; }
-  .seal, .hint, .glow, .seal-shine::before, .sparkle, .reveal-date::after, .scratch, .flake, .music-btn i { animation: none !important; }
-  .pocket, .glow, .rise, .press, .hero-bg, .reveal-up, .sc-item { transition-duration: .01s !important; transition-delay: 0s !important; }
+  .seal, .hint, .glow, .seal-shine::before, .sparkle, .reveal-date::after, .scratch, .flake, .music-btn i, .rs-seal { animation: none !important; }
+  .pocket, .glow, .rise, .press, .hero-bg, .reveal-up, .sc-item, .sheet-panel, .sheet-backdrop { transition-duration: .01s !important; transition-delay: 0s !important; }
   .cd-num.tick { animation: none !important; }
 }

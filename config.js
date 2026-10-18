@@ -20,6 +20,11 @@ window.WEDDING = {
     { time: "22:30", title: "Сватбена торта", place: "Le Grand Salon" },
     { time: "23:00", title: "Парти до зори", place: "" },
   ],
+  // RSVP
+  rsvpBy: "01 май 2027",           // MOCK deadline
+  // Where answers are POSTed (e.g. a Google Apps Script web-app URL that appends to a
+  // Sheet). Empty = answers are only kept in this browser (for testing).
+  rsvpEndpoint: "",
   // Background music, started (with a fade-in) when the guest taps the seal — browsers
   // block autoplay before an interaction. Put an mp3 in assets/ and its path here.
   music: "assets/music.mp3",

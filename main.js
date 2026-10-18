@@ -25,6 +25,7 @@
   fill("[data-date-day]", cfg.dateDay);
   fill("[data-date-month]", cfg.dateMonth);
   fill("[data-date-year]", cfg.dateYear);
+  fill("[data-rsvp-by]", cfg.rsvpBy);
 
   // ---- Schedule list from config ----
   const scheduleList = document.getElementById("scheduleList");
@@ -47,6 +48,7 @@
   };
   useImage("assets/paper.webp?v=2", "has-paper");
   useImage("assets/seal.webp?v=2", "has-seal");
+  useImage("assets/seal-rsvp.webp?v=1", "has-rsvp-seal");
 
   // ---- Gold sparkles for the dissolve ----
   const sparkles = document.getElementById("sparkles");
@@ -360,6 +362,73 @@
     }, { passive: true });
     window.addEventListener("resize", update);
     update();
+  })();
+
+  // ---- RSVP: seal opens a bottom-sheet form ----
+  (() => {
+    const sheet = document.getElementById("rsvpSheet");
+    const form = document.getElementById("rsvpForm");
+    const thanks = document.getElementById("rsvpThanks");
+    const err = document.getElementById("rsvpError");
+    const ifYes = form.querySelector(".f-if-yes");
+    const companions = form.querySelector(".f-companions");
+    let lastFocus = null;
+
+    const openSheet = () => {
+      lastFocus = document.activeElement;
+      sheet.hidden = false;
+      requestAnimationFrame(() => requestAnimationFrame(() => sheet.classList.add("open")));
+      setTimeout(() => form.elements.name.focus({ preventScroll: true }), 450);
+    };
+    const closeSheet = () => {
+      sheet.classList.remove("open");
+      setTimeout(() => { sheet.hidden = true; lastFocus && lastFocus.focus({ preventScroll: true }); }, 500);
+    };
+    document.getElementById("rsvpOpen").addEventListener("click", openSheet);
+    sheet.querySelectorAll("[data-close]").forEach((el) => el.addEventListener("click", closeSheet));
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !sheet.hidden) closeSheet(); });
+
+    form.addEventListener("change", () => {
+      const att = form.elements.attending.value;
+      ifYes.hidden = att === "no";
+      companions.hidden = Number(form.elements.guests.value) < 2;
+    });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      err.hidden = true;
+      const data = Object.fromEntries(new FormData(form));
+      if (!data.name || !data.name.trim()) { err.textContent = "Моля, въведете името си."; err.hidden = false; return; }
+      if (!data.attending) { err.textContent = "Моля, отбележете дали ще присъствате."; err.hidden = false; return; }
+      if (data.attending === "no") ["guests", "companions", "children", "menu", "allergies", "song"].forEach((k) => delete data[k]);
+      data.submittedAt = new Date().toISOString();
+
+      const btn = form.querySelector(".f-submit");
+      btn.disabled = true;
+      try {
+        if (cfg.rsvpEndpoint) {
+          // text/plain avoids a CORS preflight (works with Google Apps Script web apps)
+          await fetch(cfg.rsvpEndpoint, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(data) });
+        } else {
+          try {
+            const all = JSON.parse(localStorage.getItem("rsvp-test") || "[]");
+            all.push(data);
+            localStorage.setItem("rsvp-test", JSON.stringify(all));
+          } catch (_) { /* storage unavailable: ignore in test mode */ }
+          console.info("[RSVP test mode] no rsvpEndpoint configured", data);
+        }
+        form.hidden = true;
+        thanks.hidden = false;
+        document.getElementById("rsvpThanksText").textContent = data.attending === "yes"
+          ? `Очакваме ви с нетърпение на ${cfg.dateText}!`
+          : "Ще ни липсвате! Благодарим ви, че ни уведомихте.";
+      } catch (_) {
+        err.textContent = "Нещо се обърка. Моля, опитайте отново.";
+        err.hidden = false;
+      } finally {
+        btn.disabled = false;
+      }
+    });
   })();
 
   seal.addEventListener("click", open);

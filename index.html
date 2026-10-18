@@ -162,6 +162,93 @@
           </li>
         </ul>
       </section>
+
+      <section class="rsvp" id="rsvp">
+        <h2 class="rs-title reveal-up">Потвърдете присъствието си</h2>
+        <p class="rs-text reveal-up">За да подготвим един незабравим празник,<br>моля, потвърдете присъствието си<br>до <span data-rsvp-by></span></p>
+        <button class="rs-seal reveal-up" id="rsvpOpen" type="button" aria-haspopup="dialog" aria-controls="rsvpSheet">
+          <span class="rs-seal-wax"></span>
+          <span class="rs-seal-text">RSVP</span>
+        </button>
+        <p class="rs-hint reveal-up"><span aria-hidden="true">︿</span><br>Докоснете, за да отворите</p>
+        <p class="rs-hope reveal-up">Надяваме се да ви видим там!</p>
+        <p class="rs-names reveal-up"><span data-name1></span> и <span data-name2></span></p>
+      </section>
+    </div>
+
+    <!-- RSVP form (bottom sheet) -->
+    <div class="sheet" id="rsvpSheet" role="dialog" aria-modal="true" aria-labelledby="rsvpTitle" hidden>
+      <div class="sheet-backdrop" data-close></div>
+      <div class="sheet-panel">
+        <button class="sheet-close" type="button" aria-label="Затвори" data-close>×</button>
+        <form class="rsvp-form" id="rsvpForm" novalidate>
+          <h3 id="rsvpTitle">Потвърдете присъствието си</h3>
+          <p class="f-note">Моля, отговорете до <span data-rsvp-by></span></p>
+
+          <label class="f-field">
+            <span>Име и фамилия *</span>
+            <input name="name" autocomplete="name" required>
+          </label>
+
+          <fieldset class="f-field">
+            <legend>Ще присъствате ли? *</legend>
+            <label class="f-choice"><input type="radio" name="attending" value="yes" required> С удоволствие ще присъствам</label>
+            <label class="f-choice"><input type="radio" name="attending" value="no"> За съжаление, няма да успея</label>
+          </fieldset>
+
+          <div class="f-if-yes">
+            <label class="f-field">
+              <span>Брой гости (включително вие)</span>
+              <select name="guests">
+                <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+              </select>
+            </label>
+            <label class="f-field f-companions" hidden>
+              <span>Имена на придружителите</span>
+              <input name="companions" placeholder="напр. Иван Петров">
+            </label>
+            <label class="f-field">
+              <span>Деца</span>
+              <small>Моля, посочете имена и възраст</small>
+              <input name="children">
+            </label>
+            <label class="f-field">
+              <span>Предпочитано меню</span>
+              <select name="menu">
+                <option value="standard">Без ограничения</option>
+                <option value="vegetarian">Вегетарианско</option>
+                <option value="vegan">Веганско</option>
+                <option value="gluten-free">Без глутен</option>
+              </select>
+            </label>
+            <label class="f-field">
+              <span>Алергии или хранителни ограничения</span>
+              <input name="allergies">
+            </label>
+            <label class="f-field">
+              <span>Песен, която ще ви изкара на дансинга</span>
+              <input name="song" placeholder="Изпълнител — песен">
+            </label>
+          </div>
+
+          <label class="f-field">
+            <span>Телефон</span>
+            <small>За да можем да се свържем с вас при нужда</small>
+            <input name="phone" type="tel" autocomplete="tel" inputmode="tel">
+          </label>
+          <label class="f-field">
+            <span>Пожелание към младоженците</span>
+            <textarea name="message" rows="3"></textarea>
+          </label>
+
+          <p class="f-error" id="rsvpError" role="alert" hidden></p>
+          <button class="f-submit" type="submit">Изпрати</button>
+        </form>
+        <div class="rsvp-thanks" id="rsvpThanks" hidden>
+          <h3>Благодарим ви!</h3>
+          <p id="rsvpThanksText"></p>
+        </div>
+      </div>
     </div>
     <div class="sparkles" id="sparkles" aria-hidden="true"></div>
 
