@@ -12,7 +12,6 @@
   --sky-mid: #efc298;
   --sky-low: #f5cdad;
   --paper-peach: #f6d5b9;
-  --deboss: #eec29f;
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.55 0 0 0 0 0.35 0 0 0 0 0.25 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 
   --ease-open: cubic-bezier(.65, 0, .25, 1);
@@ -366,13 +365,17 @@ body {
     linear-gradient(180deg, var(--sky-low) 0%, var(--paper-peach) 40%, var(--paper-peach) 100%);
 }
 
-/* Debossed into the paper: slightly darker fill, light lower edge, dark upper edge */
-.arrived-title,
-.arrived-text {
-  color: var(--deboss);
+/* Debossed into the paper: darker fill, dark upper edge (shadow inside the press),
+   light lower edge (paper catching the light) */
+.arrived-title {
+  color: #e3a982;
   text-shadow:
-    0 1px 0 rgba(255, 246, 236, .75),
-    0 -1px 0 rgba(150, 88, 58, .28);
+    0 -1px 1px rgba(120, 60, 30, .35),
+    0 1.5px 0 rgba(255, 248, 240, .9);
+}
+.arrived-text {
+  color: #b9785a;
+  text-shadow: 0 1px 0 rgba(255, 248, 240, .7);
 }
 .arrived-title {
   display: flex;
@@ -407,9 +410,9 @@ body {
   filter: blur(0);
   letter-spacing: var(--ls);
   transition:
-    opacity 1.3s ease calc(var(--i) * .3s),
-    filter 1.3s ease calc(var(--i) * .3s),
-    letter-spacing 1.8s cubic-bezier(.2, .8, .2, 1) calc(var(--i) * .3s);
+    opacity .9s ease calc(var(--i) * .2s),
+    filter .9s ease calc(var(--i) * .2s),
+    letter-spacing 1.3s cubic-bezier(.2, .8, .2, 1) calc(var(--i) * .2s);
 }
 .arrived-title .press { display: block; }
 

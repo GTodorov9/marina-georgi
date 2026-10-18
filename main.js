@@ -190,7 +190,7 @@
   }
   const io = new IntersectionObserver((entries) => {
     entries.forEach((e) => e.isIntersecting && e.target.classList.add("in-view"));
-  }, { root: invite, threshold: 0.35 });
+  }, { root: invite, threshold: 0.12 });
   document.querySelectorAll(".arrived").forEach((el) => io.observe(el));
 
   seal.addEventListener("click", open);
