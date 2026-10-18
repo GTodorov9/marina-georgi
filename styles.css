@@ -288,7 +288,7 @@ body {
     0 1.5px 0 rgba(255, 248, 240, .9);
 }
 .arrived-text {
-  color: #b9785a;
+  color: #9a5f42;
   text-shadow: 0 1px 0 rgba(255, 248, 240, .7);
 }
 .arrived-title {
@@ -296,21 +296,21 @@ body {
   flex-direction: column;
   font-family: "Cormorant Garamond", Georgia, serif;
   font-weight: 400;
-  font-size: clamp(42px, 13vw, 62px);
-  line-height: 1.04;
-  --ls: .08em;
+  font-size: clamp(30px, 9vw, 44px);
+  line-height: 1.1;
+  --ls: .05em;
   letter-spacing: var(--ls);
   text-transform: uppercase;
-  margin-right: -.08em;
+  margin-right: -.05em;
+  white-space: nowrap;
 }
 .arrived-text {
-  font-size: 15px;
+  font-style: italic;
+  font-size: 20px;
   font-weight: 500;
-  line-height: 1.8;
-  --ls: .26em;
+  line-height: 1.5;
+  --ls: 0em;
   letter-spacing: var(--ls);
-  text-transform: uppercase;
-  margin-right: -.26em;
 }
 
 /* Pressed into the paper as it scrolls into view */
