@@ -761,7 +761,7 @@
   const ctx = cvs.getContext("2d");
   const W = cvs.width, H = cvs.height;
   const water = new Image();     // the sea cut out of the plate; its alpha is the water mask
-  water.src = "assets/hero/water.webp?v=1";
+  water.src = "assets/hero/water.webp?v=2";
 
   let visible = true, last = 0, raf = 0;
   function frame(now) {
