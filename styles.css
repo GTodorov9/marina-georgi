@@ -57,7 +57,7 @@ body {
   background-size: cover;
   background-position: center;
 }
-.has-paper .paper { background-image: url("assets/paper.webp"); }
+.has-paper .paper { background-image: url("assets/paper.webp?v=2"); }
 
 /* ---------- Envelope interior + light ---------- */
 /* Only visible through the V where the flap was: deep orange at the edges,
@@ -233,7 +233,7 @@ body {
   background-size: min(100vw, 480px) auto;
   background-position: top center;
 }
-.has-paper .flap-front::before { background-image: url("assets/paper.webp"); }
+.has-paper .flap-front::before { background-image: url("assets/paper.webp?v=2"); }
 
 .flap-inside { transform: rotateX(180deg); }
 .flap-inside::before {
@@ -271,9 +271,9 @@ body {
 .has-seal .seal-wax {
   inset: 0;
   border-radius: 0;
-  background: url("assets/seal.webp") center / contain no-repeat;
+  background: url("assets/seal.webp?v=2") center / contain no-repeat;
   box-shadow: none;
-  filter: drop-shadow(0 8px 10px rgba(90, 45, 20, .35));
+  filter: brightness(1.12) saturate(1.1) drop-shadow(0 8px 10px rgba(90, 45, 20, .35));
 }
 
 .seal-shine {
@@ -306,13 +306,13 @@ body {
   line-height: 1;
   padding-top: 2%;
   white-space: nowrap;
-  color: #4a2c05;
-  /* pressed into the wax: dark rim above, warm highlight below, soft inner shade */
+  color: #e9cf8a;
+  /* raised gold on the darker bronze centre: light top edge, dark cast shadow below */
   text-shadow:
-    0 -1px 0 rgba(40, 20, 0, .7),
-    0 1.5px 0 rgba(255, 226, 150, .85),
-    0 0 6px rgba(60, 30, 0, .25);
-  -webkit-text-stroke: .4px rgba(40, 20, 0, .5);
+    0 -1px 0 rgba(255, 244, 205, .55),
+    0 1.5px 1px rgba(30, 15, 0, .85),
+    0 0 8px rgba(30, 15, 0, .35);
+  -webkit-text-stroke: .3px rgba(60, 35, 5, .6);
   pointer-events: none;
 }
 
@@ -329,8 +329,8 @@ body {
 .has-seal .seal-shine {
   inset: 0;
   border-radius: 0;
-  -webkit-mask: url("assets/seal.webp") center / contain no-repeat;
-          mask: url("assets/seal.webp") center / contain no-repeat;
+  -webkit-mask: url("assets/seal.webp?v=2") center / contain no-repeat;
+          mask: url("assets/seal.webp?v=2") center / contain no-repeat;
 }
 
 /* Lit-from-within layer: a brightened, high-contrast copy of the seal, so the raised
@@ -343,7 +343,7 @@ body {
   pointer-events: none;
 }
 .has-seal .seal-lit {
-  background: url("assets/seal-lines.webp") center / contain no-repeat;
+  background: url("assets/seal-lines.webp?v=2") center / contain no-repeat;
   filter: brightness(1.4) drop-shadow(0 0 1.5px rgba(255, 252, 240, 1)) drop-shadow(0 0 5px rgba(255, 230, 160, .9)) drop-shadow(0 0 12px rgba(255, 200, 100, .6));
 }
 .seal-glow {
@@ -438,7 +438,7 @@ body {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: url("assets/seal.webp") center / contain no-repeat;
+  background: url("assets/seal.webp?v=2") center / contain no-repeat;
   filter: brightness(1.45) saturate(.45) drop-shadow(0 0 14px rgba(255, 215, 150, .75));
   --sweep-dur: 1.9s;
   --sweep-delay: .9s;

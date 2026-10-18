@@ -29,8 +29,8 @@
     img.onload = () => root.classList.add(cls);
     img.src = src;
   };
-  useImage("assets/paper.webp", "has-paper");
-  useImage("assets/seal.webp", "has-seal");
+  useImage("assets/paper.webp?v=2", "has-paper");
+  useImage("assets/seal.webp?v=2", "has-seal");
 
   // ---- Gold sparkles for the dissolve ----
   const sparkles = document.getElementById("sparkles");
