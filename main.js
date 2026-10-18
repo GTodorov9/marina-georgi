@@ -45,89 +45,11 @@
     sparkles.appendChild(s);
   }
 
-  // ---- Gold dust: glittering particles rising out of the envelope ----
-  const dust = (() => {
-    const canvas = document.getElementById("dust");
-    const ctx = canvas.getContext("2d");
-    const COLORS = ["255,250,242", "255,238,220", "250,222,196", "242,206,170"];
-    let parts = [], raf = 0, emitUntil = 0, w = 0, h = 0, dpr = 1;
-
-    const resize = () => {
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
-      w = canvas.clientWidth; h = canvas.clientHeight;
-      canvas.width = w * dpr; canvas.height = h * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    };
-
-    const spawn = (burst) => {
-      // born near the tip of the V, a few along its edges
-      const t = Math.random();
-      const edge = Math.random() < 0.35;
-      const x = edge ? w * (0.5 + (Math.random() < 0.5 ? -1 : 1) * t * 0.5) : w * (0.5 + (Math.random() - 0.5) * 0.25);
-      const y = edge ? h * (0.54 - t * 0.24) : h * (0.52 + Math.random() * 0.04);
-      const ang = -Math.PI / 2 + (Math.random() - 0.5) * (burst ? 2.6 : 1.4);
-      const speed = burst ? 160 + Math.random() * 280 : 40 + Math.random() * 70;
-      parts.push({
-        x, y,
-        vx: Math.cos(ang) * speed, vy: Math.sin(ang) * speed,
-        r: 0.6 + Math.random() * 2.2,
-        life: 0, max: 1.6 + Math.random() * 2.2,
-        tw: Math.random() * Math.PI * 2, tws: 6 + Math.random() * 10,
-        glint: Math.random() < 0.18,
-        c: COLORS[(Math.random() * COLORS.length) | 0],
-      });
-    };
-
-    const star = (x, y, r, a, c) => {
-      ctx.strokeStyle = `rgba(${c},${a})`;
-      ctx.lineWidth = 0.8;
-      ctx.beginPath();
-      ctx.moveTo(x - r * 4, y); ctx.lineTo(x + r * 4, y);
-      ctx.moveTo(x, y - r * 4); ctx.lineTo(x, y + r * 4);
-      ctx.stroke();
-    };
-
-    let last = 0;
-    const frame = (now) => {
-      const dt = Math.min((now - (last || now)) / 1000, 0.05);
-      last = now;
-      if (now < emitUntil) for (let i = 0; i < 4; i++) spawn(false);
-      ctx.clearRect(0, 0, w, h);
-      ctx.globalCompositeOperation = "lighter";
-      parts = parts.filter((p) => (p.life += dt) < p.max);
-      for (const p of parts) {
-        p.vx *= 0.975; p.vy = p.vy * 0.975 - 6 * dt;   // drag + gentle lift
-        p.x += p.vx * dt + Math.sin(p.life * 2 + p.tw) * 0.3;
-        p.y += p.vy * dt;
-        const fade = Math.min(p.life / 0.25, 1) * (1 - p.life / p.max);
-        const a = fade * (0.55 + 0.45 * Math.sin(p.tw + p.life * p.tws));
-        const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 3);
-        g.addColorStop(0, `rgba(${p.c},${a})`);
-        g.addColorStop(1, `rgba(${p.c},0)`);
-        ctx.fillStyle = g;
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 3, 0, Math.PI * 2); ctx.fill();
-        if (p.glint && a > 0.5) star(p.x, p.y, p.r, a * 0.8, "255,250,230");
-      }
-      raf = parts.length || now < emitUntil ? requestAnimationFrame(frame) : 0;
-    };
-
-    window.addEventListener("resize", resize);
-    return {
-      start(ms) {
-        resize();
-        for (let i = 0; i < 90; i++) spawn(true);
-        emitUntil = performance.now() + ms;
-        if (!raf) { last = 0; raf = requestAnimationFrame(frame); }
-      },
-      stop() { emitUntil = 0; parts = []; ctx.clearRect(0, 0, w, h); },
-    };
-  })();
-
   // ---- Open sequence ----
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const T = reduced
-    ? { press: 0, glow: 0, wash: 0, dust: 0, flare: 0, bloom: 0, reveal: 0, done: 0 }
-    : { press: 140, glow: 2650, wash: 2250, dust: 500, flare: 1900, bloom: 2600, reveal: 3400, done: 4000 };
+    ? { press: 0, glow: 0, wash: 0, slide: 0, reveal: 0, done: 0 }
+    : { press: 140, glow: 2650, wash: 2250, slide: 1300, reveal: 2300, done: 3700 };
   let timers = [];
   let opened = false;
 
@@ -153,14 +75,13 @@
     later(T.press + T.wash, () => stage.classList.add("is-washed"));
     const t0 = T.press + T.glow;
     later(t0, () => stage.classList.add("is-open"));
-    if (!reduced) later(t0 + T.dust, () => dust.start(2600));
-    later(t0 + T.flare, () => stage.classList.add("is-flare"));
-    later(t0 + T.bloom, () => stage.classList.add("is-bloom"));
+    later(t0 + T.slide, () => stage.classList.add("is-slide"));
     later(t0 + T.reveal, () => {
       stage.classList.add("is-reveal");
       invite.setAttribute("aria-hidden", "false");
     });
     later(t0 + T.done, () => {
+      stage.classList.add("is-done");
       replay.hidden = false;
       document.dispatchEvent(new CustomEvent("invitation:opened"));
     });
@@ -170,13 +91,12 @@
     timers.forEach(clearTimeout);
     timers = [];
     music.pause();
-    dust.stop();
     invite.scrollTop = 0;
     invite.setAttribute("aria-hidden", "true");
     heroBg.style.translate = "";
     document.querySelectorAll(".in-view").forEach((el) => el.classList.remove("in-view"));
     replay.hidden = true;
-    stage.classList.remove("is-pressed", "is-glowing", "is-washed", "is-open", "is-flare", "is-bloom", "is-reveal");
+    stage.classList.remove("is-pressed", "is-glowing", "is-washed", "is-open", "is-slide", "is-reveal", "is-done");
     opened = false;
   }
 
@@ -198,7 +118,7 @@
   // Dev aid: ?skip jumps straight to the opened invitation
   if (new URLSearchParams(location.search).has("skip")) {
     opened = true;
-    stage.classList.add("is-open", "is-bloom", "is-reveal");
+    stage.classList.add("is-open", "is-slide", "is-reveal", "is-done");
     invite.setAttribute("aria-hidden", "false");
     replay.hidden = false;
   }

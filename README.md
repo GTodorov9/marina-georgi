@@ -15,8 +15,8 @@ Mobile-first digital wedding invitation. Static HTML/CSS/JS, no build step.
 - `tools/cutout_seal.py` — removes the white background from a generated seal
 
 ## Phases
-1. ✅ Envelope: embossed paper, gold wax seal М&Г; tap → light rises through the seal, washes it cream, seams glow, flap lifts away with the seal, light pours out, dissolve to cream with sparkles
-2. Illustrated hero / letter expands full screen (parallax)
+1. ✅ Envelope: embossed paper, gold wax seal М&Г; tap → light rises through the seal, washes it cream, seams glow, flap lifts away with the seal, the painting's sky shows through the V, the pocket slides away
+2. ✅ Hero painting (Sofia meets Burgas) with names / Сватбен ден / Запазете датата; 'Денят настъпи!' section
 3. Scratch-to-reveal date, venue, RSVP
 
 ## Assets
