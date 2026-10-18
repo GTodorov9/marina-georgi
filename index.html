@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ballet:opsz@16..72&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400;1,500;1,600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=202610182250">
+  <link rel="stylesheet" href="styles.css?v=202610182252">
   <link rel="preload" as="image" href="assets/paper.webp?v=3">
   <link rel="preload" as="image" href="assets/seal.webp?v=2">
   <link rel="preload" as="image" href="assets/seal-lines.webp?v=2">
@@ -36,12 +36,14 @@
       <!-- Front pocket -->
       <div class="pocket paper">
         <canvas class="card-shade" id="shadePocket" aria-hidden="true"></canvas>
+        <canvas class="card-lines" id="linesPocket" aria-hidden="true"></canvas>
       </div>
 
       <!-- Top flap, flips open in 3D -->
       <div class="flap" id="flap">
         <div class="flap-face flap-front">
           <canvas class="card-shade" id="shadeFlap" aria-hidden="true"></canvas>
+          <canvas class="card-lines" id="linesFlap" aria-hidden="true"></canvas>
         </div>
         <div class="flap-face flap-inside"></div>
         <!-- Wax seal rides on the flap -->
@@ -382,7 +384,7 @@
   </main>
 
 
-  <script src="config.js?v=202610182250"></script>
-  <script src="main.js?v=202610182250"></script>
+  <script src="config.js?v=202610182252"></script>
+  <script src="main.js?v=202610182252"></script>
 </body>
 </html>

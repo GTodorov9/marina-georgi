@@ -221,9 +221,64 @@
           }
         }
         ctx.putImageData(out, 0, 0);
+        drawLines(id === "shadePocket" ? "linesPocket" : "linesFlap", lum, W, H, sx, sy, dpr);
       });
     };
     img.src = "assets/paper.webp?v=3";
+  }
+
+  // Separable box blur (radius r) of a W×H float field
+  function boxBlur(src, W, H, r) {
+    const tmp = new Float32Array(W * H), out = new Float32Array(W * H), n = 2 * r + 1;
+    for (let y = 0; y < H; y++) {
+      let acc = 0; const row = y * W;
+      for (let x = -r; x <= r; x++) acc += src[row + Math.min(W - 1, Math.max(0, x))];
+      for (let x = 0; x < W; x++) {
+        tmp[row + x] = acc / n;
+        acc += src[row + Math.min(W - 1, x + r + 1)] - src[row + Math.max(0, x - r)];
+      }
+    }
+    for (let x = 0; x < W; x++) {
+      let acc = 0;
+      for (let y = -r; y <= r; y++) acc += tmp[Math.min(H - 1, Math.max(0, y)) * W + x];
+      for (let y = 0; y < H; y++) {
+        out[y * W + x] = acc / n;
+        acc += tmp[Math.min(H - 1, y + r + 1) * W + x] - tmp[Math.max(0, y - r) * W + x];
+      }
+    }
+    return out;
+  }
+
+  // ---- The engraved drawings around the seal, traced in glowing gold (revealed as a ripple in CSS) ----
+  function drawLines(id, lum, W, H, sx, sy, dpr) {
+    const cv = document.getElementById(id);
+    if (!cv) return;
+    cv.width = W; cv.height = H;
+    cv.style.setProperty("--sx", `${sx / dpr}px`);
+    cv.style.setProperty("--sy", `${sy / dpr}px`);
+    // engraved strokes are darker than the paper around them
+    const mean = boxBlur(lum, W, H, Math.round(4 * dpr));
+    const line = new Float32Array(W * H);
+    for (let i = 0; i < line.length; i++) line[i] = Math.min(1, Math.max(0, (mean[i] - lum[i] - 3) / 12));
+    const glow = boxBlur(line, W, H, Math.round(5 * dpr));
+    const R = 300 * dpr;                         // the light reaches the nearest drawings, then fades
+    const ctx = cv.getContext("2d");
+    const out = ctx.createImageData(W, H), o = out.data;
+    for (let y = 0; y < H; y++) {
+      for (let x = 0; x < W; x++) {
+        const i = y * W + x;
+        const d = Math.hypot(x - sx, y - sy);
+        const f = Math.exp(-(d * d) / (R * R));
+        if (f < 0.03) continue;
+        const core = line[i] * f, halo = Math.min(1, glow[i] * 2.2) * f;
+        const a = Math.min(1, core * .95 + halo * .5);
+        if (a < 0.01) continue;
+        const t = core / (core + halo * .5 + 1e-6);     // 1 = stroke centre (pale gold), 0 = halo (amber)
+        const p = i * 4;
+        o[p] = 255; o[p + 1] = 168 + 72 * t; o[p + 2] = 70 + 120 * t; o[p + 3] = a * 255;
+      }
+    }
+    ctx.putImageData(out, 0, 0);
   }
 
   // ---- Open sequence ----
@@ -231,7 +286,7 @@
   if (!reduced) drawSealLight();
   const T = reduced
     ? { press: 0, glow: 0, wash: 0, slide: 0, reveal: 0, done: 0 }
-    : { press: 140, glow: 2650, wash: 2250, slide: 1300, reveal: 2300, done: 3700 };
+    : { press: 140, glow: 3500, wash: 3000, slide: 1300, reveal: 2300, done: 3700 };   // glow leaves time for the ripple through the drawings
   let timers = [];
   let opened = false;
 

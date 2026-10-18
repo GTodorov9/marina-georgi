@@ -968,6 +968,28 @@ body {
 .is-washed .card-shade { animation: candle 2.4s ease-in-out infinite; }
 @keyframes candle { 0%, 100% { opacity: 1; } 45% { opacity: .86; } 70% { opacity: .95; } }
 
+/* The drawings near the seal light up in gold: a ring of light spreads out from the seal,
+   flaring each line as it passes, and leaves them softly glowing. */
+@property --ripple { syntax: "<length>"; inherits: false; initial-value: 0px; }
+.card-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  --ripple: 0px;
+  -webkit-mask-image: radial-gradient(circle at var(--sx, 50%) var(--sy, 54%), rgba(0, 0, 0, .45) calc(var(--ripple) - 120px), #000 calc(var(--ripple) - 40px), rgba(0, 0, 0, 0) var(--ripple));
+          mask-image: radial-gradient(circle at var(--sx, 50%) var(--sy, 54%), rgba(0, 0, 0, .45) calc(var(--ripple) - 120px), #000 calc(var(--ripple) - 40px), rgba(0, 0, 0, 0) var(--ripple));
+}
+.flap-front .card-lines { clip-path: polygon(0 0, 100% 0, 100% 55.5%, 50% 100%, 0 55.5%); }
+.is-glowing .card-lines {
+  opacity: 1;
+  --ripple: 620px;
+  transition: --ripple 2.1s cubic-bezier(.3, .1, .35, 1) 1.4s, opacity .4s ease 1.4s;
+}
+.is-washed .card-lines { animation: candle 2.4s ease-in-out .8s infinite; }
+
 /* ================= OPEN SEQUENCE ================= */
 /* 1) Ignite: light rises through the seal from bottom to top.
    Each .sweep layer is revealed by a tall gradient mask sliding upwards, so the lit
@@ -2177,6 +2199,6 @@ body {
   :root { --t-flap: .01s; }
   .seal, .hint, .glow, .seal-shine::before, .sparkle, .reveal-date::after, .scratch, .flake, .music-btn i, .rs-seal, .after-reveal.unveil, .rd-next span, .hero-next span, .hl, .lh-glow, .lh-beam, .boat, .sail, .couple, .couple *, .lh-door, .mist, .mist::before, .dome-glint, .bell, .bell *, .dolphin, .splash, .gull, .gull .wing, .card-shade, .scratch, .rd-item::before, .scratch-value::after { animation: none !important; }
   .petal { display: none; }
-  .card-shade, .pocket, .glow, .rise, .press, .hero-bg, .reveal-up, .sc-item, .sheet-panel, .sheet-backdrop { transition-duration: .01s !important; transition-delay: 0s !important; }
+  .card-shade, .card-lines, .pocket, .glow, .rise, .press, .hero-bg, .reveal-up, .sc-item, .sheet-panel, .sheet-backdrop { transition-duration: .01s !important; transition-delay: 0s !important; }
   .cd-num.tick { animation: none !important; }
 }
