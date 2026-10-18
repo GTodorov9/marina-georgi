@@ -67,8 +67,8 @@ body {
   inset: 0;
   z-index: 0;
   background:
-    radial-gradient(70% 45% at 50% 50%, #ffe7a8 0%, rgba(255, 196, 90, .9) 35%, rgba(255, 196, 90, 0) 70%),
-    linear-gradient(180deg, #ee7d12 0%, #f59a26 35%, #ffc35a 60%);
+    radial-gradient(60% 40% at 50% 54%, #fff8e1 0%, rgba(255, 233, 170, .95) 22%, rgba(242, 205, 120, 0) 65%),
+    linear-gradient(180deg, #a97a2c 0%, #c4923a 22%, #e0b862 42%, #f3d58c 54%);
 }
 
 .light {
@@ -77,21 +77,87 @@ body {
   z-index: 2;
   overflow: hidden;
   pointer-events: none;
-  mix-blend-mode: screen;
 }
 
+/* Two sets of god rays turning against each other, so the light shimmers */
 .rays {
   position: absolute;
-  inset: 0;
-  background: repeating-conic-gradient(from -64deg at 50% 54%, rgba(255, 246, 215, 0) 0deg, rgba(255, 246, 215, .5) 2deg, rgba(255, 246, 215, 0) 5deg 9deg);
-  filter: blur(1.5px);
-  -webkit-mask: linear-gradient(to top, transparent 46%, #000 54%, rgba(0, 0, 0, .25) 100%);
-          mask: linear-gradient(to top, transparent 46%, #000 54%, rgba(0, 0, 0, .25) 100%);
+  left: 50%;
+  top: 54%;
+  width: 260%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  mix-blend-mode: screen;
+  -webkit-mask: radial-gradient(closest-side, #000 0%, rgba(0, 0, 0, .8) 30%, transparent 75%);
+          mask: radial-gradient(closest-side, #000 0%, rgba(0, 0, 0, .8) 30%, transparent 75%);
   opacity: 0;
-  transform-origin: 50% 54%;
-  animation: sway 6s ease-in-out infinite alternate;
+  filter: blur(1.5px);
 }
-@keyframes sway { from { rotate: -2deg; } to { rotate: 2deg; } }
+.rays-a {
+  background: repeating-conic-gradient(from 0deg, rgba(255, 246, 214, 0) 0deg, rgba(255, 246, 214, .55) 2.5deg, rgba(255, 246, 214, 0) 6deg 11deg);
+  animation: turn 28s linear infinite;
+}
+.rays-b {
+  background: repeating-conic-gradient(from 4deg, rgba(255, 224, 150, 0) 0deg, rgba(255, 224, 150, .35) 4deg, rgba(255, 224, 150, 0) 9deg 17deg);
+  animation: turn 40s linear infinite reverse;
+}
+@keyframes turn { to { rotate: 360deg; } }
+
+/* Sheen sweeping across the gold, like light moving on metal */
+.sheen {
+  position: absolute;
+  inset: 0;
+  mix-blend-mode: soft-light;
+  background: linear-gradient(115deg, transparent 35%, rgba(255, 252, 235, .9) 48%, rgba(255, 252, 235, .2) 54%, transparent 65%);
+  background-size: 300% 100%;
+  background-position: 120% 0;
+  opacity: 0;
+}
+
+/* Pulsing light core at the tip of the V */
+.core {
+  position: absolute;
+  left: 50%;
+  top: 54%;
+  width: 70%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+  background: radial-gradient(closest-side, #fffdf4 0%, rgba(255, 240, 190, .85) 25%, rgba(255, 215, 120, .3) 55%, rgba(255, 215, 120, 0) 100%);
+  opacity: 0;
+  transform: scale(.4);
+}
+@keyframes core-pulse {
+  0%, 100% { transform: scale(.95); filter: brightness(1); }
+  50%      { transform: scale(1.12); filter: brightness(1.15); }
+}
+
+/* Gold flare that expands from the tip and fills the screen */
+.flare {
+  position: absolute;
+  left: 50%;
+  top: 54%;
+  z-index: 6;
+  width: 60vmax;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(closest-side, #fffdf5 0%, #fff3cf 30%, rgba(246, 214, 140, .85) 55%, rgba(236, 196, 110, 0) 100%);
+  opacity: 0;
+  transform: scale(.1);
+}
+
+/* Gold dust (canvas, drawn in main.js) */
+.dust {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
 
 /* ---------- Dissolve to cream + sparkles, then the next scene ---------- */
 .bloom {
@@ -99,7 +165,7 @@ body {
   inset: 0;
   z-index: 6;
   pointer-events: none;
-  background: radial-gradient(120% 80% at 50% 40%, #fffaf2 0%, #fcefe6 55%, #f6ddd4 100%);
+  background: radial-gradient(120% 80% at 50% 45%, #fffcf3 0%, #fbf0dc 45%, #f5e1cf 100%);
   opacity: 0;
 }
 
@@ -440,16 +506,19 @@ body {
 .flap-front { transition: filter .6s ease; }
 .is-washed .flap-front {
   filter:
-    drop-shadow(0 0 2px rgba(255, 190, 70, 1))
-    drop-shadow(0 4px 10px rgba(255, 140, 20, .95))
-    drop-shadow(0 8px 22px rgba(255, 150, 40, .6));
+    drop-shadow(0 0 2px rgba(255, 236, 170, 1))
+    drop-shadow(0 4px 10px rgba(232, 180, 70, .95))
+    drop-shadow(0 8px 22px rgba(214, 160, 60, .6));
 }
 
 /* 4) The flap lifts away with the seal on it; light pours out of the V */
 .is-open .seal { pointer-events: none; }
 .is-open .hint { opacity: 0; animation: none; }
 .is-open .flap { transform: rotateX(100deg); opacity: 0; }
-.is-open .rays { opacity: 1; transition: opacity 1s ease .4s; }
+.is-open .rays { opacity: 1; transition: opacity 1.2s ease .3s; }
+.is-open .core { opacity: 1; transform: scale(1); transition: opacity .9s ease .2s, transform 1.2s cubic-bezier(.2, .8, .2, 1) .2s; animation: core-pulse 2.4s ease-in-out 1.4s infinite; }
+.is-open .sheen { opacity: 1; background-position: -20% 0; transition: opacity .6s ease .5s, background-position 2.2s cubic-bezier(.45, 0, .25, 1) .5s; }
+.is-flare .flare { opacity: 1; transform: scale(4.5); transition: opacity .5s ease, transform 1.6s cubic-bezier(.5, 0, .2, 1); }
 
 /* 5) Everything dissolves into a cream glow with drifting sparkles */
 .is-bloom .bloom { opacity: 1; transition: opacity 1.1s ease; }
@@ -457,6 +526,7 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   :root { --t-flap: .01s; }
-  .seal, .hint, .rays, .seal-shine::before, .sparkle { animation: none; }
+  .seal, .hint, .rays, .core, .seal-shine::before, .sparkle { animation: none !important; }
+  .flare, .sheen { transition-duration: .01s !important; }
   .letter, .bloom, .rays { transition-duration: .01s; transition-delay: 0s; }
 }

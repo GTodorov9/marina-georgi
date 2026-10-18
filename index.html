@@ -22,7 +22,10 @@
 
       <!-- Light escaping the envelope, layered over the letter -->
       <div class="light" aria-hidden="true">
-        <div class="rays"></div>
+        <div class="sheen"></div>
+        <div class="rays rays-a"></div>
+        <div class="rays rays-b"></div>
+        <div class="core"></div>
       </div>
 
       <!-- Front pocket -->
@@ -47,6 +50,7 @@
 
     </div>
 
+    <div class="flare" aria-hidden="true"></div>
     <div class="bloom" aria-hidden="true"></div>
     <!-- Placeholder for the phase-2 scene -->
     <article class="letter" id="letter" aria-hidden="true">
@@ -55,6 +59,7 @@
       <p class="letter-date" data-date></p>
     </article>
     <div class="sparkles" id="sparkles" aria-hidden="true"></div>
+    <canvas class="dust" id="dust" aria-hidden="true"></canvas>
 
     <p class="hint" id="hint">Докоснете печата</p>
     <button class="replay" id="replay" type="button" hidden>↺ Отново</button>
