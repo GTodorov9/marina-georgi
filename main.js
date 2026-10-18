@@ -49,7 +49,7 @@
   const dust = (() => {
     const canvas = document.getElementById("dust");
     const ctx = canvas.getContext("2d");
-    const COLORS = ["255,248,222", "255,232,170", "246,210,128", "232,186,92"];
+    const COLORS = ["255,250,242", "255,238,220", "250,222,196", "242,206,170"];
     let parts = [], raf = 0, emitUntil = 0, w = 0, h = 0, dpr = 1;
 
     const resize = () => {

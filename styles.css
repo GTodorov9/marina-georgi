@@ -74,8 +74,8 @@ body {
   inset: 0;
   z-index: 0;
   background:
-    radial-gradient(60% 40% at 50% 54%, #fff8e1 0%, rgba(255, 233, 170, .95) 22%, rgba(242, 205, 120, 0) 65%),
-    linear-gradient(180deg, #a97a2c 0%, #c4923a 22%, #e0b862 42%, #f3d58c 54%);
+    radial-gradient(60% 40% at 50% 54%, #fffaf2 0%, rgba(253, 236, 214, .95) 22%, rgba(245, 214, 180, 0) 65%),
+    linear-gradient(180deg, #dc9f86 0%, #e3ae92 22%, #eec29f 42%, #f6dcc0 54%);
 }
 
 .light {
@@ -101,11 +101,11 @@ body {
   filter: blur(1.5px);
 }
 .rays-a {
-  background: repeating-conic-gradient(from 0deg, rgba(255, 246, 214, 0) 0deg, rgba(255, 246, 214, .55) 2.5deg, rgba(255, 246, 214, 0) 6deg 11deg);
+  background: repeating-conic-gradient(from 0deg, rgba(255, 246, 236, 0) 0deg, rgba(255, 246, 236, .5) 2.5deg, rgba(255, 246, 236, 0) 6deg 11deg);
   animation: turn 28s linear infinite;
 }
 .rays-b {
-  background: repeating-conic-gradient(from 4deg, rgba(255, 224, 150, 0) 0deg, rgba(255, 224, 150, .35) 4deg, rgba(255, 224, 150, 0) 9deg 17deg);
+  background: repeating-conic-gradient(from 4deg, rgba(255, 232, 214, 0) 0deg, rgba(255, 232, 214, .3) 4deg, rgba(255, 232, 214, 0) 9deg 17deg);
   animation: turn 40s linear infinite reverse;
 }
 @keyframes turn { to { rotate: 360deg; } }
@@ -131,7 +131,7 @@ body {
   translate: -50% -50%;
   border-radius: 50%;
   mix-blend-mode: screen;
-  background: radial-gradient(closest-side, #fffdf4 0%, rgba(255, 240, 190, .85) 25%, rgba(255, 215, 120, .3) 55%, rgba(255, 215, 120, 0) 100%);
+  background: radial-gradient(closest-side, #fffdf8 0%, rgba(255, 240, 222, .85) 25%, rgba(248, 214, 186, .3) 55%, rgba(248, 214, 186, 0) 100%);
   opacity: 0;
   transform: scale(.4);
 }
@@ -151,7 +151,7 @@ body {
   translate: -50% -50%;
   border-radius: 50%;
   pointer-events: none;
-  background: radial-gradient(closest-side, #fffdf5 0%, #fff3cf 30%, rgba(246, 214, 140, .85) 55%, rgba(236, 196, 110, 0) 100%);
+  background: radial-gradient(closest-side, #fffaf3 0%, #fdeedd 30%, rgba(242, 200, 168, .85) 55%, rgba(232, 180, 148, 0) 100%);
   opacity: 0;
   transform: scale(.1);
 }
@@ -188,7 +188,7 @@ body {
   width: var(--s, 4px);
   height: var(--s, 4px);
   border-radius: 50%;
-  background: radial-gradient(circle, #fff6d8 0%, #f2c46a 45%, rgba(242, 196, 106, 0) 70%);
+  background: radial-gradient(circle, #fffaf0 0%, #f3d2a4 45%, rgba(243, 210, 164, 0) 70%);
   opacity: 0;
 }
 .is-bloom .sparkle { animation: drift var(--d, 5s) ease-in-out var(--delay, 0s) infinite; }
@@ -473,7 +473,7 @@ body {
 
 .flap-inside { transform: rotateX(180deg); }
 .flap-inside::before {
-  background: linear-gradient(0deg, #f7a83c, #fbd28a 70%, #f8e2c4);
+  background: linear-gradient(0deg, #e3ae92, #f1cbb0 70%, #f8e2d2);
 }
 
 /* ---------- Wax seal ---------- */
@@ -685,9 +685,9 @@ body {
 .flap-front { transition: filter .6s ease; }
 .is-washed .flap-front {
   filter:
-    drop-shadow(0 0 2px rgba(255, 236, 170, 1))
-    drop-shadow(0 4px 10px rgba(232, 180, 70, .95))
-    drop-shadow(0 8px 22px rgba(214, 160, 60, .6));
+    drop-shadow(0 0 2px rgba(255, 242, 228, 1))
+    drop-shadow(0 4px 10px rgba(236, 178, 146, .95))
+    drop-shadow(0 8px 22px rgba(226, 160, 128, .6));
 }
 
 /* 4) The flap lifts away with the seal on it; light pours out of the V */
