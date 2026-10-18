@@ -830,7 +830,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 48px 7% 14vh;
+  padding: 48px 7% 28px;
   text-align: center;
   color: var(--cocoa);
   background: var(--grain), linear-gradient(180deg, #fbeee3 0%, var(--paper-peach) 30%, #f8ddc6 100%);
@@ -1196,7 +1196,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 64px 8% 96px;
+  padding: 36px 8% 96px;
   text-align: center;
   color: #6b3c28;
   background: var(--grain), linear-gradient(180deg, #f8ddc6 0%, #fbeee3 100%);
