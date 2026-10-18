@@ -292,12 +292,25 @@
 
   const later = (ms, fn) => timers.push(setTimeout(fn, ms));
 
+  // Phones: tapping the seal also takes the page full screen (browsers only allow it from a tap).
+  // Android browsers support this; iPhone Safari has no full-screen API for pages, so it is skipped there.
+  function goFullscreen() {
+    const el = document.documentElement;
+    const req = el.requestFullscreen || el.webkitRequestFullscreen;
+    if (!req || document.fullscreenElement || !window.matchMedia("(pointer: coarse)").matches) return;
+    try {
+      const p = req.call(el, { navigationUI: "hide" });
+      if (p && p.catch) p.catch(() => {});
+    } catch (e) { /* not allowed here: carry on normally */ }
+  }
+
   function open() {
     if (opened) return;
     opened = true;
 
     if (navigator.vibrate) navigator.vibrate(15);
     player.start();
+    goFullscreen();
 
     stage.classList.add("is-pressed");
     // The seal lights up from within, then breaks open
