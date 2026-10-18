@@ -12,6 +12,8 @@
   --sky-mid: #efc298;
   --sky-low: #f5cdad;
   --paper-peach: #f6d5b9;
+  --night: #2e2322;
+  --night-ink: #f6e6d6;
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.55 0 0 0 0 0.35 0 0 0 0 0.25 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 
   --ease-open: cubic-bezier(.65, 0, .25, 1);
@@ -626,8 +628,178 @@ body {
 .is-reveal .scene { pointer-events: none; }
 .is-done .scene { visibility: hidden; }
 
+/* ---------- Screen 3: scratch to reveal the date ---------- */
+.reveal-date {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15vh 7% 16vh;
+  text-align: center;
+  color: var(--night-ink);
+  background:
+    radial-gradient(1.5px 1.5px at 12% 18%, rgba(255, 236, 214, .8), transparent),
+    radial-gradient(1px 1px at 78% 12%, rgba(255, 236, 214, .7), transparent),
+    radial-gradient(1.5px 1.5px at 88% 40%, rgba(255, 236, 214, .6), transparent),
+    radial-gradient(1px 1px at 30% 62%, rgba(255, 236, 214, .6), transparent),
+    radial-gradient(1.5px 1.5px at 62% 78%, rgba(255, 236, 214, .7), transparent),
+    radial-gradient(1px 1px at 8% 86%, rgba(255, 236, 214, .5), transparent),
+    radial-gradient(1px 1px at 46% 30%, rgba(255, 236, 214, .5), transparent),
+    radial-gradient(120% 70% at 50% 45%, #43312e 0%, var(--night) 70%);
+}
+/* soft edge from the peach paper into the night */
+.reveal-date::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1px;
+  height: 160px;
+  background: linear-gradient(180deg, var(--paper-peach) 0%, rgba(246, 213, 185, .55) 30%, rgba(246, 213, 185, .15) 65%, rgba(246, 213, 185, 0) 100%);
+  pointer-events: none;
+}
+/* slow twinkle over the static stars */
+.reveal-date::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(2px 2px at 22% 34%, rgba(255, 240, 220, .9), transparent),
+    radial-gradient(2px 2px at 70% 24%, rgba(255, 240, 220, .9), transparent),
+    radial-gradient(2px 2px at 84% 70%, rgba(255, 240, 220, .9), transparent),
+    radial-gradient(2px 2px at 16% 72%, rgba(255, 240, 220, .9), transparent);
+  animation: twinkle 4.5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes twinkle { 0%, 100% { opacity: .15; } 50% { opacity: 1; } }
+
+.rd-instruction,
+.rd-sub {
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.7;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  margin-right: -.3em;
+}
+.rd-title {
+  margin: 14px 0 10px;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(46px, 14vw, 64px);
+  line-height: 1;
+  color: #fff4e8;
+  text-shadow: 0 0 24px rgba(255, 214, 170, .25);
+}
+
+.rd-circles {
+  display: flex;
+  justify-content: center;
+  gap: clamp(12px, 4vw, 22px);
+  margin-top: 34px;
+  position: relative;
+  z-index: 1;
+}
+.rd-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.rd-label {
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  margin-right: -.28em;
+  opacity: .9;
+}
+
+.scratch {
+  position: relative;
+  width: min(26vw, 112px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  overflow: hidden;
+  touch-action: none;            /* scratching must not scroll the page */
+  cursor: grab;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, .35);
+  /* the pressed cream disc under the coating */
+  background: radial-gradient(circle at 50% 40%, #fff6ec 0%, #f8e2cf 60%, #eecbb0 100%);
+}
+.scratch::after {   /* inner shadow so the disc looks pressed into the card */
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  box-shadow: inset 0 3px 8px rgba(120, 70, 40, .35);
+  pointer-events: none;
+}
+.scratch canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity .7s ease;
+}
+.scratch.done canvas { opacity: 0; }
+.scratch-value {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 600;
+  font-size: min(9vw, 38px);
+  font-variant-numeric: lining-nums;
+  color: #6b3c28;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .6);
+}
+.scratch-month {
+  font-size: min(6.4vw, 27px);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.scratch.done .scratch-value { animation: pop .6s cubic-bezier(.2, 1.4, .4, 1); }
+@keyframes pop { 0% { transform: scale(.85); } 100% { transform: scale(1); } }
+
+/* gold flakes falling while scratching */
+.flake {
+  position: absolute;
+  z-index: 2;
+  width: var(--s);
+  height: var(--s);
+  border-radius: 2px;
+  background: linear-gradient(135deg, #fff0d8, #e2a77a);
+  pointer-events: none;
+  animation: flake-fall .9s ease-in forwards;
+}
+@keyframes flake-fall {
+  to { transform: translate(var(--dx), 60px) rotate(var(--r)); opacity: 0; }
+}
+
+.rd-done {
+  margin-top: 40px;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-style: italic;
+  font-size: 22px;
+  line-height: 1.4;
+  color: #fff4e8;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 1.2s ease .3s, transform 1.4s cubic-bezier(.2, .8, .2, 1) .3s;
+}
+.rd-done span { font-style: normal; font-weight: 600; letter-spacing: .08em; font-variant-numeric: lining-nums; }
+.reveal-date.complete .rd-done { opacity: 1; transform: none; }
+.reveal-date.complete .scratch { animation: halo 2.6s ease-in-out infinite; }
+@keyframes halo {
+  0%, 100% { box-shadow: 0 10px 22px rgba(0, 0, 0, .35), 0 0 0 rgba(255, 214, 170, 0); }
+  50%      { box-shadow: 0 10px 22px rgba(0, 0, 0, .35), 0 0 26px rgba(255, 214, 170, .45); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   :root { --t-flap: .01s; }
-  .seal, .hint, .glow, .seal-shine::before, .sparkle { animation: none !important; }
+  .seal, .hint, .glow, .seal-shine::before, .sparkle, .reveal-date::after, .scratch, .flake { animation: none !important; }
   .pocket, .glow, .rise, .press, .hero-bg { transition-duration: .01s !important; transition-delay: 0s !important; }
 }

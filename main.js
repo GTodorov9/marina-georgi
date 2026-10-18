@@ -22,6 +22,9 @@
     }
   });
   fill("[data-date]", cfg.dateText);
+  fill("[data-date-day]", cfg.dateDay);
+  fill("[data-date-month]", cfg.dateMonth);
+  fill("[data-date-year]", cfg.dateYear);
 
   // ---- Use the generated art only once it has loaded; CSS fallbacks otherwise ----
   const useImage = (src, cls) => {
@@ -95,6 +98,8 @@
     invite.setAttribute("aria-hidden", "true");
     heroBg.style.translate = "";
     document.querySelectorAll(".in-view").forEach((el) => el.classList.remove("in-view"));
+    revealDate.classList.remove("complete");
+    scratches.forEach((s) => s.reset());
     replay.hidden = true;
     stage.classList.remove("is-pressed", "is-glowing", "is-washed", "is-open", "is-slide", "is-reveal", "is-done");
     opened = false;
@@ -112,6 +117,120 @@
     entries.forEach((e) => e.isIntersecting && e.target.classList.add("in-view"));
   }, { root: invite, threshold: 0.12 });
   document.querySelectorAll(".arrived").forEach((el) => io.observe(el));
+
+  // ---- Scratch to reveal the date ----
+  const revealDate = document.getElementById("revealDate");
+  const scratches = [...document.querySelectorAll("[data-scratch]")].map((el) => {
+    const canvas = el.querySelector("canvas");
+    const ctx = canvas.getContext("2d");
+    let size = 0, down = false, last = null, done = false, moves = 0, lastFlake = 0;
+
+    // The rose-gold coating: a glossy sphere with a fine foil grain
+    function paint() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      size = el.clientWidth;
+      canvas.width = canvas.height = Math.round(size * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.globalCompositeOperation = "source-over";
+      const g = ctx.createRadialGradient(size * .36, size * .3, size * .04, size * .5, size * .5, size * .62);
+      g.addColorStop(0, "#fff3e0");
+      g.addColorStop(.28, "#f4c79b");
+      g.addColorStop(.62, "#dd9a6a");
+      g.addColorStop(1, "#a9643f");
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, size, size);
+      for (let i = 0; i < size * 6; i++) {           // foil grain
+        ctx.fillStyle = `rgba(${Math.random() < .5 ? "255,240,220" : "120,60,30"},${Math.random() * .12})`;
+        ctx.fillRect(Math.random() * size, Math.random() * size, 1, 1);
+      }
+      const hl = ctx.createRadialGradient(size * .34, size * .26, 0, size * .34, size * .26, size * .22);
+      hl.addColorStop(0, "rgba(255,255,255,.75)");
+      hl.addColorStop(1, "rgba(255,255,255,0)");
+      ctx.fillStyle = hl;
+      ctx.fillRect(0, 0, size, size);
+    }
+
+    const point = (e) => {
+      const r = canvas.getBoundingClientRect();
+      return { x: e.clientX - r.left, y: e.clientY - r.top };
+    };
+
+    function flake(p) {
+      const now = performance.now();
+      if (reduced || now - lastFlake < 40) return;
+      lastFlake = now;
+      const host = revealDate.getBoundingClientRect();
+      const r = canvas.getBoundingClientRect();
+      const f = document.createElement("span");
+      f.className = "flake";
+      f.style.left = `${r.left - host.left + p.x}px`;
+      f.style.top = `${r.top - host.top + p.y}px`;
+      f.style.setProperty("--s", `${2 + Math.random() * 3}px`);
+      f.style.setProperty("--dx", `${(Math.random() - .5) * 40}px`);
+      f.style.setProperty("--r", `${Math.random() * 360}deg`);
+      revealDate.appendChild(f);
+      setTimeout(() => f.remove(), 950);
+    }
+
+    function scratchTo(p) {
+      ctx.globalCompositeOperation = "destination-out";
+      ctx.lineCap = ctx.lineJoin = "round";
+      ctx.lineWidth = size * .26;
+      ctx.beginPath();
+      ctx.moveTo((last || p).x, (last || p).y);
+      ctx.lineTo(p.x, p.y);
+      ctx.stroke();
+      last = p;
+      flake(p);
+      if (++moves % 6 === 0) check();
+    }
+
+    // Share of the coating already cleared (sampled, inside the circle only)
+    function check() {
+      const { width: w, height: h } = canvas;
+      const data = ctx.getImageData(0, 0, w, h).data;
+      let total = 0, clear = 0;
+      for (let y = 0; y < h; y += 4) {
+        for (let x = 0; x < w; x += 4) {
+          const dx = x - w / 2, dy = y - h / 2;
+          if (dx * dx + dy * dy > (w / 2) * (w / 2)) continue;
+          total++;
+          if (data[(y * w + x) * 4 + 3] < 40) clear++;
+        }
+      }
+      if (clear / total > 0.5) finish();
+    }
+
+    function finish() {
+      if (done) return;
+      done = true;
+      el.classList.add("done");
+      if (navigator.vibrate) navigator.vibrate(12);
+      if (scratches.every((s) => s.isDone())) {
+        revealDate.classList.add("complete");
+        if (navigator.vibrate) navigator.vibrate([20, 60, 30]);
+      }
+    }
+
+    canvas.addEventListener("pointerdown", (e) => {
+      if (done) return;
+      down = true; last = null;
+      canvas.setPointerCapture(e.pointerId);
+      scratchTo(point(e));
+    });
+    canvas.addEventListener("pointermove", (e) => { if (down && !done) scratchTo(point(e)); });
+    const up = () => { if (down) { down = false; last = null; if (!done) check(); } };
+    canvas.addEventListener("pointerup", up);
+    canvas.addEventListener("pointercancel", up);
+
+    paint();
+    return {
+      isDone: () => done,
+      reset() { done = false; moves = 0; el.classList.remove("done"); paint(); },
+      repaint() { if (!done && moves === 0) paint(); },
+    };
+  });
+  window.addEventListener("resize", () => scratches.forEach((s) => s.repaint()));
 
   seal.addEventListener("click", open);
 

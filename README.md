@@ -17,7 +17,8 @@ Mobile-first digital wedding invitation. Static HTML/CSS/JS, no build step.
 ## Phases
 1. ✅ Envelope: embossed paper, gold wax seal М&Г; tap → light rises through the seal, washes it cream, seams glow, flap lifts away with the seal, the painting's sky shows through the V, the pocket slides away
 2. ✅ Hero painting (Sofia meets Burgas) with names / Сватбен ден / Запазете датата; 'Денят настъпи!' section
-3. Scratch-to-reveal date, venue, RSVP
+3. ✅ Scratch-to-reveal date: ДЕН / МЕСЕЦ / ГОДИНА circles (canvas), 05 · Юни · 2027
+4. Venue, RSVP
 
 ## Assets
 Generated with Gemini (`gemini-3-pro-image`) via the AIContent cloud routine
