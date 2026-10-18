@@ -569,44 +569,20 @@ body {
 @keyframes eq { 0%, 100% { height: 4px; } 50% { height: 16px; } }
 
 /* ---------- Seal light falling on the card ---------- */
-/* Lit relief: the same embossed paper with stronger contrast and a warm tint, revealed
-   in a soft circle around the seal, so nearby motifs catch the light and cast shade. */
-.card-lit,
-.card-glow {
+/* Canvas (drawn in main.js) with per-pixel light and shade of the embossed relief, lit
+   from the seal: faces towards the seal get warm highlights, the far sides soft shadow. */
+.card-shade {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
   opacity: 0;
-  --cx: 50%;
-  --cy: 54%;                      /* seal centre, in the pocket's coordinates */
 }
-.flap-front .card-lit,
-.flap-front .card-glow {
-  --cy: 100%;                     /* the flap is 54% tall; the seal sits at its tip */
-  clip-path: polygon(0 0, 100% 0, 100% 55.5%, 50% 100%, 0 55.5%);
-}
-.has-paper .card-lit {
-  background-image: url("assets/paper.webp?v=3");
-  background-size: cover;
-  background-position: center;
-  filter: contrast(3.6) brightness(1.02) sepia(.75) saturate(1.8);
-  -webkit-mask: radial-gradient(circle at var(--cx) var(--cy), #000 0, rgba(0, 0, 0, .8) 90px, transparent 260px);
-          mask: radial-gradient(circle at var(--cx) var(--cy), #000 0, rgba(0, 0, 0, .8) 90px, transparent 260px);
-}
-.flap-front .card-lit {
-  background-size: min(100vw, 480px) auto;
-  background-position: top center;
-}
-.card-glow {
-  /* candle-warm light on the paper: multiply tints the white towards amber */
-  background: radial-gradient(circle at var(--cx) var(--cy), rgba(246, 190, 120, .55) 0, rgba(248, 205, 150, .32) 110px, rgba(250, 220, 180, 0) 280px);
-  mix-blend-mode: multiply;
-  transform-origin: var(--cx) var(--cy);
-  transform: scale(.55);
-}
-.is-glowing .card-lit { opacity: 1; transition: opacity 2s ease .4s; }
-.is-glowing .card-glow { opacity: 1; transform: scale(1); transition: opacity 1.6s ease .3s, transform 2.4s cubic-bezier(.2, .8, .2, 1) .3s; }
-.is-washed .card-glow { opacity: 1; transform: scale(1.25); transition: transform 1.6s ease; }
+.flap-front .card-shade { clip-path: polygon(0 0, 100% 0, 100% 55.5%, 50% 100%, 0 55.5%); }
+.is-glowing .card-shade { opacity: 1; transition: opacity 2.2s ease .4s; }
+.is-washed .card-shade { animation: candle 2.4s ease-in-out infinite; }
+@keyframes candle { 0%, 100% { opacity: 1; } 45% { opacity: .86; } 70% { opacity: .95; } }
 
 /* ================= OPEN SEQUENCE ================= */
 /* 1) Ignite: light rises through the seal from bottom to top.
@@ -1505,7 +1481,7 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   :root { --t-flap: .01s; }
-  .seal, .hint, .glow, .seal-shine::before, .sparkle, .reveal-date::after, .scratch, .flake, .music-btn i, .rs-seal, .after-reveal.unveil, .rd-next span, .hero-next span { animation: none !important; }
-  .card-lit, .card-glow, .pocket, .glow, .rise, .press, .hero-bg, .reveal-up, .sc-item, .sheet-panel, .sheet-backdrop { transition-duration: .01s !important; transition-delay: 0s !important; }
+  .seal, .hint, .glow, .seal-shine::before, .sparkle, .reveal-date::after, .scratch, .flake, .music-btn i, .rs-seal, .after-reveal.unveil, .rd-next span, .hero-next span, .card-shade { animation: none !important; }
+  .card-shade, .pocket, .glow, .rise, .press, .hero-bg, .reveal-up, .sc-item, .sheet-panel, .sheet-backdrop { transition-duration: .01s !important; transition-delay: 0s !important; }
   .cd-num.tick { animation: none !important; }
 }

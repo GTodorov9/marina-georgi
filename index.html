@@ -25,15 +25,13 @@
 
       <!-- Front pocket -->
       <div class="pocket paper">
-        <span class="card-lit" aria-hidden="true"></span>
-        <span class="card-glow" aria-hidden="true"></span>
+        <canvas class="card-shade" id="shadePocket" aria-hidden="true"></canvas>
       </div>
 
       <!-- Top flap, flips open in 3D -->
       <div class="flap" id="flap">
         <div class="flap-face flap-front">
-          <span class="card-lit" aria-hidden="true"></span>
-          <span class="card-glow" aria-hidden="true"></span>
+          <canvas class="card-shade" id="shadeFlap" aria-hidden="true"></canvas>
         </div>
         <div class="flap-face flap-inside"></div>
         <!-- Wax seal rides on the flap -->

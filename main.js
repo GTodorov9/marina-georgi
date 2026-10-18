@@ -146,8 +146,71 @@
     };
   })();
 
+  // ---- Seal light on the card: relief lit from the seal, computed from the paper ----
+  function drawSealLight() {
+    const img = new Image();
+    img.onload = () => {
+      [["shadePocket", "cover"], ["shadeFlap", "width"]].forEach(([id, fit]) => {
+        const cv = document.getElementById(id);
+        const host = cv.parentElement;
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const scene = document.getElementById("scene");
+        const W = Math.round(host.clientWidth * dpr), H = Math.round(host.clientHeight * dpr);
+        if (!W || !H) return;
+        cv.width = W; cv.height = H;
+        const ctx = cv.getContext("2d", { willReadFrequently: true });
+        // draw the paper exactly as CSS shows it on this piece
+        let dw, dh;
+        if (fit === "cover") {
+          const k = Math.max(W / img.width, H / img.height); dw = img.width * k; dh = img.height * k;
+          ctx.drawImage(img, (W - dw) / 2, (H - dh) / 2, dw, dh);
+        } else {
+          const k = W / img.width; dw = W; dh = img.height * k;
+          ctx.drawImage(img, 0, 0, dw, dh);
+        }
+        const src = ctx.getImageData(0, 0, W, H).data;
+        const lum = new Float32Array(W * H);
+        for (let i = 0, p = 0; i < lum.length; i++, p += 4) lum[i] = src[p] * .3 + src[p + 1] * .59 + src[p + 2] * .11;
+        // seal centre in this canvas (seal sits at 54% of the scene height)
+        const sx = W / 2;
+        const sy = (scene.clientHeight * 0.54 - (fit === "cover" ? 0 : 0)) * dpr;
+        const R = 210 * dpr;                     // reach of the light
+        const out = ctx.createImageData(W, H);
+        const o = out.data;
+        for (let y = 1; y < H - 1; y++) {
+          for (let x = 1; x < W - 1; x++) {
+            const i = y * W + x;
+            const dx0 = x - sx, dy0 = y - sy;
+            const d = Math.hypot(dx0, dy0);
+            const fall = Math.exp(-(d * d) / (R * R));
+            if (fall < 0.02) continue;
+            // relief slope (Sobel)
+            const gx = (lum[i - W + 1] + 2 * lum[i + 1] + lum[i + W + 1]) - (lum[i - W - 1] + 2 * lum[i - 1] + lum[i + W - 1]);
+            const gy = (lum[i + W - 1] + 2 * lum[i + W] + lum[i + W + 1]) - (lum[i - W - 1] + 2 * lum[i - W] + lum[i - W + 1]);
+            const inv = d > 0 ? 1 / d : 0;
+            const s = -(gx * dx0 + gy * dy0) * inv / 60;   // >0 faces the seal, <0 turned away
+            const p = i * 4;
+            const warm = 0.14 * fall;                       // soft amber pool
+            if (s > 0) {                                    // lit edge: warm gold highlight
+              const a = Math.min(.8, s * fall * .6 + warm);
+              o[p] = 255; o[p + 1] = 214; o[p + 2] = 150; o[p + 3] = a * 255;
+            } else {                                        // far side: warm brown shade
+              const a = Math.min(.55, -s * fall * .5);
+              const t = a / (a + warm + 1e-6);
+              o[p] = 255 * (1 - t) + 110 * t; o[p + 1] = 214 * (1 - t) + 66 * t; o[p + 2] = 150 * (1 - t) + 30 * t;
+              o[p + 3] = Math.min(1, a + warm) * 255;
+            }
+          }
+        }
+        ctx.putImageData(out, 0, 0);
+      });
+    };
+    img.src = "assets/paper.webp?v=3";
+  }
+
   // ---- Open sequence ----
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!reduced) drawSealLight();
   const T = reduced
     ? { press: 0, glow: 0, wash: 0, slide: 0, reveal: 0, done: 0 }
     : { press: 140, glow: 2650, wash: 2250, slide: 1300, reveal: 2300, done: 3700 };
