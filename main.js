@@ -176,6 +176,8 @@
     heroBg.style.translate = "";
     document.querySelectorAll(".in-view").forEach((el) => el.classList.remove("in-view"));
     revealDate.classList.remove("complete");
+    afterReveal.hidden = true;
+    afterReveal.classList.remove("unveil");
     scratches.forEach((s) => s.reset());
     replay.hidden = true;
     stage.classList.remove("is-pressed", "is-glowing", "is-washed", "is-open", "is-slide", "is-reveal", "is-done");
@@ -194,6 +196,21 @@
     entries.forEach((e) => e.isIntersecting && e.target.classList.add("in-view"));
   }, { root: invite, threshold: 0.12 });
   document.querySelectorAll(".arrived, .reveal-up").forEach((el) => io.observe(el));
+
+  // ---- The rest of the invitation unlocks after the date is found ----
+  const afterReveal = document.getElementById("afterReveal");
+  function unlockRest(instant) {
+    if (!afterReveal.hidden) return;
+    afterReveal.hidden = false;
+    invite.dispatchEvent(new Event("scroll"));          // position the schedule rose
+    if (instant === true) return;
+    afterReveal.classList.add("unveil");
+    // glide down so the countdown comes into view
+    setTimeout(() => {
+      const top = afterReveal.offsetTop - invite.clientHeight * 0.18;
+      invite.scrollTo({ top, behavior: reduced ? "auto" : "smooth" });
+    }, 500);
+  }
 
   // ---- Scratch to reveal the date ----
   const revealDate = document.getElementById("revealDate");
@@ -286,6 +303,7 @@
       if (scratches.every((s) => s.isDone())) {
         revealDate.classList.add("complete");
         if (navigator.vibrate) navigator.vibrate([20, 60, 30]);
+        setTimeout(unlockRest, 900);
       }
     }
 
@@ -437,6 +455,7 @@
   if (new URLSearchParams(location.search).has("skip")) {
     opened = true;
     stage.classList.add("is-open", "is-slide", "is-reveal", "is-done");
+    if (new URLSearchParams(location.search).get("skip") !== "locked") unlockRest(true);
     invite.setAttribute("aria-hidden", "false");
     replay.hidden = false;
   }

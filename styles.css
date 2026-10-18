@@ -982,6 +982,30 @@ body {
 }
 .v-info-icon svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; }
 
+/* ---------- Unlock after the date is revealed ---------- */
+.after-reveal[hidden] { display: none; }
+.after-reveal.unveil {
+  animation: unveil 1.6s cubic-bezier(.2, .8, .2, 1) both;
+}
+@keyframes unveil {
+  from { opacity: 0; transform: translateY(60px); filter: blur(8px); }
+  to   { opacity: 1; transform: none; filter: none; }
+}
+/* the date section closes with a soft "continue" cue once complete */
+.rd-next {
+  margin-top: 34px;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-style: italic;
+  font-size: 18px;
+  color: #f6e6d6;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 1s ease .6s, transform 1.2s cubic-bezier(.2, .8, .2, 1) .6s;
+}
+.rd-next span { display: block; font-style: normal; font-size: 22px; animation: nudge 1.6s ease-in-out infinite; }
+@keyframes nudge { 50% { transform: translateY(6px); } }
+.reveal-date.complete .rd-next { opacity: .9; transform: none; }
+
 /* ---------- Screen 4: countdown ---------- */
 .countdown {
   position: relative;
@@ -1429,7 +1453,7 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   :root { --t-flap: .01s; }
-  .seal, .hint, .glow, .seal-shine::before, .sparkle, .reveal-date::after, .scratch, .flake, .music-btn i, .rs-seal { animation: none !important; }
+  .seal, .hint, .glow, .seal-shine::before, .sparkle, .reveal-date::after, .scratch, .flake, .music-btn i, .rs-seal, .after-reveal.unveil, .rd-next span { animation: none !important; }
   .pocket, .glow, .rise, .press, .hero-bg, .reveal-up, .sc-item, .sheet-panel, .sheet-backdrop { transition-duration: .01s !important; transition-delay: 0s !important; }
   .cd-num.tick { animation: none !important; }
 }

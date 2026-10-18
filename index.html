@@ -95,8 +95,11 @@
             <span class="rd-label">Година</span>
           </div>
         </div>
+        <p class="rd-next" aria-hidden="true">Продължете надолу<span>⌄</span></p>
       </section>
 
+      <!-- Everything below unlocks once all three date circles are scratched -->
+      <div class="after-reveal" id="afterReveal" hidden>
       <section class="countdown" id="countdown">
         <h2 class="cd-title reveal-up">Празненството започва след</h2>
         <div class="cd-clock reveal-up" role="timer" aria-live="off">
@@ -180,6 +183,7 @@
           <p class="closing-mono reveal-up"><span data-initials></span> · 05.06.2027</p>
         </footer>
       </section>
+      </div>
     </div>
 
     <!-- RSVP form (bottom sheet) -->
