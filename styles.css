@@ -221,14 +221,14 @@ body {
   aspect-ratio: 259 / 226;
   -webkit-mask: url("assets/hero/dome-mask.webp?v=1") center / 100% 100% no-repeat;
           mask: url("assets/hero/dome-mask.webp?v=1") center / 100% 100% no-repeat;
-  background: linear-gradient(105deg, rgba(255, 246, 205, 0) 45%, rgba(255, 248, 215, .6) 50%, rgba(255, 246, 205, 0) 55%) no-repeat;
+  background: linear-gradient(105deg, rgba(255, 246, 205, 0) 44%, rgba(255, 246, 210, .22) 50%, rgba(255, 246, 205, 0) 56%) no-repeat;
   background-size: 300% 100%;
   mix-blend-mode: screen;
-  animation: glint 9s ease-in-out infinite;
+  animation: glint 16s ease-in-out infinite;
 }
 @keyframes glint {
   0%        { background-position: 100% 0; }
-  30%, 100% { background-position: 0 0; }
+  25%, 100% { background-position: 0 0; }
 }
 
 /* Dolphin: hinged below the waterline (405,1075) and swung over in an arc; the pool clips it at the surface */
