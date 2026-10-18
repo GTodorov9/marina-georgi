@@ -231,12 +231,21 @@ body {
   25%, 100% { background-position: 0 0; }
 }
 
-/* Bell swinging in the middle arch of the bell tower; hangs from (467.5,773.5) */
+/* Belfry (438,762 · 60×38): the bell swings behind a cut-out of the stonework, seen through the arches */
+.belfry {
+  position: absolute;
+  left: 57.031%;
+  top: 55.378%;
+  width: 7.813%;
+  aspect-ratio: 60 / 38;
+  overflow: hidden;
+}
+.belfry-front { position: absolute; inset: 0; width: 100%; height: 100%; }
 .bell {
   position: absolute;
-  left: 60.872%;
-  top: 55.814%;              /* 768: hangs from the base of the dome */
-  width: 5.6cqw;             /* almost as wide as the dome */
+  left: 49.17%;              /* hangs from (467.5,770) */
+  top: 21.05%;
+  width: 50%;                /* 30% smaller than the dome-sized bell; the columns frame it */
   translate: -50% 0;
   overflow: visible;
   transform-origin: 50% 0;
