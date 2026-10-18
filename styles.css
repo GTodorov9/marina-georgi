@@ -165,7 +165,7 @@ body {
   width: max(100cqw, 100cqh * 768 / 1376);
   aspect-ratio: 768 / 1376;
   transform: translateX(-50%);
-  background: url("assets/hero/plate.webp?v=1") center / 100% 100% no-repeat;
+  background: url("assets/hero/plate.webp?v=2") center / 100% 100% no-repeat;
   container-type: inline-size;
 }
 .hl {
@@ -181,6 +181,40 @@ body {
 .hl-rose-l    { left: 0;       top: 73.474%; width: 16.667%; transform-origin: 31% 100%; --a: -1.6deg; --b: 1.4deg; --dur: 6s;   --delay: -2s; }
 .hl-rose-r    { left: 81.901%; top: 74.855%; width: 14.063%; transform-origin: 66% 100%; --a: 1.5deg;  --b: -1.5deg; --dur: 6.8s; --delay: -4s; }
 .hl-rose-tr   { left: 89.063%; top: 58.648%; width: 10.938%; transform-origin: 90% 100%; --a: -1.8deg; --b: 1.2deg; --dur: 5.6s; --delay: -1s; }
+
+/* Sea: rows of the water strip slide side to side on a canvas (main.js); 915/1376 down, 262 tall */
+.sea {
+  position: absolute;
+  left: 0;
+  top: 66.497%;
+  width: 100%;
+  height: 19.041%;
+}
+
+/* Boat (467,975 · 128×131): the whole boat bobs, the sails fill and ease with the wind */
+.boat {
+  position: absolute;
+  left: 60.807%;
+  top: 70.858%;
+  width: 16.667%;
+  aspect-ratio: 128 / 131;
+  transform-origin: 50% 92%;
+  animation: bob 5.2s ease-in-out infinite;
+}
+.boat img { position: absolute; height: auto; }
+.boat-hull { left: 0; top: 0; width: 100%; }
+.sail { animation: billow 3.4s ease-in-out infinite alternate; will-change: transform; }
+.sail-l { left: 3.906%;  top: 6.107%; width: 42.188%; transform-origin: 100% 100%; }   /* hinged on the mast */
+.sail-r { left: 50.781%; top: 9.160%; width: 39.063%; transform-origin: 0 100%; animation-delay: -.25s; }
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0) rotate(-1.1deg); }
+  50%      { transform: translateY(.35cqw) rotate(1.1deg); }
+}
+@keyframes billow {
+  from { transform: scaleX(.93) skewY(-.6deg); }
+  to   { transform: scaleX(1.03) skewY(.8deg); }
+}
 
 @keyframes sway { from { transform: rotate(var(--a, -1deg)); } to { transform: rotate(var(--b, 1deg)); } }
 @keyframes breathe {
@@ -1836,7 +1870,7 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   :root { --t-flap: .01s; }
-  .seal, .hint, .glow, .seal-shine::before, .sparkle, .reveal-date::after, .scratch, .flake, .music-btn i, .rs-seal, .after-reveal.unveil, .rd-next span, .hero-next span, .hl, .lh-glow, .lh-beam, .card-shade, .scratch, .rd-item::before, .scratch-value::after { animation: none !important; }
+  .seal, .hint, .glow, .seal-shine::before, .sparkle, .reveal-date::after, .scratch, .flake, .music-btn i, .rs-seal, .after-reveal.unveil, .rd-next span, .hero-next span, .hl, .lh-glow, .lh-beam, .boat, .sail, .card-shade, .scratch, .rd-item::before, .scratch-value::after { animation: none !important; }
   .petal { display: none; }
   .card-shade, .pocket, .glow, .rise, .press, .hero-bg, .reveal-up, .sc-item, .sheet-panel, .sheet-backdrop { transition-duration: .01s !important; transition-delay: 0s !important; }
   .cd-num.tick { animation: none !important; }

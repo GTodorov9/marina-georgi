@@ -711,3 +711,42 @@
     }));
   }
 })();
+
+/* ---------- Hero sea: each row of the water strip drifts sideways, so the painted waves ripple ---------- */
+(function () {
+  const cvs = document.getElementById("sea");
+  if (!cvs || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const ctx = cvs.getContext("2d");
+  const W = cvs.width, H = cvs.height;
+  const water = new Image();     // the sea cut out of the plate; its alpha is the water mask
+  water.src = "assets/hero/water.webp?v=1";
+
+  let visible = true, last = 0, raf = 0;
+  function frame(now) {
+    raf = requestAnimationFrame(frame);
+    if (now - last < 33) return;                 // ~30fps is plenty for slow water
+    last = now;
+    const t = now / 1000;
+    ctx.clearRect(0, 0, W, H);
+    ctx.globalCompositeOperation = "source-over";
+    for (let y = 0; y < H; y++) {
+      const depth = y / H;                       // 0 = horizon, 1 = shore: nearer water moves more
+      const amp = 0.7 + depth * depth * 4.2;
+      const dx = amp * (0.62 * Math.sin(y * 0.21 + t * 1.5) + 0.38 * Math.sin(y * 0.067 - t * 0.85));
+      // a slow swell: rows borrow from a pixel or two above/below, so the painted wave lines rise and fall
+      const sy = Math.min(H - 1, Math.max(0, y + Math.round((0.5 + depth * 1.6) * Math.sin(t * 1.1 - y * 0.09))));
+      ctx.drawImage(water, 0, sy, W, 1, dx, y, W, 1);
+    }
+    // keep the ripple inside the sea (pier, rocks and island stay still)
+    ctx.globalCompositeOperation = "destination-in";
+    ctx.drawImage(water, 0, 0);
+  }
+  const start = () => { if (!raf && visible && !document.hidden) raf = requestAnimationFrame(frame); };
+  const stop = () => { cancelAnimationFrame(raf); raf = 0; };
+  water.onload = () => {
+    new IntersectionObserver(([e]) => { visible = e.isIntersecting; visible ? start() : stop(); }).observe(cvs);
+    document.addEventListener("visibilitychange", () => (document.hidden ? stop() : start()));
+    start();
+  };
+})();
+
