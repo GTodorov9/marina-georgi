@@ -9,9 +9,10 @@ window.WEDDING = {
   dateYear: "2027",
   dateText: "05 юни 2027",
   // Countdown target: first moment of the day (Sofia is UTC+3 in June)
-  celebrationStart: "2027-06-05T16:00:00+03:00",
+  celebrationStart: "2027-06-05T14:00:00+03:00",
   // Day-of schedule (MOCK until confirmed with Terra Residence)
   schedule: [
+    { time: "14:00", title: "Църковен ритуал", place: "Храм „Света София“" },
     { time: "16:00", title: "Посрещане на гостите", place: "Централната градина" },
     { time: "16:30", title: "Изнесен ритуал", place: "Английският двор" },
     { time: "17:30", title: "Коктейл", place: "Градината с фонтана" },
