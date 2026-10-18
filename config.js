@@ -27,5 +27,5 @@ window.WEDDING = {
   rsvpEndpoint: "",
   // Background music, started (with a fade-in) when the guest taps the seal — browsers
   // block autoplay before an interaction. Put an mp3 in assets/ and its path here.
-  music: "assets/music.mp3?v=2",
+  music: "assets/music.mp3?v=3",
 };

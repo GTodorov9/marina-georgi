@@ -3,7 +3,6 @@
   const root = document.documentElement;
   const stage = document.getElementById("stage");
   const seal = document.getElementById("seal");
-  const music = document.getElementById("music");
 
   // ---- Fill couple details from config.js ----
   const fill = (sel, text) => document.querySelectorAll(sel).forEach((el) => (el.textContent = text || ""));
@@ -63,47 +62,64 @@
   }
 
   // ---- Background music: fades in on the seal tap, floating mute button ----
-  // Volume goes through Web Audio (a GainNode) because iOS ignores audio.volume.
+  // Played through Web Audio: the decoded track is looped by crossfading two copies
+  // (no audible restart, no MP3 gap), and volume fades work on iOS too.
   const musicBtn = document.getElementById("musicBtn");
   const player = (() => {
-    let ctx = null, gain = null, on = false, available = false;
-    if (cfg.music) {
-      music.src = cfg.music;
-      music.addEventListener("canplay", () => { available = true; }, { once: true });
-      music.addEventListener("error", () => { available = false; musicBtn.hidden = true; });
+    const VOLUME = 0.35, XFADE = 4;            // seconds of overlap at the loop point
+    let ctx = null, master = null, buffer = null, on = false, started = false, timer = 0;
+    const fileReq = cfg.music ? fetch(cfg.music).then((r) => r.arrayBuffer()).catch(() => null) : Promise.resolve(null);
+
+    const decode = (data) => new Promise((res, rej) => ctx.decodeAudioData(data, res, rej));  // callback form for older Safari
+
+    // play one copy starting at `when`, fading in/out over XFADE, and schedule the next
+    function scheduleCopy(when) {
+      const src = ctx.createBufferSource();
+      const g = ctx.createGain();
+      src.buffer = buffer;
+      src.connect(g).connect(master);
+      const end = when + buffer.duration;
+      g.gain.setValueAtTime(0, when);
+      g.gain.linearRampToValueAtTime(1, when + XFADE);
+      g.gain.setValueAtTime(1, end - XFADE);
+      g.gain.linearRampToValueAtTime(0, end);
+      src.start(when);
+      src.stop(end + 0.05);
+      const next = end - XFADE;
+      timer = setTimeout(() => scheduleCopy(next), Math.max(0, (next - ctx.currentTime - 1) * 1000));
     }
 
     const fadeTo = (v, secs) => {
-      if (gain) {
-        const t = ctx.currentTime;
-        gain.gain.cancelScheduledValues(t);
-        gain.gain.setValueAtTime(gain.gain.value, t);
-        gain.gain.linearRampToValueAtTime(v, t + secs);
-      } else {
-        music.volume = v;
-      }
+      const t = ctx.currentTime;
+      master.gain.cancelScheduledValues(t);
+      master.gain.setValueAtTime(master.gain.value, t);
+      master.gain.linearRampToValueAtTime(v, t + secs);
+    };
+    const setBtn = (playing) => {
+      musicBtn.setAttribute("aria-pressed", String(playing));
+      musicBtn.classList.toggle("playing", playing);
     };
 
     const play = () => {
-      music.play().then(() => fadeTo(0.35, 3)).catch(() => {});
+      if (!ctx || !buffer) return;
+      ctx.resume();
+      if (!started) { started = true; scheduleCopy(ctx.currentTime + 0.05); }
+      fadeTo(VOLUME, 3);
       on = true;
-      musicBtn.setAttribute("aria-pressed", "true");
-      musicBtn.classList.add("playing");
+      setBtn(true);
     };
-    const pause = (keepState) => {
+    const pause = () => {
+      if (!ctx) return;
       fadeTo(0, 0.6);
-      setTimeout(() => { if (!on || keepState) music.pause(); }, 650);
-      if (!keepState) {
-        on = false;
-        musicBtn.setAttribute("aria-pressed", "false");
-        musicBtn.classList.remove("playing");
-      }
+      on = false;
+      setBtn(false);
     };
 
-    // pause while the guest is in another app / tab, resume when they return
+    // silence while the guest is in another app / tab; continue softly on return
     document.addEventListener("visibilitychange", () => {
-      if (!on) return;
-      if (document.hidden) pause(true); else play();
+      if (!ctx || !on) return;
+      if (document.hidden) { fadeTo(0, 0.3); setTimeout(() => document.hidden && ctx.suspend(), 350); }
+      else { ctx.resume().then(() => fadeTo(VOLUME, 1.5)); }
     });
     musicBtn.addEventListener("click", () => (on ? pause() : play()));
 
@@ -114,17 +130,19 @@
           if (!ctx) {
             const AC = window.AudioContext || window.webkitAudioContext;
             ctx = new AC();
-            gain = ctx.createGain();
-            gain.gain.value = 0;
-            ctx.createMediaElementSource(music).connect(gain).connect(ctx.destination);
+            master = ctx.createGain();
+            master.gain.value = 0;
+            master.connect(ctx.destination);
           }
-          ctx.resume();
-        } catch (e) { ctx = gain = null; music.volume = 0; }
-        musicBtn.hidden = false;
-        play();
+          ctx.resume();            // unlock inside the gesture (iOS)
+        } catch (e) { return; }
+        fileReq.then((data) => (data ? decode(data) : null)).then((buf) => {
+          if (!buf) return;
+          buffer = buf;
+          musicBtn.hidden = false;
+          play();
+        }).catch(() => { musicBtn.hidden = true; });
       },
-      stop() { pause(); musicBtn.hidden = true; music.currentTime = 0; },
-      get ready() { return available; },
     };
   })();
 
@@ -168,7 +186,6 @@
   function reset() {
     timers.forEach(clearTimeout);
     timers = [];
-    player.stop();
     invite.scrollTop = 0;
     invite.setAttribute("aria-hidden", "true");
     heroBg.style.translate = "";
