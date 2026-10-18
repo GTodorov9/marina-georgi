@@ -93,5 +93,15 @@
   }
 
   seal.addEventListener("click", open);
+
+  // Dev aid: ?freeze=<ms> plays the open sequence and freezes it <ms> after the flap
+  // starts moving, so a single frame can be inspected or screenshotted.
+  const freeze = new URLSearchParams(location.search).get("freeze");
+  if (freeze !== null) {
+    stage.classList.add("is-glowing", "is-washed", "is-open");
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      document.getAnimations().forEach((a) => { a.pause(); a.currentTime = Number(freeze); });
+    }));
+  }
   replay.addEventListener("click", reset);
 })();

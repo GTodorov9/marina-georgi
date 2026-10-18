@@ -457,7 +457,7 @@ body {
 /* 4) The flap lifts away with the seal on it; light pours out of the V */
 .is-open .seal { pointer-events: none; }
 .is-open .hint { opacity: 0; animation: none; }
-.is-open .flap { transform: rotateX(-105deg); opacity: 0; }
+.is-open .flap { transform: rotateX(100deg); opacity: 0; }
 .is-open .rays { opacity: 1; transition: opacity 1s ease .4s; }
 
 /* 5) Everything dissolves into a cream glow with drifting sparkles */
