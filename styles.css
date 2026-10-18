@@ -673,7 +673,6 @@ body {
 }
 @keyframes twinkle { 0%, 100% { opacity: .15; } 50% { opacity: 1; } }
 
-.rd-instruction,
 .rd-sub {
   font-size: 12.5px;
   font-weight: 500;
@@ -683,7 +682,7 @@ body {
   margin-right: -.3em;
 }
 .rd-title {
-  margin: 14px 0 10px;
+  margin: 0 0 10px;
   font-family: "Cormorant Garamond", Georgia, serif;
   font-style: italic;
   font-weight: 600;
