@@ -1,11 +1,11 @@
 :root {
-  --paper: #f2d6cf;
+  --paper: #f8f5f0;
   --paper-shade: #e3bdb2;
   --liner: #e9c9a0;
   --gold: #d9a24e;
   --gold-deep: #9c6620;
   --ink: #7b4b42;
-  --backdrop: #d9b1a6;
+  --backdrop: #d8cfc6;
 
   /* invitation (hero sky + paper); tuned to the hero painting */
   --sky-top: #e9ae8f;
@@ -26,7 +26,7 @@
 html, body { height: 100%; }
 
 body {
-  background: radial-gradient(120% 90% at 50% 30%, #ecc9bf 0%, var(--backdrop) 60%, #c99a8e 100%);
+  background: radial-gradient(120% 90% at 50% 30%, #ece6df 0%, var(--backdrop) 60%, #bfb3a8 100%);
   color: var(--ink);
   font-family: "Cormorant Garamond", Georgia, serif;
   font-variant-numeric: lining-nums;
@@ -69,7 +69,7 @@ body {
   background-size: cover;
   background-position: center;
 }
-.has-paper .paper { background-image: url("assets/paper.webp?v=2"); }
+.has-paper .paper { background-image: url("assets/paper.webp?v=3"); }
 
 /* ---------- Light inside the envelope ---------- */
 /* The envelope has no lining: the invitation painting sits behind it, so the V shows
@@ -375,7 +375,7 @@ body {
 }
 
 .flap-front {
-  filter: drop-shadow(0 5px 6px rgba(110, 55, 45, .28)) drop-shadow(0 1px 1px rgba(110, 55, 45, .25));
+  filter: drop-shadow(0 5px 6px rgba(90, 70, 55, .22)) drop-shadow(0 1px 1px rgba(90, 70, 55, .2));
 }
 .flap-front::before {
   background-color: var(--paper);
@@ -383,7 +383,7 @@ body {
   background-size: min(100vw, 480px) auto;
   background-position: top center;
 }
-.has-paper .flap-front::before { background-image: url("assets/paper.webp?v=2"); }
+.has-paper .flap-front::before { background-image: url("assets/paper.webp?v=3"); }
 
 .flap-inside { transform: rotateX(180deg); }
 .flap-inside::before {

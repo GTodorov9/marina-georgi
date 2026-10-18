@@ -44,7 +44,7 @@
     img.onload = () => root.classList.add(cls);
     img.src = src;
   };
-  useImage("assets/paper.webp?v=2", "has-paper");
+  useImage("assets/paper.webp?v=3", "has-paper");
   useImage("assets/seal.webp?v=2", "has-seal");
   useImage("assets/seal-rsvp.webp?v=1", "has-rsvp-seal");
 
