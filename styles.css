@@ -182,6 +182,147 @@ body {
 .hl-rose-r    { left: 81.901%; top: 74.855%; width: 14.063%; transform-origin: 66% 100%; --a: 1.5deg;  --b: -1.5deg; --dur: 6.8s; --delay: -4s; }
 .hl-rose-tr   { left: 89.063%; top: 58.648%; width: 10.938%; transform-origin: 90% 100%; --a: -1.8deg; --b: 1.2deg; --dur: 5.6s; --delay: -1s; }
 
+/* Mist over Vitosha (54,644 · 672×214): soft wisps drift across, masked to the mountain */
+.mist {
+  position: absolute;
+  left: 7.031%;
+  top: 46.802%;
+  width: 87.5%;
+  aspect-ratio: 672 / 214;
+  overflow: hidden;
+  -webkit-mask: url("assets/hero/mist-mask.webp?v=1") center / 100% 100% no-repeat;
+          mask: url("assets/hero/mist-mask.webp?v=1") center / 100% 100% no-repeat;
+  animation: mist-breathe 14s ease-in-out infinite alternate;
+}
+.mist::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 200%;
+  /* one tile of wisps, repeated twice so sliding by half the width loops seamlessly */
+  background:
+    radial-gradient(ellipse 13% 22% at 12% 42%, rgba(255, 251, 247, .75), rgba(255, 251, 247, 0) 70%),
+    radial-gradient(ellipse 18% 16% at 34% 70%, rgba(255, 250, 245, .65), rgba(255, 250, 245, 0) 70%),
+    radial-gradient(ellipse 15% 20% at 58% 30%, rgba(255, 252, 248, .7), rgba(255, 252, 248, 0) 70%),
+    radial-gradient(ellipse 20% 15% at 82% 62%, rgba(255, 250, 245, .65), rgba(255, 250, 245, 0) 70%);
+  background-size: 50% 100%;
+  background-repeat: repeat-x;
+  animation: mist-drift 70s linear infinite;
+}
+@keyframes mist-drift   { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes mist-breathe { from { opacity: .55; } to { opacity: 1; } }
+
+/* Sunlight glint sliding over the golden domes (238,743 · 259×226) */
+.dome-glint {
+  position: absolute;
+  left: 30.990%;
+  top: 53.997%;
+  width: 33.724%;
+  aspect-ratio: 259 / 226;
+  -webkit-mask: url("assets/hero/dome-mask.webp?v=1") center / 100% 100% no-repeat;
+          mask: url("assets/hero/dome-mask.webp?v=1") center / 100% 100% no-repeat;
+  background: linear-gradient(105deg, rgba(255, 246, 205, 0) 45%, rgba(255, 248, 215, .6) 50%, rgba(255, 246, 205, 0) 55%) no-repeat;
+  background-size: 300% 100%;
+  mix-blend-mode: screen;
+  animation: glint 9s ease-in-out infinite;
+}
+@keyframes glint {
+  0%        { background-position: 100% 0; }
+  30%, 100% { background-position: 0 0; }
+}
+
+/* Dolphin: hinged below the waterline (405,1075) and swung over in an arc; the pool clips it at the surface */
+.dolphin-pool {
+  position: absolute;
+  left: 47.526%;
+  top: 74.855%;
+  width: 10.417%;
+  aspect-ratio: 80 / 45;
+}
+.dolphin-arm {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 0;
+  height: 100%;
+  overflow: visible;
+  clip-path: inset(-10cqw -10cqw 0 -10cqw);     /* nothing shows below the surface */
+}
+.dolphin {
+  position: absolute;
+  left: -2cqw;
+  top: calc(100% + 1.2cqw - 4.2cqw - .9cqw);   /* pivot 1.2cqw under water, radius 4.2cqw */
+  width: 4cqw;
+  transform-origin: 2cqw calc(4.2cqw + .9cqw);
+  rotate: -100deg;
+  animation: leap 17s cubic-bezier(.35, .15, .65, .85) 4s infinite;
+}
+.dolphin .d-body  { fill: #6d8494; }
+.dolphin .d-belly { fill: #d9e2e4; }
+.dolphin .d-eye   { fill: #23303a; }
+@keyframes leap {
+  0%        { rotate: -100deg; }
+  11%, 100% { rotate: 100deg; }
+}
+.splash {
+  position: absolute;
+  top: 100%;
+  width: 2.4cqw;
+  height: .8cqw;
+  margin: -.4cqw 0 0 -1.2cqw;
+  border-radius: 50%;
+  border: .25cqw solid rgba(255, 255, 255, .85);
+  box-shadow: 0 -.3cqw .5cqw rgba(255, 255, 255, .5);
+  opacity: 0;
+  animation: splash 17s ease-out 4s infinite;
+}
+.splash-out { left: calc(50% - 3.9cqw); }
+.splash-in  { left: calc(50% + 3.9cqw); animation-delay: 5.75s; }
+@keyframes splash {
+  0%   { opacity: 0; transform: scale(.3); }
+  1%   { opacity: 1; }
+  9%   { opacity: 0; transform: scale(1.6); }
+  100% { opacity: 0; transform: scale(1.6); }
+}
+
+/* Gulls gliding across the sky above Vitosha, with the odd wingbeat */
+.gull {
+  position: absolute;
+  width: 3.6cqw;
+  overflow: visible;
+  opacity: 0;
+  animation: fly var(--dur) linear var(--delay) infinite;
+}
+.gull path { fill: none; stroke: #6e5f58; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round;
+  transform-box: view-box; transform-origin: 12px 6px; animation: flap 2.6s ease-in-out infinite; }
+.gull-1 { top: 49.5%; --dur: 30s; --delay: -6s; }
+.gull-2 { top: 51.5%; --dur: 36s; --delay: -20s; width: 3cqw; }
+.gull-2 path { animation-delay: -.9s; }
+.gull-3 { top: 47.5%; --dur: 42s; --delay: -31s; width: 2.4cqw; animation-name: fly-back; }
+.gull-3 path { animation-delay: -1.7s; }
+@keyframes fly {
+  0%   { left: -5%;  translate: 0 0;     opacity: 0; }
+  4%   { opacity: .85; }
+  25%  { translate: 0 -1.2cqw; }
+  50%  { translate: 0 .6cqw; }
+  75%  { translate: 0 -.8cqw; }
+  96%  { opacity: .85; }
+  100% { left: 105%; translate: 0 0;     opacity: 0; }
+}
+@keyframes fly-back {
+  0%   { left: 105%; translate: 0 0;   opacity: 0; scale: -1 1; }
+  4%   { opacity: .75; }
+  50%  { translate: 0 -1cqw; }
+  96%  { opacity: .75; }
+  100% { left: -5%;  translate: 0 0;   opacity: 0; scale: -1 1; }
+}
+/* mostly gliding, then a few quick beats */
+@keyframes flap {
+  0%, 55%, 100% { transform: scaleY(1); }
+  62%, 76%      { transform: scaleY(-.35); }
+  69%, 83%      { transform: scaleY(1); }
+}
+
 /* Sea: rows of the water strip slide side to side on a canvas (main.js); 915/1376 down, 262 tall */
 .sea {
   position: absolute;
@@ -1926,7 +2067,7 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   :root { --t-flap: .01s; }
-  .seal, .hint, .glow, .seal-shine::before, .sparkle, .reveal-date::after, .scratch, .flake, .music-btn i, .rs-seal, .after-reveal.unveil, .rd-next span, .hero-next span, .hl, .lh-glow, .lh-beam, .boat, .sail, .couple, .couple *, .lh-door, .card-shade, .scratch, .rd-item::before, .scratch-value::after { animation: none !important; }
+  .seal, .hint, .glow, .seal-shine::before, .sparkle, .reveal-date::after, .scratch, .flake, .music-btn i, .rs-seal, .after-reveal.unveil, .rd-next span, .hero-next span, .hl, .lh-glow, .lh-beam, .boat, .sail, .couple, .couple *, .lh-door, .mist, .mist::before, .dome-glint, .dolphin, .splash, .gull, .gull path, .card-shade, .scratch, .rd-item::before, .scratch-value::after { animation: none !important; }
   .petal { display: none; }
   .card-shade, .pocket, .glow, .rise, .press, .hero-bg, .reveal-up, .sc-item, .sheet-panel, .sheet-backdrop { transition-duration: .01s !important; transition-delay: 0s !important; }
   .cd-num.tick { animation: none !important; }

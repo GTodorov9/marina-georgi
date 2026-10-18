@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ballet:opsz@16..72&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400;1,500;1,600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=202610182210">
+  <link rel="stylesheet" href="styles.css?v=202610182219">
   <link rel="preload" as="image" href="assets/paper.webp?v=3">
   <link rel="preload" as="image" href="assets/seal.webp?v=2">
   <link rel="preload" as="image" href="assets/seal-lines.webp?v=2">
@@ -64,7 +64,15 @@
         <div class="hero-bg" id="heroBg">
           <!-- the painting, split into a still plate + gently moving cut-outs; positions are in % of the 768×1376 art -->
           <div class="hero-art" aria-hidden="true">
+            <span class="mist"></span>
+            <span class="dome-glint"></span>
             <canvas class="sea" id="sea" width="768" height="262"></canvas>
+            <span class="dolphin-pool">
+              <span class="dolphin-arm">
+                <svg class="dolphin" viewBox="0 0 48 22"><path class="d-body" d="M2 13 Q7 6 18 6 Q22 2 27 1.5 Q25 4 25.5 6.2 Q36 7 42 11 Q44 11.5 47 11.8 Q44.5 13.2 41.5 13.6 Q34 17.5 22 16.5 Q19 19.5 15 20.5 Q16.5 18 16.4 16 Q9 15 5.5 13.8 Q3.5 16.5 0.5 19 Q1.6 15.6 2 13Z"/><path class="d-belly" d="M24 15.6 Q33 16 40.5 13.4 Q34 15.4 24 14.6Z"/><circle class="d-eye" cx="39" cy="10.6" r=".7"/></svg>
+              </span>
+              <i class="splash splash-out"></i><i class="splash splash-in"></i>
+            </span>
             <div class="boat">
               <img class="sail sail-l" src="assets/hero/sail-l.webp?v=1" alt="">
               <img class="sail sail-r" src="assets/hero/sail-r.webp?v=1" alt="">
@@ -93,6 +101,9 @@
               </g>
               <path class="c-arms" d="M8 6.6 Q9.2 9.5 9.9 11.2 Q11 9.2 12.5 6.6"/>
             </svg>
+            <svg class="gull gull-1" viewBox="0 0 24 10"><path d="M1 6 Q6 0.5 12 6 Q18 0.5 23 6"/></svg>
+            <svg class="gull gull-2" viewBox="0 0 24 10"><path d="M1 6 Q6 0.5 12 6 Q18 0.5 23 6"/></svg>
+            <svg class="gull gull-3" viewBox="0 0 24 10"><path d="M1 6 Q6 0.5 12 6 Q18 0.5 23 6"/></svg>
             <span class="lighthouse"><i class="lh-beam lh-beam-r"></i><i class="lh-beam lh-beam-l"></i><i class="lh-glow"></i></span>
           </div>
         </div>
@@ -359,7 +370,7 @@
   </main>
 
 
-  <script src="config.js?v=202610182210"></script>
-  <script src="main.js?v=202610182210"></script>
+  <script src="config.js?v=202610182219"></script>
+  <script src="main.js?v=202610182219"></script>
 </body>
 </html>
