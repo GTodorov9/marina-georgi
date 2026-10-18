@@ -8,11 +8,11 @@
   --backdrop: #d9b1a6;
 
   /* invitation (hero sky + paper); tuned to the hero painting */
-  --sky-top: #f8dccb;
-  --sky-mid: #f5cdb3;
-  --sky-low: #f2c6ab;
-  --paper-peach: #f6d6c2;
-  --deboss: #ecc3a8;
+  --sky-top: #e9ae8f;
+  --sky-mid: #efc298;
+  --sky-low: #f5cdad;
+  --paper-peach: #f6d5b9;
+  --deboss: #eec29f;
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.55 0 0 0 0 0.35 0 0 0 0 0.25 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 
   --ease-open: cubic-bezier(.65, 0, .25, 1);
@@ -173,7 +173,7 @@ body {
   inset: 0;
   z-index: 6;
   pointer-events: none;
-  background: radial-gradient(120% 80% at 50% 45%, #fff6ea 0%, #fbe2cf 50%, var(--sky-mid) 100%);
+  background: radial-gradient(120% 80% at 50% 45%, #fff3e2 0%, #f8d9bd 50%, var(--sky-mid) 100%);
   opacity: 0;
 }
 
@@ -236,6 +236,18 @@ body {
   will-change: transform;
 }
 .is-reveal .hero-bg { transform: scale(1); transition: transform 7s cubic-bezier(.2, .7, .2, 1); }
+
+/* Soft fade into the paper below, so the parallax never shows a hard edge */
+.hero::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 18%;
+  background: linear-gradient(180deg, rgba(245, 205, 173, 0) 0%, var(--sky-low) 85%);
+  pointer-events: none;
+}
 
 .hero-text {
   position: relative;
@@ -310,6 +322,7 @@ body {
 /* Scroll cue: a thin line with a falling dot */
 .scroll-cue {
   position: absolute;
+  z-index: 1;
   left: 50%;
   bottom: max(18px, env(safe-area-inset-bottom));
   width: 1px;

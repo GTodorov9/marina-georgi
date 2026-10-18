@@ -185,7 +185,7 @@
   const heroBg = document.getElementById("heroBg");
   if (!reduced) {
     invite.addEventListener("scroll", () => {
-      heroBg.style.translate = `0 ${invite.scrollTop * 0.35}px`;
+      heroBg.style.translate = `0 ${invite.scrollTop * 0.25}px`;
     }, { passive: true });
   }
   const io = new IntersectionObserver((entries) => {
