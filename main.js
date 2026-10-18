@@ -436,7 +436,7 @@
       const data = Object.fromEntries(new FormData(form));
       if (!data.name || !data.name.trim()) { err.textContent = "Моля, въведете името си."; err.hidden = false; return; }
       if (!data.attending) { err.textContent = "Моля, отбележете дали ще присъствате."; err.hidden = false; return; }
-      if (data.attending === "no") ["guests", "companions", "children", "menu", "allergies", "song"].forEach((k) => delete data[k]);
+      if (data.attending === "no") ["guests", "companions", "children", "menu", "allergies"].forEach((k) => delete data[k]);
       data.submittedAt = new Date().toISOString();
 
       const btn = form.querySelector(".f-submit");
