@@ -13,13 +13,12 @@ window.WEDDING = {
   // Day-of schedule (MOCK until confirmed with Terra Residence)
   schedule: [
     { time: "14:00", title: "Църковен ритуал", place: "Катедрален храм „Света Неделя“" },
-    { time: "16:00", title: "Посрещане на гостите", place: "Централната градина" },
-    { time: "16:30", title: "Изнесен ритуал", place: "Английският двор" },
-    { time: "17:30", title: "Коктейл", place: "Градината с фонтана" },
+    { time: "17:00", title: "Посрещане на гостите", place: "Резиденция Тера" },
+    { time: "17:30", title: "Изнесен ритуал", place: "Английският двор" },
     { time: "19:00", title: "Вечеря", place: "Le Grand Salon" },
-    { time: "21:00", title: "Първи танц", place: "Le Grand Salon" },
-    { time: "22:30", title: "Сватбена торта", place: "Le Grand Salon" },
-    { time: "23:00", title: "Парти до зори", place: "" },
+    { time: "21:00", title: "Първи танц", place: "Le Grand Salon" },        // MOCK
+    { time: "22:30", title: "Сватбена торта", place: "Le Grand Salon" },    // MOCK
+    { time: "23:00", title: "Парти до зори", place: "" },                   // MOCK
   ],
   // RSVP
   rsvpBy: "01 май 2027",           // MOCK deadline

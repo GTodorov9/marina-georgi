@@ -827,6 +827,42 @@ body {
   font-size: clamp(42px, 12.5vw, 58px);
   line-height: 1.05;
 }
+.v-step {
+  margin-top: 18px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  margin-right: -.26em;
+  color: #b06f49;
+  font-variant-numeric: lining-nums;
+}
+.v-title-sm { font-size: clamp(34px, 10vw, 46px); }
+.v-church {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.v-church .v-card { margin-top: 22px; }
+.v-divider {
+  position: relative;
+  width: 170px;
+  height: 1px;
+  margin: 46px 0 6px;
+  background: linear-gradient(90deg, transparent, #b98a62 25%, #b98a62 75%, transparent);
+}
+.v-divider::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  translate: -50% -50%;
+  rotate: 45deg;
+  background: #b98a62;
+}
 .v-place {
   font-size: 13px;
   font-weight: 500;
