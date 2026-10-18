@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#efd3cb">
+  <title>You're Invited</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Pinyon+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preload" as="image" href="assets/paper.webp">
+  <link rel="preload" as="image" href="assets/seal.webp">
+</head>
+<body>
+  <main class="stage" id="stage">
+    <div class="scene" id="scene">
+      <!-- Inside back of the envelope + golden light that escapes when it opens -->
+      <div class="env-back"></div>
+
+      <!-- The letter tucked inside (expanded in phase 2) -->
+      <article class="letter" id="letter" aria-hidden="true">
+        <p class="letter-kicker">Together with their families</p>
+        <h1 class="letter-names"><span data-name1></span><em>&amp;</em><span data-name2></span></h1>
+        <p class="letter-date" data-date></p>
+      </article>
+
+      <!-- Light escaping the envelope, layered over the letter -->
+      <div class="light" aria-hidden="true">
+        <div class="glow"></div>
+        <div class="rays"></div>
+      </div>
+
+      <!-- Front pocket with embossed fold lines -->
+      <div class="pocket paper">
+        <svg class="folds" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 100 L50 60 L100 100" class="fold-light"/>
+          <path d="M0 100 L50 60 L100 100" class="fold-dark"/>
+        </svg>
+      </div>
+
+      <!-- Top flap, flips open in 3D -->
+      <div class="flap" id="flap">
+        <div class="flap-face flap-front"></div>
+        <div class="flap-face flap-inside"></div>
+      </div>
+
+      <!-- Wax seal -->
+      <button class="seal" id="seal" type="button" aria-label="Open the invitation">
+        <span class="seal-wax"></span>
+        <span class="seal-shine"></span>
+        <span class="seal-initials" data-initials></span>
+      </button>
+    </div>
+
+    <p class="hint" id="hint">Tap the seal to open</p>
+    <button class="replay" id="replay" type="button" hidden>↺ Replay</button>
+  </main>
+
+  <audio id="music" preload="none" loop></audio>
+
+  <script src="config.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
