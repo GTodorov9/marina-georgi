@@ -8,8 +8,18 @@ window.WEDDING = {
   dateMonth: "Юни",
   dateYear: "2027",
   dateText: "05 юни 2027",
-  // Day-of program at Terra Residence. PLACEHOLDER times until confirmed with the venue.
-  times: { ceremony: "16:30", cocktail: "17:30", dinner: "19:00" },
+  // Countdown target: first moment of the day (Sofia is UTC+3 in June)
+  celebrationStart: "2027-06-05T16:00:00+03:00",
+  // Day-of schedule (MOCK until confirmed with Terra Residence)
+  schedule: [
+    { time: "16:00", title: "Посрещане на гостите", place: "Централната градина" },
+    { time: "16:30", title: "Изнесен ритуал", place: "Английският двор" },
+    { time: "17:30", title: "Коктейл", place: "Градината с фонтана" },
+    { time: "19:00", title: "Вечеря", place: "Le Grand Salon" },
+    { time: "21:00", title: "Първи танц", place: "Le Grand Salon" },
+    { time: "22:30", title: "Сватбена торта", place: "Le Grand Salon" },
+    { time: "23:00", title: "Парти до зори", place: "" },
+  ],
   // Background music, started (with a fade-in) when the guest taps the seal — browsers
   // block autoplay before an interaction. Put an mp3 in assets/ and its path here.
   music: "assets/music.mp3",

@@ -25,8 +25,18 @@
   fill("[data-date-day]", cfg.dateDay);
   fill("[data-date-month]", cfg.dateMonth);
   fill("[data-date-year]", cfg.dateYear);
-  document.querySelectorAll("[data-time]").forEach((el) => {
-    el.textContent = (cfg.times || {})[el.dataset.time] || "";
+
+  // ---- Schedule list from config ----
+  const scheduleList = document.getElementById("scheduleList");
+  (cfg.schedule || []).forEach((it) => {
+    const li = document.createElement("li");
+    li.className = "sc-item";
+    li.innerHTML = '<span class="sc-time"></span><span class="sc-dot" aria-hidden="true"></span>' +
+      '<span class="sc-what"><strong></strong><small></small></span>';
+    li.querySelector(".sc-time").textContent = it.time;
+    li.querySelector("strong").textContent = it.title;
+    li.querySelector("small").textContent = it.place || "";
+    scheduleList.appendChild(li);
   });
 
   // ---- Use the generated art only once it has loaded; CSS fallbacks otherwise ----
@@ -296,6 +306,61 @@
     };
   });
   window.addEventListener("resize", () => scratches.forEach((s) => s.repaint()));
+
+  // ---- Countdown to the celebration ----
+  (() => {
+    const target = new Date(cfg.celebrationStart).getTime();
+    const els = {};
+    document.querySelectorAll("[data-cd]").forEach((el) => (els[el.dataset.cd] = el));
+    const clock = document.querySelector(".cd-clock");
+    const doneMsg = document.querySelector(".cd-done");
+    const set = (el, v) => {
+      if (el.textContent === v) return;
+      el.textContent = v;
+      el.classList.remove("tick");
+      void el.offsetWidth;            // restart the tick animation
+      el.classList.add("tick");
+    };
+    const pad = (n) => String(n).padStart(2, "0");
+    const update = () => {
+      let s = Math.max(0, Math.floor((target - Date.now()) / 1000));
+      if (s === 0) { clock.hidden = true; doneMsg.hidden = false; return; }
+      const d = Math.floor(s / 86400); s %= 86400;
+      set(els.d, String(d));
+      set(els.h, pad(Math.floor(s / 3600)));
+      set(els.m, pad(Math.floor((s % 3600) / 60)));
+      set(els.s, pad(s % 60));
+    };
+    update();
+    setInterval(update, 1000);
+  })();
+
+  // ---- Schedule: the rose travels down the line as you scroll, lighting each moment ----
+  (() => {
+    const timeline = document.getElementById("timeline");
+    const rose = document.getElementById("rose");
+    const fill = document.getElementById("lineFill");
+    const items = [...timeline.querySelectorAll(".sc-item")];
+    let pending = false;
+    const update = () => {
+      pending = false;
+      const r = timeline.getBoundingClientRect();
+      const anchor = invite.clientHeight * 0.55;        // the rose follows this point of the screen
+      const y = Math.min(Math.max(anchor - r.top, 0), r.height);
+      rose.style.top = `${y}px`;
+      rose.style.transform = `rotate(${y * 0.35}deg)`;
+      fill.style.height = `${y}px`;
+      items.forEach((li) => {
+        const mid = li.offsetTop + li.offsetHeight / 2;
+        li.classList.toggle("lit", mid <= y + 4);
+      });
+    };
+    invite.addEventListener("scroll", () => {
+      if (!pending) { pending = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    window.addEventListener("resize", update);
+    update();
+  })();
 
   seal.addEventListener("click", open);
 

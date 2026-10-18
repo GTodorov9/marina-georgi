@@ -97,6 +97,34 @@
         </div>
       </section>
 
+      <section class="countdown" id="countdown">
+        <h2 class="cd-title reveal-up">Празненството започва след</h2>
+        <div class="cd-clock reveal-up" role="timer" aria-live="off">
+          <div class="cd-unit"><span class="cd-num" data-cd="d">0</span><span class="cd-label">Дни</span></div>
+          <span class="cd-sep" aria-hidden="true">:</span>
+          <div class="cd-unit"><span class="cd-num" data-cd="h">00</span><span class="cd-label">Часа</span></div>
+          <span class="cd-sep" aria-hidden="true">:</span>
+          <div class="cd-unit"><span class="cd-num" data-cd="m">00</span><span class="cd-label">Минути</span></div>
+          <span class="cd-sep" aria-hidden="true">:</span>
+          <div class="cd-unit"><span class="cd-num" data-cd="s">00</span><span class="cd-label">Секунди</span></div>
+        </div>
+        <p class="cd-done" hidden>Денят дойде!</p>
+      </section>
+
+      <section class="schedule" id="schedule">
+        <h2 class="sc-title reveal-up">
+          <svg class="flourish" viewBox="0 0 60 16" aria-hidden="true"><path d="M58 8H30c-6 0-8-6-14-6-5 0-8 4-6 7 2 3 7 2 7-1 0-2-3-3-4-1M30 8c-4 0-6 4-11 4"/><circle cx="4" cy="8" r="1.6"/></svg>
+          <span>Програма</span>
+          <svg class="flourish flip" viewBox="0 0 60 16" aria-hidden="true"><path d="M58 8H30c-6 0-8-6-14-6-5 0-8 4-6 7 2 3 7 2 7-1 0-2-3-3-4-1M30 8c-4 0-6 4-11 4"/><circle cx="4" cy="8" r="1.6"/></svg>
+        </h2>
+        <div class="sc-timeline" id="timeline">
+          <span class="sc-line" aria-hidden="true"></span>
+          <span class="sc-line-fill" id="lineFill" aria-hidden="true"></span>
+          <img class="sc-rose" id="rose" src="assets/rose.webp?v=1" alt="" aria-hidden="true" onerror="this.classList.add('fallback')">
+          <ol class="sc-list" id="scheduleList"></ol>
+        </div>
+      </section>
+
       <section class="venue" id="venue">
         <p class="v-kicker reveal-up">Мястото</p>
         <h2 class="v-title reveal-up">Резиденция Тера</h2>
@@ -106,27 +134,6 @@
           <img src="assets/venue.webp?v=2" alt="Английският двор на Резиденция Тера: извита стена с арковидни огледални прозорци, светлини, басейн с мозайка и арка от цветя" loading="lazy" onerror="this.parentElement.hidden=true">
         </figure>
         <p class="v-lead reveal-up">Сред зелени градини, светлини и вода,<br>с изглед към Витоша</p>
-
-        <ol class="v-program">
-          <li class="reveal-up">
-            <span class="v-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="12.5" cy="18" r="7"/><circle cx="19.5" cy="18" r="7"/><path d="M14 7l2-3 2 3-2 2z"/></svg></span>
-            <span class="v-time" data-time="ceremony"></span>
-            <span class="v-what">Изнесен ритуал</span>
-            <span class="v-where">Английският двор</span>
-          </li>
-          <li class="reveal-up">
-            <span class="v-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M9 5h6l-.6 8a2.4 2.4 0 0 1-4.8 0z"/><path d="M12 15.5V25M9 25h6"/><path d="M17 5h6l-.6 8a2.4 2.4 0 0 1-4.8 0z"/><path d="M20 15.5V25M17 25h6"/></svg></span>
-            <span class="v-time" data-time="cocktail"></span>
-            <span class="v-what">Коктейл</span>
-            <span class="v-where">Централната градина с фонтана</span>
-          </li>
-          <li class="reveal-up">
-            <span class="v-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M16 4v3"/><path d="M8 13a8 8 0 0 1 16 0z"/><path d="M6 13h20"/><path d="M11 17v9M21 17v9M8 26h16"/></svg></span>
-            <span class="v-time" data-time="dinner"></span>
-            <span class="v-what">Вечеря и празненство</span>
-            <span class="v-where">Le Grand Salon</span>
-          </li>
-        </ol>
 
         <div class="v-card reveal-up">
           <p class="v-label">Адрес</p>
